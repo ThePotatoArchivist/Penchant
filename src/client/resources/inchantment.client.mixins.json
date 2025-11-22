@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "archives.tater.inchantment.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "ItemEnchantmentsMixin"
+  ]
+}
