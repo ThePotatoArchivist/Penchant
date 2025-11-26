@@ -1,0 +1,17 @@
+{
+  "providers": [
+    {
+      "type": "reference",
+      "id": "minecraft:include/space"
+    },
+    {
+      "type": "bitmap",
+      "file": "penchant:font/bar.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\u0021\u0022"
+      ]
+    }
+  ]
+}

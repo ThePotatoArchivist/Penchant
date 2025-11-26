@@ -2,11 +2,12 @@ package archives.tater.penchant.mixin.client;
 
 import archives.tater.penchant.EnchantmentProgress;
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.PenchantClient;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
-import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,24 +33,31 @@ public class ItemEnchantmentsMixin {
             method = "addToTooltip",
             at = @At("HEAD")
     )
-    private void getProgress(TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag, DataComponentGetter dataComponentGetter, CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress> progress, @Share("isStored") LocalBooleanRef isStored) {
-        progress.set(dataComponentGetter.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY));
-        isStored.set(dataComponentGetter.get(DataComponents.STORED_ENCHANTMENTS) != null);
+    private void getProgress(TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag, DataComponentGetter dataComponentGetter, CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress> progress) {
+        if (dataComponentGetter.get(DataComponents.STORED_ENCHANTMENTS) == null)
+            progress.set(dataComponentGetter.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY));
     }
 
     @WrapOperation(
             method = "addToTooltip",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;")
     )
-    private Component addProgress(Holder<@NotNull Enchantment> holder, int i, Operation<Component> original, @Share("progress") LocalRef<EnchantmentProgress> progress, @Share("isStored") LocalBooleanRef isStored) {
-        if (isStored.get()) {
-            return Penchant.getName(holder);
-        }
+    private Component hideLevel(Holder<@NotNull Enchantment> holder, int i, Operation<Component> original, @Share("progress") LocalRef<EnchantmentProgress> progress, @Share("enchantment") LocalRef<Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef level) {
+        if (progress.get() == null) return Penchant.getName(holder);
+        enchantmentShare.set(holder);
+        level.set(i);
+        return original.call(holder, i);
+    }
 
-        var originalResult = original.call(holder, i);
+    @WrapOperation(
+            method = "addToTooltip",
+            at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V")
+    )
+    private <T> void addProgress(Consumer<T> instance, T text, Operation<Void> original, @Share("enchantment") LocalRef<Holder<Enchantment>> enchantment, @Share("level") LocalIntRef level, @Share("progress") LocalRef<EnchantmentProgress> progress) {
+        original.call(instance, text);
 
-        if (!EnchantmentProgress.shouldShowTooltip(holder)) return originalResult;
+        if (!EnchantmentProgress.shouldShowTooltip(enchantment.get())) return;
 
-        return originalResult.copy().append(" ").append(progress.get().getTooltip(holder, i));
+        original.call(instance, PenchantClient.getProgressTooltip(progress.get(), enchantment.get(), level.get()));
     }
 }

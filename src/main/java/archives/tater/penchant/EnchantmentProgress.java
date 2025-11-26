@@ -1,11 +1,9 @@
 package archives.tater.penchant;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvents;
@@ -83,15 +81,6 @@ public class EnchantmentProgress {
 
     public static boolean shouldShowTooltip(Holder<@NotNull Enchantment> enchantment) {
         return enchantment.value().getMaxLevel() != 1;
-    }
-    public Component getTooltip(Holder<@NotNull Enchantment> enchantment, int level) {
-        return (level >= enchantment.value().getMaxLevel()
-                ? Component.translatable("penchant.tooltip.progress.max")
-                : Component.translatable("penchant.tooltip.progress",
-                progress.getInt(enchantment),
-                getMaxProgress(enchantment, level)
-        ))
-                .withStyle(ChatFormatting.DARK_GRAY);
     }
 
     public static final Codec<EnchantmentProgress> CODEC =

@@ -3,6 +3,7 @@
   "package": "archives.tater.penchant.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "BitmapProviderMixin",
     "EnchantmentScreenMixin"
   ],
   "injectors": {
