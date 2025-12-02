@@ -1,6 +1,7 @@
 package archives.tater.penchant;
 
 import com.mojang.serialization.Codec;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,14 +14,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 import static java.util.Objects.hash;
+import static net.minecraft.util.Mth.clamp;
 
 public class EnchantmentProgress {
 
@@ -100,8 +100,8 @@ public class EnchantmentProgress {
 
     public static final EnchantmentProgress EMPTY = new EnchantmentProgress(new Object2IntOpenHashMap<>());
 
-    public static int getMaxProgress(Holder<@NotNull Enchantment> enchantment, int currentLevel) {
-        return 50 * currentLevel;
+    public static int getMaxProgress(Holder<@NotNull Enchantment> enchantment, int currentLevel, int maxDurability) {
+        return clamp(maxDurability / 100, 1, 8) * enchantment.value().getMaxCost(currentLevel + 1);
     }
 
     public static void onDurabilityDamage(ItemStack stack, @Nullable LivingEntity user) {
@@ -122,7 +122,7 @@ public class EnchantmentProgress {
     /**
      * Levels up any necessary enchantments
      */
-    public static boolean updateEnchantments(EnchantmentProgress.Mutable progress, ItemEnchantments.Mutable enchantments) {
+    public static boolean updateEnchantments(EnchantmentProgress.Mutable progress, ItemEnchantments.Mutable enchantments, int maxDamage) {
         boolean changed = false;
 
         for (var enchantment : enchantments.keySet()) {
@@ -134,7 +134,7 @@ public class EnchantmentProgress {
                     break;
                 }
 
-                var maxProgress = getMaxProgress(enchantment, level);
+                var maxProgress = getMaxProgress(enchantment, level, maxDamage);
 
                 var progressValue = progress.getProgress(enchantment);
 
@@ -162,7 +162,7 @@ public class EnchantmentProgress {
     public static void updateEnchantmentsForEntity(EnchantmentProgress.Mutable progress, ItemEnchantments enchantments, ItemStack stack, @Nullable LivingEntity user) {
         ItemEnchantments.Mutable newEnchantments = new ItemEnchantments.Mutable(enchantments);
 
-        if (!updateEnchantments(progress, newEnchantments)) return;
+        if (!updateEnchantments(progress, newEnchantments, stack.getMaxDamage())) return;
         stack.set(DataComponents.ENCHANTMENTS, newEnchantments.toImmutable());
 
         if (user == null) return;

@@ -73,7 +73,7 @@ public abstract class AnvilMenuMixin {
         var progress = progressRef.get();
         if (progress != null) {
             result.set(Penchant.ENCHANTMENT_PROGRESS, progress.toImmutable());
-            EnchantmentProgress.updateEnchantments(progress, instance);
+            EnchantmentProgress.updateEnchantments(progress, instance, result.getMaxDamage());
         }
         return original.call(instance);
     }

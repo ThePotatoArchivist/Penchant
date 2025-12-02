@@ -6,9 +6,11 @@ import archives.tater.penchant.PenchantClient;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -62,14 +64,19 @@ public class ItemEnchantmentsMixin {
             method = "addToTooltip",
             at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V")
     )
-    private <T> void addProgress(Consumer<T> instance, T text, Operation<Void> original, @Share("enchantment") LocalRef<Holder<Enchantment>> enchantment, @Share("level") LocalIntRef level, @Share("progress") LocalRef<EnchantmentProgress> progress) {
+    private <T> void addProgress(Consumer<T> instance, T text, Operation<Void> original, @Share("enchantment") LocalRef<Holder<Enchantment>> enchantment, @Share("level") LocalIntRef level, @Share("progress") LocalRef<EnchantmentProgress> progress, @Local(argsOnly = true) DataComponentGetter components) {
         original.call(instance, text);
 
         if (enchantment.get() == null) return;
         if (!PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
         if (!EnchantmentProgress.shouldShowTooltip(enchantment.get())) return;
 
-        original.call(instance, PenchantClient.getProgressTooltip(progress.get(), enchantment.get(), level.get()));
+        original.call(instance, PenchantClient.getProgressTooltip(
+                progress.get(),
+                enchantment.get(),
+                level.get(),
+                components instanceof ItemStack stack ? stack.getMaxDamage() : components.getOrDefault(DataComponents.MAX_DAMAGE, 0)
+        ));
     }
 
     @Inject(
