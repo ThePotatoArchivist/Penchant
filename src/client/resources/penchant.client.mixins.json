@@ -3,13 +3,13 @@
   "package": "archives.tater.penchant.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "BitmapProviderMixin",
-    "EnchantmentScreenMixin"
+    "leveling.BitmapProviderMixin",
+    "leveling.EnchantmentScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
-    "ItemEnchantmentsMixin"
+    "leveling.ItemEnchantmentsMixin"
   ]
 }

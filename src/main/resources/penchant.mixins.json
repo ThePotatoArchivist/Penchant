@@ -3,9 +3,14 @@
   "package": "archives.tater.penchant.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "AnvilMenuMixin",
-    "CreativeModeTabsMixin",
-    "ItemStackMixin"
+    "disable.EnchantBookForEmeraldsMixin",
+    "disable.EnchantmentHelperMixin",
+    "disable.EnchantRandomlyFunctionMixin",
+    "disable.ItemStackMixin",
+    "disable.SingleEnchantmentMixin",
+    "leveling.AnvilMenuMixin",
+    "leveling.CreativeModeTabsMixin",
+    "leveling.ItemStackMixin"
   ],
   "injectors": {
     "defaultRequire": 1

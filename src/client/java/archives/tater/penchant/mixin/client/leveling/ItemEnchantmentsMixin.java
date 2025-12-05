@@ -1,4 +1,4 @@
-package archives.tater.penchant.mixin.client;
+package archives.tater.penchant.mixin.client.leveling;
 
 import archives.tater.penchant.EnchantmentProgress;
 import archives.tater.penchant.Penchant;

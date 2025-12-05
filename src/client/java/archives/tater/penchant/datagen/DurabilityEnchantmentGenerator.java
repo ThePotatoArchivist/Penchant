@@ -3,6 +3,7 @@ package archives.tater.penchant.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -45,6 +46,16 @@ public class DurabilityEnchantmentGenerator extends FabricDynamicRegistryProvide
                 )
                 .build(Enchantments.UNBREAKING.location())
         );
+        entries.add(Enchantments.MENDING, new Enchantment.Builder(new Enchantment.EnchantmentDefinition(
+                HolderSet.empty(),
+                Optional.empty(),
+                1,
+                1,
+                new Enchantment.Cost(99, 0),
+                new Enchantment.Cost(99, 0),
+                1,
+                List.of()
+        )).build(Enchantments.MENDING.location()));
     }
 
     @Override
