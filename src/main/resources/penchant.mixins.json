@@ -13,6 +13,7 @@
     "leveling.AnvilMenuMixin",
     "leveling.CreativeModeTabsMixin",
     "leveling.EnchantCommandMixin",
+    "leveling.EnchantRandomlyFunctionMixin",
     "leveling.ItemStackMixin"
   ],
   "injectors": {

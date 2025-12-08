@@ -23,6 +23,7 @@ import java.util.Objects;
 import static java.util.Objects.hash;
 import static net.minecraft.util.Mth.clamp;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class EnchantmentProgress {
 
     private final Object2IntOpenHashMap<Holder<@NotNull Enchantment>> progress;
@@ -105,18 +106,25 @@ public class EnchantmentProgress {
         return clamp(maxDurability / 100, 1, 8) * enchantment.value().getMaxCost(currentLevel + 1);
     }
 
+    public static EnchantmentProgress getProgress(ItemStack stack) {
+        return stack.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EMPTY);
+    }
+
     public static void onDurabilityDamage(ItemStack stack, @Nullable LivingEntity user) {
+        addToProgress(stack, 1, user);
+    }
+
+    public static void addToProgress(ItemStack stack, int increase, @Nullable LivingEntity user) {
         var enchantments = stack.getEnchantments();
         if (enchantments.isEmpty()) return;
 
-        var newProgress = stack.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EMPTY).toMutable();
+        var newProgress = getProgress(stack).toMutable();
 
-        // Increment all enchantments
         for (var enchantment : enchantments.keySet())
             if (!enchantment.is(PenchantEnchantmentTags.NO_LEVELING))
-                newProgress.addProgress(enchantment, 1);
+                newProgress.addProgress(enchantment, increase);
 
-        updateEnchantmentsForEntity(newProgress, stack.getEnchantments(), stack, user);
+        updateEnchantmentsForStack(newProgress, enchantments, stack, user);
 
         stack.set(Penchant.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
     }
@@ -163,7 +171,7 @@ public class EnchantmentProgress {
      *
      * @param stack is mutated
      */
-    public static void updateEnchantmentsForEntity(EnchantmentProgress.Mutable progress, ItemEnchantments enchantments, ItemStack stack, @Nullable LivingEntity user) {
+    public static void updateEnchantmentsForStack(EnchantmentProgress.Mutable progress, ItemEnchantments enchantments, ItemStack stack, @Nullable LivingEntity user) {
         var newEnchantments = new ItemEnchantments.Mutable(enchantments);
 
         if (!updateEnchantments(progress, newEnchantments, stack.getMaxDamage())) return;
