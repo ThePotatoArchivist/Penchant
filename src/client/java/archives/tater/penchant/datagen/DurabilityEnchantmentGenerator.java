@@ -1,7 +1,12 @@
 package archives.tater.penchant.datagen;
 
+import archives.tater.penchant.Penchant;
+import archives.tater.penchant.UnbreakableEffect;
+
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
+
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -44,6 +49,9 @@ public class DurabilityEnchantmentGenerator extends FabricDynamicRegistryProvide
                                 LevelBasedValue.constant(4)
                         ))
                 )
+                .withSpecialEffect(Penchant.UNBREAKABLE, List.of(
+                        new UnbreakableEffect(MinMaxBounds.Ints.atLeast(5))
+                ))
                 .build(Enchantments.UNBREAKING.location())
         );
         entries.add(Enchantments.MENDING, new Enchantment.Builder(new Enchantment.EnchantmentDefinition(

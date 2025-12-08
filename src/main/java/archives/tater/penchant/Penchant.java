@@ -24,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class Penchant implements ModInitializer {
 	public static final String MOD_ID = "penchant";
 
@@ -49,6 +51,10 @@ public class Penchant implements ModInitializer {
         return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id(path), type.build());
     }
 
+    private static <T> DataComponentType<T> registerEnchantmentEffect(String path, Codec<T> codec) {
+        return Registry.register(BuiltInRegistries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, id(path), DataComponentType.<T>builder().persistent(codec).build());
+    }
+
     public static final DataComponentType<@NotNull EnchantmentProgress> ENCHANTMENT_PROGRESS = registerComponent(
             "enchantment_progress",
             EnchantmentProgress.CODEC,
@@ -56,6 +62,8 @@ public class Penchant implements ModInitializer {
             true//,
 //            true
     );
+
+    public static final DataComponentType<List<UnbreakableEffect>> UNBREAKABLE = registerEnchantmentEffect("unbreakable", UnbreakableEffect.CODEC.listOf());
 
     public static Component getName(Holder<@NotNull Enchantment> enchantment) {
         return ComponentUtils.mergeStyles(

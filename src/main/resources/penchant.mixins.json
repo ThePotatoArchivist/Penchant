@@ -9,6 +9,7 @@
     "disable.EnchantRandomlyFunctionMixin",
     "disable.ItemStackMixin",
     "disable.SingleEnchantmentMixin",
+    "effect.ItemStackMixin",
     "leveling.AnvilMenuMixin",
     "leveling.CreativeModeTabsMixin",
     "leveling.EnchantCommandMixin",
