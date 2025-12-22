@@ -9,15 +9,16 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import org.jetbrains.annotations.NotNull;
 
-import static net.minecraft.Util.makeDescriptionId;
+import static net.minecraft.util.Util.makeDescriptionId;
+
 
 public class PenchantClient implements ClientModInitializer {
-    private static KeyMappingExt keybind(ResourceLocation id, int key, KeyMapping.Category category) {
+    private static KeyMappingExt keybind(Identifier id, int key, KeyMapping.Category category) {
         return (KeyMappingExt) KeyBindingHelper.registerKeyBinding(new KeyMappingExt(makeDescriptionId("key", id), Type.KEYSYM, key, category));
     }
 

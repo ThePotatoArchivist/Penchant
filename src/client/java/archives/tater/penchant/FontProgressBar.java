@@ -4,7 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class FontProgressBar {
 
@@ -12,7 +12,7 @@ public class FontProgressBar {
 
     public static final String SEGMENT = "!";
 
-    public static final ResourceLocation FONT_TEXTURE = Penchant.id("font/bar.png");
+    public static final Identifier FONT_TEXTURE = Penchant.id("font/bar.png");
     public static final FontDescription FONT = new FontDescription.Resource(Penchant.id("bar"));
 
     public static MutableComponent getBar(int width, int progress) {

@@ -1,19 +1,22 @@
 package archives.tater.penchant.mixin.disable;
 
 import archives.tater.penchant.PenchantEnchantmentTags;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.item.enchantment.Enchantment;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
+import net.minecraft.world.item.enchantment.Enchantment;
+
 import java.util.Optional;
 
-import static net.minecraft.Util.getRandomSafe;
+import static net.minecraft.util.Util.getRandomSafe;
+
 
 @Mixin(VillagerTrades.EnchantBookForEmeralds.class)
 public class EnchantBookForEmeraldsMixin {

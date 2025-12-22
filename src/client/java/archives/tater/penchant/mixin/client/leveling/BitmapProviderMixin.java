@@ -9,14 +9,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import net.minecraft.client.gui.font.providers.BitmapProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 // This was quite a hack I'm sorry
 @Mixin(BitmapProvider.Definition.class)
 public class BitmapProviderMixin {
     @Shadow
     @Final
-    private ResourceLocation file;
+    private Identifier file;
 
     @ModifyArg(
             method = "load",

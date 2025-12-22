@@ -1,8 +1,8 @@
 package archives.tater.penchant;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 
 import com.mojang.serialization.Codec;
@@ -16,7 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.enchantment.Enchantment;
 
@@ -29,11 +29,11 @@ import java.util.List;
 public class Penchant implements ModInitializer {
 	public static final String MOD_ID = "penchant";
 
-    public static ResourceLocation id(String namespace, String path) {
-        return ResourceLocation.fromNamespaceAndPath(namespace, path);
+    public static Identifier id(String namespace, String path) {
+        return Identifier.fromNamespaceAndPath(namespace, path);
     }
 
-    public static ResourceLocation id(String path) {
+    public static Identifier id(String path) {
         return id(MOD_ID, path);
     }
 
@@ -42,16 +42,16 @@ public class Penchant implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static final ResourceLocation DURABILITY_REWORK = Penchant.id("durability_rework");
+    public static final Identifier DURABILITY_REWORK = Penchant.id("durability_rework");
 
-    private static <T> DataComponentType<@NotNull T> registerComponent(String path, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, @NotNull T> streamCodec, boolean cache/*, boolean ignoreSwapAnimation*/) {
+    private static <T> DataComponentType<@NotNull T> registerComponent(String path, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, @NotNull T> streamCodec, boolean cache, boolean ignoreSwapAnimation) {
         var type = DataComponentType.<T>builder().persistent(codec).networkSynchronized(streamCodec);
         if (cache) type.cacheEncoding();
-//        if (ignoreSwapAnimation) type.ignoreSwapAnimation();
+        if (ignoreSwapAnimation) type.ignoreSwapAnimation();
         return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id(path), type.build());
     }
 
-    private static <T> DataComponentType<T> registerEnchantmentEffect(String path, Codec<T> codec) {
+    private static <T> DataComponentType<@NotNull T> registerEnchantmentEffect(String path, Codec<T> codec) {
         return Registry.register(BuiltInRegistries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, id(path), DataComponentType.<T>builder().persistent(codec).build());
     }
 
@@ -59,11 +59,11 @@ public class Penchant implements ModInitializer {
             "enchantment_progress",
             EnchantmentProgress.CODEC,
             EnchantmentProgress.STREAM_CODEC,
-            true//,
-//            true
+            true,
+            true
     );
 
-    public static final DataComponentType<List<UnbreakableEffect>> UNBREAKABLE = registerEnchantmentEffect("unbreakable", UnbreakableEffect.CODEC.listOf());
+    public static final DataComponentType<@NotNull List<UnbreakableEffect>> UNBREAKABLE = registerEnchantmentEffect("unbreakable", UnbreakableEffect.CODEC.listOf());
 
     public static Component getName(Holder<@NotNull Enchantment> enchantment) {
         return ComponentUtils.mergeStyles(
@@ -77,11 +77,11 @@ public class Penchant implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-        ResourceManagerHelper.registerBuiltinResourcePack(
+        ResourceLoader.registerBuiltinPack(
                 DURABILITY_REWORK,
                 FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow(),
                 Component.translatable(DURABILITY_REWORK.toLanguageKey("dataPack", "name")),
-                ResourcePackActivationType.DEFAULT_ENABLED
+                PackActivationType.DEFAULT_ENABLED
         );
 	}
 }

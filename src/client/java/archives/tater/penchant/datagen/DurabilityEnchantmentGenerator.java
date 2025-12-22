@@ -6,7 +6,7 @@ import archives.tater.penchant.UnbreakableEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 
-import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -52,7 +52,7 @@ public class DurabilityEnchantmentGenerator extends FabricDynamicRegistryProvide
                 .withSpecialEffect(Penchant.UNBREAKABLE, List.of(
                         new UnbreakableEffect(MinMaxBounds.Ints.atLeast(5))
                 ))
-                .build(Enchantments.UNBREAKING.location())
+                .build(Enchantments.UNBREAKING.identifier())
         );
         entries.add(Enchantments.MENDING, new Enchantment.Builder(new Enchantment.EnchantmentDefinition(
                 HolderSet.empty(),
@@ -63,7 +63,7 @@ public class DurabilityEnchantmentGenerator extends FabricDynamicRegistryProvide
                 new Enchantment.Cost(99, 0),
                 1,
                 List.of()
-        )).build(Enchantments.MENDING.location()));
+        )).build(Enchantments.MENDING.identifier()));
     }
 
     @Override
