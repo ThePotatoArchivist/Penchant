@@ -3,5 +3,7 @@
   "penchant.tooltip.progress.max": "MAX",
   "penchant.tooltip.progress.key": "See progress: [%s]",
   "dataPack.penchant.durability_rework.name": "Penchant: Durability Rework",
-  "dataPack.penchant.durability_rework.description": "Remove mending & alter unbreaking"
+  "dataPack.penchant.durability_rework.description": "Remove mending & alter unbreaking",
+  "dataPack.penchant.table_rework.name": "Penchant: Table Rework",
+  "dataPack.penchant.table_rework.description": "Remove table RNG & chiseled enchanting"
 }

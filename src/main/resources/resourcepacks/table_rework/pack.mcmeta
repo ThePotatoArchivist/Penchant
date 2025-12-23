@@ -1,7 +1,7 @@
 {
   "pack": {
     "description": {
-      "translate": "dataPack.penchant.durability_rework.description"
+      "translate": "dataPack.penchant.table_rework.description"
     },
     "min_format": 94,
     "max_format": 94

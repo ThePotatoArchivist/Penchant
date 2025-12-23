@@ -43,6 +43,7 @@ public class Penchant implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final Identifier DURABILITY_REWORK = Penchant.id("durability_rework");
+    public static final Identifier TABLE_REWORK = Penchant.id("table_rework");
 
     private static <T> DataComponentType<@NotNull T> registerComponent(String path, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, @NotNull T> streamCodec, boolean cache, boolean ignoreSwapAnimation) {
         var type = DataComponentType.<T>builder().persistent(codec).networkSynchronized(streamCodec);
@@ -75,13 +76,18 @@ public class Penchant implements ModInitializer {
         );
     }
 
-	@Override
-	public void onInitialize() {
+    private void registerPack(Identifier id) {
         ResourceLoader.registerBuiltinPack(
-                DURABILITY_REWORK,
+                id,
                 FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow(),
-                Component.translatable(DURABILITY_REWORK.toLanguageKey("dataPack", "name")),
+                Component.translatable(id.toLanguageKey("dataPack", "name")),
                 PackActivationType.DEFAULT_ENABLED
         );
+    }
+
+	@Override
+	public void onInitialize() {
+        registerPack(DURABILITY_REWORK);
+        registerPack(TABLE_REWORK);
 	}
 }

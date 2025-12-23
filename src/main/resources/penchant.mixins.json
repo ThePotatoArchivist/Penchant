@@ -3,6 +3,8 @@
   "package": "archives.tater.penchant.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "bookshelf.EnchantingTableBlockMixin",
+    "bookshelf.EnchantmentMenuMixin",
     "disable.CreativeModeTabsMixin",
     "disable.EnchantBookForEmeraldsMixin",
     "disable.EnchantmentHelperMixin",
