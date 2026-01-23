@@ -15,7 +15,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -26,13 +25,13 @@ import static net.minecraft.util.Mth.clamp;
 @SuppressWarnings("ClassCanBeRecord")
 public class EnchantmentProgress {
 
-    private final Object2IntOpenHashMap<Holder<@NotNull Enchantment>> progress;
+    private final Object2IntOpenHashMap<Holder<Enchantment>> progress;
 
-    public EnchantmentProgress(Object2IntOpenHashMap<Holder<@NotNull Enchantment>> progress) {
+    public EnchantmentProgress(Object2IntOpenHashMap<Holder<Enchantment>> progress) {
         this.progress = progress;
     }
 
-    public int getProgress(Holder<@NotNull Enchantment> enchantment) {
+    public int getProgress(Holder<Enchantment> enchantment) {
         return progress.getInt(enchantment);
     }
 
@@ -55,25 +54,25 @@ public class EnchantmentProgress {
 
     public static class Mutable {
 
-        private final Object2IntOpenHashMap<Holder<@NotNull Enchantment>> progress;
+        private final Object2IntOpenHashMap<Holder<Enchantment>> progress;
 
         public Mutable(EnchantmentProgress progress) {
             this.progress = progress.progress.clone();
         }
 
-        public int getProgress(Holder<@NotNull Enchantment> enchantment) {
+        public int getProgress(Holder<Enchantment> enchantment) {
             return progress.getInt(enchantment);
         }
 
-        public void setProgress(Holder<@NotNull Enchantment> enchantment, int progress) {
+        public void setProgress(Holder<Enchantment> enchantment, int progress) {
             this.progress.put(enchantment, progress);
         }
 
-        public void removeProgress(Holder<@NotNull Enchantment> enchantment) {
+        public void removeProgress(Holder<Enchantment> enchantment) {
             progress.removeInt(enchantment);
         }
 
-        public void addProgress(Holder<@NotNull Enchantment> enchantment, int progress) {
+        public void addProgress(Holder<Enchantment> enchantment, int progress) {
             setProgress(enchantment, getProgress(enchantment) + progress);
         }
 
@@ -83,7 +82,7 @@ public class EnchantmentProgress {
 
     }
 
-    public static boolean shouldShowTooltip(Holder<@NotNull Enchantment> enchantment) {
+    public static boolean shouldShowTooltip(Holder<Enchantment> enchantment) {
         return enchantment.value().getMaxLevel() != 1 && !enchantment.is(PenchantEnchantmentTags.NO_LEVELING);
     }
 
@@ -93,7 +92,7 @@ public class EnchantmentProgress {
                     component -> component.progress
             );
 
-    public static final StreamCodec<@NotNull RegistryFriendlyByteBuf, @NotNull EnchantmentProgress> STREAM_CODEC =
+    public static final StreamCodec<RegistryFriendlyByteBuf, EnchantmentProgress> STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.map(Object2IntOpenHashMap::new, Enchantment.STREAM_CODEC, ByteBufCodecs.VAR_INT),
                     progress -> progress.progress,
@@ -102,7 +101,7 @@ public class EnchantmentProgress {
 
     public static final EnchantmentProgress EMPTY = new EnchantmentProgress(new Object2IntOpenHashMap<>());
 
-    public static int getMaxProgress(Holder<@NotNull Enchantment> enchantment, int currentLevel, int maxDurability) {
+    public static int getMaxProgress(Holder<Enchantment> enchantment, int currentLevel, int maxDurability) {
         return clamp(maxDurability / 100, 1, 8) * enchantment.value().getMaxCost(currentLevel + 1);
     }
 

@@ -55,7 +55,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         addSlot(new Slot(enchantSlots, 1, 35, 47) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(Items.LAPIS_LAZULI);
+                return stack.is(Items.LAPIS_LAZULI); // TODO: Stripping enchantments onto books
             }
 
             @Override
@@ -102,6 +102,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     @Override
     public void slotsChanged(Container container) {
         if (container != this.enchantSlots) return;
+        // TODO
     }
 
     @Override

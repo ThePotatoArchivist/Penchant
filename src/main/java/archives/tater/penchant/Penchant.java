@@ -20,7 +20,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.enchantment.Enchantment;
 
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,18 +44,18 @@ public class Penchant implements ModInitializer {
     public static final Identifier DURABILITY_REWORK = Penchant.id("durability_rework");
     public static final Identifier TABLE_REWORK = Penchant.id("table_rework");
 
-    private static <T> DataComponentType<@NotNull T> registerComponent(String path, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, @NotNull T> streamCodec, boolean cache, boolean ignoreSwapAnimation) {
+    private static <T> DataComponentType<T> registerComponent(String path, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, boolean cache, boolean ignoreSwapAnimation) {
         var type = DataComponentType.<T>builder().persistent(codec).networkSynchronized(streamCodec);
         if (cache) type.cacheEncoding();
         if (ignoreSwapAnimation) type.ignoreSwapAnimation();
         return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id(path), type.build());
     }
 
-    private static <T> DataComponentType<@NotNull T> registerEnchantmentEffect(String path, Codec<T> codec) {
+    private static <T> DataComponentType<T> registerEnchantmentEffect(String path, Codec<T> codec) {
         return Registry.register(BuiltInRegistries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, id(path), DataComponentType.<T>builder().persistent(codec).build());
     }
 
-    public static final DataComponentType<@NotNull EnchantmentProgress> ENCHANTMENT_PROGRESS = registerComponent(
+    public static final DataComponentType<EnchantmentProgress> ENCHANTMENT_PROGRESS = registerComponent(
             "enchantment_progress",
             EnchantmentProgress.CODEC,
             EnchantmentProgress.STREAM_CODEC,
@@ -64,9 +63,9 @@ public class Penchant implements ModInitializer {
             true
     );
 
-    public static final DataComponentType<@NotNull List<UnbreakableEffect>> UNBREAKABLE = registerEnchantmentEffect("unbreakable", UnbreakableEffect.CODEC.listOf());
+    public static final DataComponentType<List<UnbreakableEffect>> UNBREAKABLE = registerEnchantmentEffect("unbreakable", UnbreakableEffect.CODEC.listOf());
 
-    public static Component getName(Holder<@NotNull Enchantment> enchantment) {
+    public static Component getName(Holder<Enchantment> enchantment) {
         return ComponentUtils.mergeStyles(
                 enchantment.value().description().copy(),
                 Style.EMPTY.withColor(enchantment.is(EnchantmentTags.CURSE)
