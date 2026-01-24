@@ -18,6 +18,7 @@ import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.objects.AtlasSprite;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -36,9 +37,14 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private static final Identifier BOOK_TEXTURE = Identifier.withDefaultNamespace("textures/entity/enchanting_table_book.png");
     private static final Identifier SCROLLLER_TEXTURE = Penchant.id("container/enchanting_table/scroller");
     private static final AtlasSprite BOOK_ICON_TEXTURE = new AtlasSprite(AtlasIds.GUI, Penchant.id("container/enchanting_table/book"));
-    private static final List<Identifier> SECOND_SLOT_TEXTURES = List.of(
-            Identifier.withDefaultNamespace("container/slot/lapis_lazuli"),
-            Penchant.id("container/slot/book")
+    public static final Identifier LAPIS_LAZULI_SLOT_TEXTURE = Identifier.withDefaultNamespace("container/slot/lapis_lazuli");
+    public static final Identifier BOOK_SLOT_TEXTURE = Penchant.id("container/slot/book");
+    private static final List<Identifier> INGREDIENT_SLOT_TEXTURES = List.of(
+            LAPIS_LAZULI_SLOT_TEXTURE,
+            BOOK_SLOT_TEXTURE
+    );
+    private static final List<Identifier> INGREDIENT_SLOT_TEXTURES_NO_DISENCHANT = List.of(
+            LAPIS_LAZULI_SLOT_TEXTURE
     );
 
     private final ScrollbarComponent scrollbar = new ScrollbarComponent(
@@ -99,7 +105,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         leftPos + 60,
                         topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                         enchantment,
-                        EnchantmentHelper.isEnchantmentCompatible(PenchantmentHelper.getEnchantments(menu.getIngredientStack()).keySet(), enchantment)
+                        !enchantment.is(EnchantmentTags.CURSE) &&
+                                EnchantmentHelper.isEnchantmentCompatible(PenchantmentHelper.getEnchantments(menu.getIngredientStack()).keySet(), enchantment)
                 ));
             else
                 addRenderableWidget(new EnchantmentSlotWidget(
@@ -118,7 +125,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     public void containerTick() {
         super.containerTick();
         minecraft.player.experienceDisplayStartTick = minecraft.player.tickCount;
-        secondSlotBackground.tick(SECOND_SLOT_TEXTURES);
+        secondSlotBackground.tick(menu.canDisenchant() ? INGREDIENT_SLOT_TEXTURES : INGREDIENT_SLOT_TEXTURES_NO_DISENCHANT);
         tickBook();
     }
 

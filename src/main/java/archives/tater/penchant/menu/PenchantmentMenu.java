@@ -2,6 +2,7 @@ package archives.tater.penchant.menu;
 
 import archives.tater.penchant.Penchant;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
+import archives.tater.penchant.registry.PenchantEnchantmentTags;
 import archives.tater.penchant.registry.PenchantMenus;
 import archives.tater.penchant.util.PenchantmentHelper;
 
@@ -79,7 +80,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         addSlot(new Slot(enchantSlots, 1, 35, 47) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return isEnchantingIngredient(stack) || isDisenchantingIngredient(stack);
+                return isEnchantingIngredient(stack) || canDisenchant() && isDisenchantingIngredient(stack);
             }
 
             @Override
@@ -125,6 +126,11 @@ public class PenchantmentMenu extends AbstractContainerMenu {
 
     public int getPlayerXp() {
         return player.experienceLevel;
+    }
+
+    public boolean canDisenchant() {
+        var stack = getEnchantingStack();
+        return stack.isEmpty() || !PenchantmentHelper.getEnchantments(stack).isEmpty();
     }
 
     public boolean isEnchanting() {
@@ -208,6 +214,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         } else if (isDisenchanting()) {
             var ingredientStack = getIngredientStack();
             if (!PenchantmentHelper.hasEnchantment(stack, enchantment)
+                    || enchantment.is(EnchantmentTags.CURSE)
                     || !EnchantmentHelper.isEnchantmentCompatible(PenchantmentHelper.getEnchantments(ingredientStack).keySet(), enchantment)) {
                 Penchant.LOGGER.warn("Cannot disenchant!");
                 return;
@@ -241,7 +248,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         }
         if (isEnchanting()) {
             var applicable = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)
-                    .filter(enchantment -> PenchantmentHelper.canEnchantItem(stack, enchantment))
+                    .filter(enchantment -> !enchantment.is(PenchantEnchantmentTags.DISABLED) && PenchantmentHelper.canEnchantItem(stack, enchantment))
                     .toList();
             displayedEnchantments = Stream.concat(
                     applicable.stream().filter(enchantment -> availableEnchantments.contains(enchantment) || PenchantmentHelper.hasEnchantment(stack, enchantment)),
@@ -274,7 +281,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         } else if (index == 1) {
             if (!moveItemStackTo(itemStack2, 2, Inventory.INVENTORY_SIZE + 2, true))
                 return ItemStack.EMPTY;
-        } else if (isEnchantingIngredient(itemStack2) || !getEnchantingStack().isEmpty() && isDisenchantingIngredient(itemStack2)) {
+        } else if (isEnchantingIngredient(itemStack2) || !getEnchantingStack().isEmpty() && canDisenchant() && isDisenchantingIngredient(itemStack2)) {
             if (!moveItemStackTo(itemStack2, 1, 2, true))
                 return ItemStack.EMPTY;
         } else {
