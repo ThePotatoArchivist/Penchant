@@ -2,6 +2,7 @@ package archives.tater.penchant.menu;
 
 import archives.tater.penchant.Penchant;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
+import archives.tater.penchant.registry.PenchantMenus;
 import archives.tater.penchant.util.PenchantmentHelper;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -65,7 +66,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public PenchantmentMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
-        super(Penchant.PENCHANTMENT_MENU, containerId);
+        super(PenchantMenus.PENCHANTMENT_MENU, containerId);
         player = playerInventory.player;
         enchantments = player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
         this.access = access;

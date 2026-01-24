@@ -1,4 +1,9 @@
 {
+  "features": {
+    "enabled": [
+      "penchant:rework_enchanting_table"
+    ]
+  },
   "pack": {
     "description": {
       "translate": "dataPack.penchant.table_rework.description"

@@ -6,6 +6,7 @@ import archives.tater.penchant.client.gui.screen.PenchantmentScreen;
 import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
+import archives.tater.penchant.registry.PenchantMenus;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -68,7 +69,7 @@ public class PenchantClient implements ClientModInitializer {
     @Override
 	public void onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
-        MenuScreens.register(Penchant.PENCHANTMENT_MENU, PenchantmentScreen::new);
+        MenuScreens.register(PenchantMenus.PENCHANTMENT_MENU, PenchantmentScreen::new);
 
         ClientPlayNetworking.registerGlobalReceiver(UnlockedEnchantmentsPayload.TYPE, (payload, context) -> {
             if (!(context.player().containerMenu instanceof PenchantmentMenu menu)) {

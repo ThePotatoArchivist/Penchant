@@ -1,10 +1,11 @@
 package archives.tater.penchant;
 
-import archives.tater.penchant.component.EnchantmentProgress;
-import archives.tater.penchant.enchantment.UnbreakableEffect;
 import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
+import archives.tater.penchant.registry.PenchantComponents;
+import archives.tater.penchant.registry.PenchantEnchantments;
+import archives.tater.penchant.registry.PenchantMenus;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -13,21 +14,11 @@ import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.inventory.MenuType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class Penchant implements ModInitializer {
 	public static final String MOD_ID = "penchant";
@@ -48,33 +39,6 @@ public class Penchant implements ModInitializer {
     public static final Identifier DURABILITY_REWORK = Penchant.id("durability_rework");
     public static final Identifier TABLE_REWORK = Penchant.id("table_rework");
 
-    private static <T> DataComponentType<T> registerComponent(String path, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, boolean cache, boolean ignoreSwapAnimation) {
-        var type = DataComponentType.<T>builder().persistent(codec).networkSynchronized(streamCodec);
-        if (cache) type.cacheEncoding();
-        if (ignoreSwapAnimation) type.ignoreSwapAnimation();
-        return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id(path), type.build());
-    }
-
-    private static <T> DataComponentType<T> registerEnchantmentEffect(String path, Codec<T> codec) {
-        return Registry.register(BuiltInRegistries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, id(path), DataComponentType.<T>builder().persistent(codec).build());
-    }
-
-    public static final MenuType<PenchantmentMenu> PENCHANTMENT_MENU = Registry.register(
-            BuiltInRegistries.MENU,
-            id("penchantment"),
-            new MenuType<>(PenchantmentMenu::new, FeatureFlags.VANILLA_SET) // TODO feature flags
-    );
-
-    public static final DataComponentType<EnchantmentProgress> ENCHANTMENT_PROGRESS = registerComponent(
-            "enchantment_progress",
-            EnchantmentProgress.CODEC,
-            EnchantmentProgress.STREAM_CODEC,
-            true,
-            true
-    );
-
-    public static final DataComponentType<List<UnbreakableEffect>> UNBREAKABLE = registerEnchantmentEffect("unbreakable", UnbreakableEffect.CODEC.listOf());
-
     private void registerPack(Identifier id) {
         ResourceLoader.registerBuiltinPack(
                 id,
@@ -86,6 +50,10 @@ public class Penchant implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+        PenchantComponents.init();
+        PenchantEnchantments.init();
+        PenchantMenus.init();
+
         PayloadTypeRegistry.playS2C().register(UnlockedEnchantmentsPayload.TYPE, UnlockedEnchantmentsPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(EnchantPayload.TYPE, EnchantPayload.CODEC);
 

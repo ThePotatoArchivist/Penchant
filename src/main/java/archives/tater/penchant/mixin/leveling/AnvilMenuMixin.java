@@ -1,7 +1,7 @@
 package archives.tater.penchant.mixin.leveling;
 
 import archives.tater.penchant.component.EnchantmentProgress;
-import archives.tater.penchant.Penchant;
+import archives.tater.penchant.registry.PenchantComponents;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
 
 import com.llamalad7.mixinextras.expression.Expression;
@@ -33,7 +33,7 @@ public abstract class AnvilMenuMixin {
     )
     private void saveProgress(CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress.Mutable> progress, @Local(ordinal = 1) ItemStack result, @Local(ordinal = 2) ItemStack sacrifice) {
         if (!result.has(DataComponents.STORED_ENCHANTMENTS) && !sacrifice.has(DataComponents.STORED_ENCHANTMENTS))
-            progress.set(result.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY).toMutable());
+            progress.set(result.getOrDefault(PenchantComponents.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY).toMutable());
     }
 
     @Expression("? + 1")
@@ -57,7 +57,7 @@ public abstract class AnvilMenuMixin {
         }
         var inputLevel = instance.getLevel(enchantment);
         var sacrificeLevel = entry.getIntValue();
-        var sacrificeProgress = sacrifice.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY).getProgress(enchantment);
+        var sacrificeProgress = sacrifice.getOrDefault(PenchantComponents.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY).getProgress(enchantment);
         if (sacrificeLevel == inputLevel) {
             progress.addProgress(enchantment, sacrificeProgress);
         } else if (sacrificeLevel > inputLevel)
@@ -73,7 +73,7 @@ public abstract class AnvilMenuMixin {
     private ItemEnchantments setProgress(ItemEnchantments.Mutable instance, Operation<ItemEnchantments> original, @Share("progress") LocalRef<EnchantmentProgress.Mutable> progressRef, @Local(ordinal = 1) ItemStack result) {
         var progress = progressRef.get();
         if (progress != null) {
-            result.set(Penchant.ENCHANTMENT_PROGRESS, progress.toImmutable());
+            result.set(PenchantComponents.ENCHANTMENT_PROGRESS, progress.toImmutable());
             EnchantmentProgress.updateEnchantments(progress, instance, result.getMaxDamage());
         }
         return original.call(instance);

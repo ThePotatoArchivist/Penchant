@@ -2,6 +2,7 @@ package archives.tater.penchant.mixin.client.leveling;
 
 import archives.tater.penchant.*;
 import archives.tater.penchant.component.EnchantmentProgress;
+import archives.tater.penchant.registry.PenchantComponents;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
 import archives.tater.penchant.util.PenchantmentHelper;
 
@@ -45,7 +46,7 @@ public class ItemEnchantmentsMixin {
     )
     private void getProgress(TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag, DataComponentGetter dataComponentGetter, CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress> progress) {
         if (dataComponentGetter.get(DataComponents.STORED_ENCHANTMENTS) == null)
-            progress.set(dataComponentGetter.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY));
+            progress.set(dataComponentGetter.getOrDefault(PenchantComponents.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY));
     }
 
     @WrapOperation(

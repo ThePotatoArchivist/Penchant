@@ -1,7 +1,7 @@
 package archives.tater.penchant.datagen;
 
-import archives.tater.penchant.Penchant;
 import archives.tater.penchant.enchantment.UnbreakableEffect;
+import archives.tater.penchant.registry.PenchantEnchantments;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
@@ -49,7 +49,7 @@ public class DurabilityEnchantmentGenerator extends FabricDynamicRegistryProvide
                                 LevelBasedValue.constant(4)
                         ))
                 )
-                .withSpecialEffect(Penchant.UNBREAKABLE, List.of(
+                .withSpecialEffect(PenchantEnchantments.UNBREAKABLE, List.of(
                         new UnbreakableEffect(MinMaxBounds.Ints.atLeast(5))
                 ))
                 .build(Enchantments.UNBREAKING.identifier())

@@ -1,6 +1,6 @@
 package archives.tater.penchant.enchantment;
 
-import archives.tater.penchant.Penchant;
+import archives.tater.penchant.registry.PenchantEnchantments;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -27,7 +27,7 @@ public record UnbreakableEffect(MinMaxBounds.Ints level, ItemPredicate item) {
         var itemEnchantments = stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
 
         for (var entry : itemEnchantments.entrySet())
-             for (var effect : entry.getKey().value().getEffects(Penchant.UNBREAKABLE))
+             for (var effect : entry.getKey().value().getEffects(PenchantEnchantments.UNBREAKABLE))
                  if (effect.test(stack, entry.getIntValue()))
                      return true;
         return false;

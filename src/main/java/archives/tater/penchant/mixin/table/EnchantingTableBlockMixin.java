@@ -1,6 +1,7 @@
 package archives.tater.penchant.mixin.table;
 
 import archives.tater.penchant.menu.PenchantmentMenu;
+import archives.tater.penchant.registry.PenchantFeatureFlags;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -27,8 +28,9 @@ public class EnchantingTableBlockMixin {
             at = @At("RETURN")
     )
     private static AbstractContainerMenu replaceMenu(AbstractContainerMenu original, @Local(argsOnly = true) int syncId, @Local(argsOnly = true) Inventory inventory, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos) {
-        // TODO feature flag
-        return new PenchantmentMenu(syncId, inventory, ContainerLevelAccess.create(level, pos));
+        return level.enabledFeatures().contains(PenchantFeatureFlags.INSTANCE.reworkEnchantingTable)
+                ? new PenchantmentMenu(syncId, inventory, ContainerLevelAccess.create(level, pos))
+                : original;
     }
 
     @Inject(

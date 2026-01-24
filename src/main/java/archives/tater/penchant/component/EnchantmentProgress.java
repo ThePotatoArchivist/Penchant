@@ -1,6 +1,6 @@
 package archives.tater.penchant.component;
 
-import archives.tater.penchant.Penchant;
+import archives.tater.penchant.registry.PenchantComponents;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
 
 import com.mojang.serialization.Codec;
@@ -109,7 +109,7 @@ public class EnchantmentProgress {
     }
 
     public static EnchantmentProgress getProgress(ItemStack stack) {
-        return stack.getOrDefault(Penchant.ENCHANTMENT_PROGRESS, EMPTY);
+        return stack.getOrDefault(PenchantComponents.ENCHANTMENT_PROGRESS, EMPTY);
     }
 
     public static void onDurabilityDamage(ItemStack stack, @Nullable LivingEntity user) {
@@ -128,7 +128,7 @@ public class EnchantmentProgress {
 
         updateEnchantmentsForStack(newProgress, enchantments, stack, user);
 
-        stack.set(Penchant.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
+        stack.set(PenchantComponents.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
     }
 
     /**
