@@ -84,6 +84,14 @@ public class Penchant implements ModInitializer {
         );
     }
 
+    public static int getBookCost(Holder<Enchantment> enchantment) {
+        return enchantment.value().getMinCost(1);
+    }
+
+    public static int getXpCost(Holder<Enchantment> enchantment) {
+        return enchantment.value().getAnvilCost();
+    }
+
     private void registerPack(Identifier id) {
         ResourceLoader.registerBuiltinPack(
                 id,
@@ -95,7 +103,7 @@ public class Penchant implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-        PayloadTypeRegistry.playS2C().register(AvailableEnchantmentsPayload.TYPE, AvailableEnchantmentsPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(UnlockedEnchantmentsPayload.TYPE, UnlockedEnchantmentsPayload.CODEC);
 
         registerPack(DURABILITY_REWORK);
         registerPack(TABLE_REWORK);

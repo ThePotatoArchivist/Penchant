@@ -11,15 +11,15 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.HashSet;
 import java.util.Set;
 
-public record AvailableEnchantmentsPayload(Set<Holder<Enchantment>> available) implements CustomPacketPayload {
+public record UnlockedEnchantmentsPayload(Set<Holder<Enchantment>> unlocked) implements CustomPacketPayload {
     @Override
-    public Type<? extends AvailableEnchantmentsPayload> type() {
+    public Type<? extends UnlockedEnchantmentsPayload> type() {
         return TYPE;
     }
 
-    public static final Type<AvailableEnchantmentsPayload> TYPE = new Type<>(Penchant.id("available_enchantments"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, AvailableEnchantmentsPayload> CODEC =
+    public static final Type<UnlockedEnchantmentsPayload> TYPE = new Type<>(Penchant.id("unlocked_enchantments"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, UnlockedEnchantmentsPayload> CODEC =
             ByteBufCodecs.holderRegistry(Registries.ENCHANTMENT)
                     .<Set<Holder<Enchantment>>>apply(ByteBufCodecs.collection(HashSet::new))
-                    .map(AvailableEnchantmentsPayload::new, AvailableEnchantmentsPayload::available);
+                    .map(UnlockedEnchantmentsPayload::new, UnlockedEnchantmentsPayload::unlocked);
 }

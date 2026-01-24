@@ -3,6 +3,7 @@ package archives.tater.penchant.client.gui.screen;
 import archives.tater.penchant.Penchant;
 import archives.tater.penchant.PenchantmentMenu;
 import archives.tater.penchant.client.gui.ScrollbarComponent;
+import archives.tater.penchant.client.gui.widget.EnchantmentSlotWidget;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -10,13 +11,17 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.book.BookModel;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 import org.jspecify.annotations.Nullable;
+
+import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 import static net.minecraft.util.Mth.clamp;
@@ -25,17 +30,13 @@ import static net.minecraft.util.Mth.lerp;
 public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu> {
     private static final Identifier TEXTURE = Penchant.id("textures/gui/container/enchanting_table.png");
     private static final Identifier BOOK_TEXTURE = Identifier.withDefaultNamespace("textures/entity/enchanting_table_book.png");
-    private static final Identifier SLOT_TEXTURE = Penchant.id("container/enchanting_table/slot");
-    private static final Identifier SLOT_DISABLED_TEXTURE = Penchant.id("container/enchanting_table/slot_disabled");
-    private static final Identifier SLOT_HIGHLIGHTED_TEXTURE = Penchant.id("container/enchanting_table/slot_highlighted");
     private static final Identifier SCROLLLER_TEXTURE = Penchant.id("container/enchanting_table/scroller");
 
-    private ScrollbarComponent scrollbar = new ScrollbarComponent(
+    private final ScrollbarComponent scrollbar = new ScrollbarComponent(
             SCROLLLER_TEXTURE,
             6,
             19,
             60,
-            4,
             102,
             60,
             this::rebuildWidgets
@@ -44,13 +45,14 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private final RandomSource random = RandomSource.create();
     private @Nullable BookModel bookModel;
 
+    private List<Holder<Enchantment>> lastDisplayed = List.of();
+
     public float flip;
     public float oFlip;
     public float flipT;
     public float flipA;
     public float open;
     public float oOpen;
-
     private ItemStack last = ItemStack.EMPTY;
 
     public PenchantmentScreen(PenchantmentMenu menu, Inventory playerInventory, Component title) {
@@ -61,12 +63,29 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     protected void init() {
         super.init();
         bookModel = new BookModel(minecraft.getEntityModels().bakeLayer(ModelLayers.BOOK));
-        scrollbar.updatePos(
+        var displayedEnchantments = menu.getDisplayedEnchantments();
+        var itemEnchantments = menu.getEnchantingStack().getEnchantments();
+        scrollbar.update(
                 leftPos + 162,
                 topPos + 14,
                 leftPos + 60,
-                topPos + 14
+                topPos + 14,
+                displayedEnchantments.size() - 4
         );
+        for (var i = 0; i < 5; i++) {
+            var index = scrollbar.getPosition() + i;
+            if (index >= displayedEnchantments.size()) break;
+            var enchantment = displayedEnchantments.get(index);
+            addRenderableWidget(new EnchantmentSlotWidget(
+                    leftPos + 60,
+                    topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
+                    enchantment,
+                    itemEnchantments.getLevel(enchantment) > 0,
+                    Penchant.getBookCost(enchantment) <= menu.getBookCount(),
+                    Penchant.getXpCost(enchantment) <=  menu.getPlayerXp(),
+                    menu.isAvailable(enchantment)
+            ));
+        }
     }
 
     @Override
@@ -74,6 +93,10 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         super.containerTick();
         minecraft.player.experienceDisplayStartTick = minecraft.player.tickCount;
         tickBook();
+        if (!menu.getDisplayedEnchantments().equals(lastDisplayed)) {
+            lastDisplayed = menu.getDisplayedEnchantments();
+            rebuildWidgets();
+        }
     }
 
     @Override
@@ -140,7 +163,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         oFlip = flip;
         oOpen = open;
 
-        open = clamp(open + (menu.hasItem() ? 0.2F : -0.2F), 0.0F, 1.0F);
+        open = clamp(open + (!menu.getDisplayedEnchantments().isEmpty() ? 0.2F : -0.2F), 0.0F, 1.0F);
         var f = clamp((flipT - flip) * 0.4F, -0.2F, 0.2F);
         flipA = flipA + (f - flipA) * 0.9F;
         flip = flip + flipA;

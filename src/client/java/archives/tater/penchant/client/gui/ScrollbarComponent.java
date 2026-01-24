@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
 import static archives.tater.penchant.client.gui.PenchantGuiUtil.containsPoint;
+import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static net.minecraft.util.Mth.clamp;
 
@@ -14,7 +15,6 @@ public class ScrollbarComponent {
     private final int width;
     private final int scrollerHeight;
     private final int trackHeight;
-    private final int maxStep;
     private final int regionWidth;
     private final int regionHeight;
     private final Runnable onScrolled;
@@ -25,19 +25,18 @@ public class ScrollbarComponent {
     private int y;
     private int regionX;
     private int regionY;
-
+    private int maxStep;
 
     private int position = 0;
 
     private boolean dragging = true;
     private double mouseYOffset = 0;
 
-    public ScrollbarComponent(Identifier texture, int width, int height, int trackHeight, int stepCount, int regionWidth, int regionHeight, Runnable onScrolled) {
+    public ScrollbarComponent(Identifier texture, int width, int height, int trackHeight, int regionWidth, int regionHeight, Runnable onScrolled) {
         this.texture = texture;
         this.width = width;
         this.scrollerHeight = height;
         this.trackHeight = trackHeight;
-        this.maxStep = stepCount - 1;
         this.regionWidth = regionWidth;
         this.regionHeight = regionHeight;
         this.onScrolled = onScrolled;
@@ -45,15 +44,21 @@ public class ScrollbarComponent {
         maxScrollerYOffset = trackHeight - scrollerHeight;
     }
 
-    public void updatePos(int x, int y, int regionX, int regionY) {
+    public void update(int x, int y, int regionX, int regionY, int stepCount) {
         this.x = x;
         this.y = y;
         this.regionX = regionX;
         this.regionY = regionY;
+        this.maxStep = max(stepCount - 1, 0);
+        position = clamp(position, 0, maxStep);
+    }
+
+    public boolean canScroll() {
+        return maxStep > 0;
     }
 
     private int getScrollerYOffset() {
-        return clamp(maxScrollerYOffset * position / maxStep, 0, maxScrollerYOffset);
+        return canScroll() ? clamp(maxScrollerYOffset * position / maxStep, 0, maxScrollerYOffset) : 0;
     }
 
     private void setPositionForOffset(int yOffset) {
@@ -69,6 +74,7 @@ public class ScrollbarComponent {
     }
 
     public void render(GuiGraphics guiGraphics) {
+        if (!canScroll()) return;
         guiGraphics.blitSprite(
                 RenderPipelines.GUI_TEXTURED,
                 texture,

@@ -67,8 +67,12 @@ public class PenchantClient implements ClientModInitializer {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
         MenuScreens.register(Penchant.PENCHANTMENT_MENU, PenchantmentScreen::new);
 
-        ClientPlayNetworking.registerGlobalReceiver(AvailableEnchantmentsPayload.TYPE, (payload, context) -> {
-
+        ClientPlayNetworking.registerGlobalReceiver(UnlockedEnchantmentsPayload.TYPE, (payload, context) -> {
+            if (!(context.player().containerMenu instanceof PenchantmentMenu menu)) {
+                Penchant.LOGGER.warn("Recieved enchantments payload but enchantment menu was not open");
+                return;
+            }
+            menu.setUnlockedEnchantments(payload.unlocked());
         });
 	}
 }
