@@ -21,6 +21,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import org.jspecify.annotations.Nullable;
 
@@ -69,6 +70,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         imageHeight = 169;
         inventoryLabelX = 8;
         inventoryLabelY = imageHeight - 94;
+        menu.setSlotChangeListener(this::rebuildWidgets);
     }
 
     @Override
@@ -86,19 +88,29 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         );
 
         var creative = requireNonNull(minecraft.player).hasInfiniteMaterials();
+        if (!menu.isEnchanting() && !menu.isDisenchanting()) return;
+        var disenchanting = menu.isDisenchanting();
         for (var i = 0; i < 5; i++) {
             var index = scrollbar.getPosition() + i;
             if (index >= displayedEnchantments.size()) break;
             var enchantment = displayedEnchantments.get(index);
-            addRenderableWidget(new EnchantmentSlotWidget(
-                    leftPos + 60,
-                    topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
-                    enchantment,
-                    PenchantmentHelper.canEnchant(stack, enchantment),
-                    creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount(),
-                    creative || PenchantmentHelper.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
-                    menu.isAvailable(enchantment)
-            ));
+            if (disenchanting)
+                addRenderableWidget(new EnchantmentSlotWidget(
+                        leftPos + 60,
+                        topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
+                        enchantment,
+                        EnchantmentHelper.isEnchantmentCompatible(PenchantmentHelper.getEnchantments(menu.getIngredientStack()).keySet(), enchantment)
+                ));
+            else
+                addRenderableWidget(new EnchantmentSlotWidget(
+                        leftPos + 60,
+                        topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
+                        enchantment,
+                        PenchantmentHelper.canEnchant(stack, enchantment),
+                        creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount(),
+                        creative || PenchantmentHelper.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
+                        menu.isAvailable(enchantment)
+                ));
         }
     }
 
@@ -107,11 +119,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         super.containerTick();
         minecraft.player.experienceDisplayStartTick = minecraft.player.tickCount;
         secondSlotBackground.tick(SECOND_SLOT_TEXTURES);
-        var stack = menu.getEnchantingStack();
-        var itemChanged = !ItemStack.matches(stack, last);
-        if (itemChanged) last = stack.copy();
-        tickBook(itemChanged);
-        if (itemChanged) rebuildWidgets();
+        tickBook();
     }
 
     @Override
@@ -173,11 +181,14 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
 
     }
 
-    public void tickBook(boolean itemChanged) {
-        if (itemChanged)
+    public void tickBook() {
+        var stack = menu.getEnchantingStack();
+        if (!ItemStack.matches(stack, last)) {
+            last = stack;
             do {
                 flipT = flipT + (random.nextInt(4) - random.nextInt(4));
             } while (flip <= flipT + 1.0F && flip >= flipT - 1.0F);
+        }
 
         oFlip = flip;
         oOpen = open;

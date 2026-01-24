@@ -51,6 +51,10 @@ public class EnchantmentSlotWidget extends AbstractButton {
         active = hasEnoughBooks && hasEnoughXp && isUnlocked && canAdd;
     }
 
+    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean canRemove) {
+        this(x, y, enchantment, canRemove, true, true, true);
+    }
+
     @Override
     protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, TEXTURES.get(active, isHovered()), getX(), getY(), getWidth(), getHeight());

@@ -13,7 +13,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -46,7 +45,6 @@ import java.util.stream.Stream;
 import static archives.tater.penchant.util.PenchantUtil.streamOrdered;
 
 public class PenchantmentMenu extends AbstractContainerMenu {
-    private static final Identifier EMPTY_SLOT_LAPIS_LAZULI = Identifier.withDefaultNamespace("container/slot/lapis_lazuli");
     private final Container enchantSlots = new SimpleContainer(2) {
         @Override
         public void setChanged() {
@@ -60,6 +58,8 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     private final Registry<Enchantment> enchantments;
     private Set<Holder<Enchantment>> availableEnchantments = Set.of();
     private List<Holder<Enchantment>> displayedEnchantments = List.of();
+
+    private Runnable onSlotsChange = () -> {};
 
     public PenchantmentMenu(int containerId, Inventory playerInventory) {
         this(containerId, playerInventory, ContainerLevelAccess.NULL);
@@ -79,12 +79,12 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         addSlot(new Slot(enchantSlots, 1, 35, 47) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(Items.LAPIS_LAZULI) || stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK);
+                return isEnchantingIngredient(stack) || isDisenchantingIngredient(stack);
             }
 
             @Override
             public int getMaxStackSize(ItemStack stack) {
-                return stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) ? 1 : super.getMaxStackSize(stack);
+                return isDisenchantingIngredient(stack) ? 1 : super.getMaxStackSize(stack);
             }
         });
         addStandardInventorySlots(playerInventory, 8, 87);
@@ -119,8 +119,28 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         return enchantSlots.getItem(0);
     }
 
+    public ItemStack getIngredientStack() {
+        return enchantSlots.getItem(1);
+    }
+
     public int getPlayerXp() {
         return player.experienceLevel;
+    }
+
+    public boolean isEnchanting() {
+        return isEnchantingIngredient(getIngredientStack());
+    }
+
+    public boolean isDisenchanting() {
+        return isDisenchantingIngredient(getIngredientStack());
+    }
+
+    public static boolean isEnchantingIngredient(ItemStack stack) {
+        return stack.is(Items.LAPIS_LAZULI);
+    }
+
+    public static boolean isDisenchantingIngredient(ItemStack stack) {
+        return stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK);
     }
 
     public static Set<Holder<Enchantment>> getUnlockedEnchantments(Level level, BlockPos pos) {
@@ -157,32 +177,56 @@ public class PenchantmentMenu extends AbstractContainerMenu {
 
     public void handleEnchant(Holder<Enchantment> enchantment) {
         var stack = getEnchantingStack();
-        var levelCost = PenchantmentHelper.getXpLevelCost(enchantment);
-        if (!player.hasInfiniteMaterials() && (
-                !PenchantmentHelper.canEnchant(stack, enchantment)
-                        || getBookCount() < PenchantmentHelper.getBookRequirement(enchantment)
-                        || getPlayerXp() < levelCost
-        )) {
-            Penchant.LOGGER.warn("Cannot enchant!");
-            return;
-        }
-        access.execute((level, pos) -> {
-            player.onEnchantmentPerformed(stack, levelCost);
-            var result = stack.is(Items.BOOK) ? stack.transmuteCopy(Items.ENCHANTED_BOOK) : stack;
-            EnchantmentHelper.updateEnchantments(result, enchantments -> {
-                enchantments.set(enchantment, 1);
+        if (isEnchanting()) {
+            var levelCost = PenchantmentHelper.getXpLevelCost(enchantment);
+            if (!player.hasInfiniteMaterials() && (
+                    !PenchantmentHelper.canEnchant(stack, enchantment)
+                            || availableEnchantments.contains(enchantment)
+                            || getBookCount() < PenchantmentHelper.getBookRequirement(enchantment)
+                            || getPlayerXp() < levelCost
+            )) {
+                Penchant.LOGGER.warn("Cannot enchant!");
+                return;
+            }
+            access.execute((level, pos) -> {
+                player.onEnchantmentPerformed(stack, levelCost);
+                var result = PenchantmentHelper.updateEnchantments(stack, enchantments -> {
+                    enchantments.set(enchantment, 1);
+                });
+                enchantSlots.setItem(0, result);
+
+                if (!player.hasInfiniteMaterials())
+                    getIngredientStack().shrink(1);
+
+                player.awardStat(Stats.ENCHANT_ITEM);
+                if (player instanceof ServerPlayer serverPlayer)
+                    CriteriaTriggers.ENCHANTED_ITEM.trigger(serverPlayer, result, levelCost);
+
+                level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
+                enchantSlots.setChanged();
             });
-            enchantSlots.setItem(0, result);
+        } else if (isDisenchanting()) {
+            var ingredientStack = getIngredientStack();
+            if (!PenchantmentHelper.hasEnchantment(stack, enchantment)
+                    || !EnchantmentHelper.isEnchantmentCompatible(PenchantmentHelper.getEnchantments(ingredientStack).keySet(), enchantment)) {
+                Penchant.LOGGER.warn("Cannot disenchant!");
+                return;
+            }
+            access.execute((level, pos) -> {
 
-            enchantSlots.getItem(1).shrink(1);
+                enchantSlots.setItem(0, PenchantmentHelper.updateEnchantments(stack, enchantments -> {
+                    enchantments.set(enchantment, 0);
+                }));
 
-            player.awardStat(Stats.ENCHANT_ITEM);
-            if (player instanceof ServerPlayer serverPlayer)
-                CriteriaTriggers.ENCHANTED_ITEM.trigger(serverPlayer, result, levelCost);
+                enchantSlots.setItem(1, PenchantmentHelper.updateEnchantments(ingredientStack, enchantments -> {
+                    enchantments.set(enchantment, 1);
+                }));
 
-            level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
-            enchantSlots.setChanged();
-        });
+                level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1.0F, level.random.nextFloat() * 0.1F + 0.9F);
+                enchantSlots.setChanged();
+            });
+        } else
+            Penchant.LOGGER.warn("Cannot enchant or disenchant, no ingredient is present");
     }
 
     @Override
@@ -192,15 +236,29 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         var stack = getEnchantingStack();
         if (stack.isEmpty()) {
             displayedEnchantments = List.of();
+            onSlotsChange.run();
             return;
         }
-        var applicable = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)
-                .filter(enchantment -> PenchantmentHelper.canEnchantItem(stack, enchantment))
-                .toList();
-        displayedEnchantments = Stream.concat(
-                applicable.stream().filter(enchantment -> availableEnchantments.contains(enchantment) || PenchantmentHelper.hasEnchantment(stack, enchantment)),
-                applicable.stream().filter(enchantment -> !availableEnchantments.contains(enchantment) && !enchantment.is(EnchantmentTags.CURSE))
-        ).toList();
+        if (isEnchanting()) {
+            var applicable = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)
+                    .filter(enchantment -> PenchantmentHelper.canEnchantItem(stack, enchantment))
+                    .toList();
+            displayedEnchantments = Stream.concat(
+                    applicable.stream().filter(enchantment -> availableEnchantments.contains(enchantment) || PenchantmentHelper.hasEnchantment(stack, enchantment)),
+                    applicable.stream().filter(enchantment -> !availableEnchantments.contains(enchantment) && !enchantment.is(EnchantmentTags.CURSE))
+            ).toList();
+        } else if (isDisenchanting()) {
+            displayedEnchantments = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)
+                    .filter(enchantment -> PenchantmentHelper.hasEnchantment(stack, enchantment))
+                    .toList();
+        } else {
+            displayedEnchantments = List.of();
+        }
+        onSlotsChange.run();
+    }
+
+    public void setSlotChangeListener(Runnable onSlotsChange) {
+        this.onSlotsChange = onSlotsChange;
     }
 
     @Override
@@ -216,7 +274,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         } else if (index == 1) {
             if (!moveItemStackTo(itemStack2, 2, Inventory.INVENTORY_SIZE + 2, true))
                 return ItemStack.EMPTY;
-        } else if (itemStack2.is(Items.LAPIS_LAZULI)) {
+        } else if (isEnchantingIngredient(itemStack2) || !getEnchantingStack().isEmpty() && isDisenchantingIngredient(itemStack2)) {
             if (!moveItemStackTo(itemStack2, 1, 2, true))
                 return ItemStack.EMPTY;
         } else {
