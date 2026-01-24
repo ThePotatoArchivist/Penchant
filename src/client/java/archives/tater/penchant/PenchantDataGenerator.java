@@ -9,6 +9,10 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 public class PenchantDataGenerator implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
+        var pack = fabricDataGenerator.createPack();
+        pack.addProvider(FlagTagGenerator.generator());
+        pack.addProvider(EnchantmentTagGenerator::new);
+
         var durabilityPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.DURABILITY_REWORK);
         durabilityPack.addProvider(DurabilityEnchantmentGenerator::new);
         durabilityPack.addProvider(DurabilityEnchantmentTagGenerator::new);

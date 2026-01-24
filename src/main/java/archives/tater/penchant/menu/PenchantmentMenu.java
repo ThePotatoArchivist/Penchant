@@ -134,11 +134,12 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public boolean isEnchanting() {
-        return isEnchantingIngredient(getIngredientStack());
+        var ingredientStack = getIngredientStack();
+        return isEnchantingIngredient(ingredientStack) || player.hasInfiniteMaterials() && ingredientStack.isEmpty();
     }
 
     public boolean isDisenchanting() {
-        return isDisenchantingIngredient(getIngredientStack());
+        return canDisenchant() && isDisenchantingIngredient(getIngredientStack());
     }
 
     public static boolean isEnchantingIngredient(ItemStack stack) {
