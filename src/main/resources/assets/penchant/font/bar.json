@@ -5,6 +5,12 @@
       "id": "minecraft:include/space"
     },
     {
+      "type": "space",
+      "advances": {
+        "\u2009": 2
+      }
+    },
+    {
       "type": "bitmap",
       "file": "penchant:font/bar.png",
       "ascent": 7,

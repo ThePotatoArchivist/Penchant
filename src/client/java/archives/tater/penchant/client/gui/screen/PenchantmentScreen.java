@@ -1,6 +1,7 @@
 package archives.tater.penchant.client.gui.screen;
 
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.client.FontUtils;
 import archives.tater.penchant.client.gui.ScrollbarComponent;
 import archives.tater.penchant.client.gui.widget.EnchantmentSlotWidget;
 import archives.tater.penchant.menu.PenchantmentMenu;
@@ -37,6 +38,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private static final Identifier BOOK_TEXTURE = Identifier.withDefaultNamespace("textures/entity/enchanting_table_book.png");
     private static final Identifier SCROLLLER_TEXTURE = Penchant.id("container/enchanting_table/scroller");
     private static final AtlasSprite BOOK_ICON_TEXTURE = new AtlasSprite(AtlasIds.GUI, Penchant.id("container/enchanting_table/book"));
+    private static final AtlasSprite GRINDSTONE_ICON_TEXTURE = new AtlasSprite(AtlasIds.GUI, Penchant.id("container/enchanting_table/grindstone"));
     public static final Identifier LAPIS_LAZULI_SLOT_TEXTURE = Identifier.withDefaultNamespace("container/slot/lapis_lazuli");
     public static final Identifier BOOK_SLOT_TEXTURE = Penchant.id("container/slot/book");
     private static final List<Identifier> INGREDIENT_SLOT_TEXTURES = List.of(
@@ -158,9 +160,15 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         renderBook(guiGraphics, x, y);
 
         var font = Minecraft.getInstance().font;
-        var bookCountText = Component.object(BOOK_ICON_TEXTURE)
-                .append(" " + menu.getBookCount());
-        guiGraphics.drawString(font, bookCountText, leftPos + 32 - font.width(bookCountText) / 2, topPos + 66, 0xFF404040, false);
+        var infoText = Component.object(BOOK_ICON_TEXTURE)
+                .append(FontUtils.THIN_SPACE_TEXT)
+                .append(Integer.toString(menu.getBookCount()))
+                .append(" ")
+                .append(Component.object(GRINDSTONE_ICON_TEXTURE))
+                .append(FontUtils.THIN_SPACE_TEXT)
+                .append("✔");
+//                .append("❌");
+        guiGraphics.drawString(font, infoText, leftPos + 32 - font.width(infoText) / 2, topPos + 66, 0xFF60606, false);
 
         secondSlotBackground.render(menu, guiGraphics, partialTick, leftPos, topPos);
 

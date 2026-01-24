@@ -130,7 +130,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
 
     public boolean canDisenchant() {
         var stack = getEnchantingStack();
-        return stack.isEmpty() || !PenchantmentHelper.getEnchantments(stack).isEmpty();
+        return stack.isEmpty() || PenchantmentHelper.getEnchantments(stack).keySet().stream().anyMatch(enchantment -> !enchantment.is(EnchantmentTags.CURSE));
     }
 
     public boolean isEnchanting() {
@@ -188,7 +188,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
             var levelCost = PenchantmentHelper.getXpLevelCost(enchantment);
             if (!player.hasInfiniteMaterials() && (
                     !PenchantmentHelper.canEnchant(stack, enchantment)
-                            || availableEnchantments.contains(enchantment)
+                            || !availableEnchantments.contains(enchantment)
                             || getBookCount() < PenchantmentHelper.getBookRequirement(enchantment)
                             || getPlayerXp() < levelCost
             )) {

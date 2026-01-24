@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.client.leveling;
 
-import archives.tater.penchant.client.FontProgressBar;
+import archives.tater.penchant.client.FontUtils;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,6 +24,6 @@ public class BitmapProviderMixin {
             index = 6
     )
     private int disableSpacing(int width) {
-        return file.equals(FontProgressBar.FONT_TEXTURE) ? width - 1 : width;
+        return file.equals(FontUtils.FONT_TEXTURE) ? width - 1 : width;
     }
 }

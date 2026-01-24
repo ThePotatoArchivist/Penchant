@@ -1,6 +1,6 @@
 package archives.tater.penchant;
 
-import archives.tater.penchant.client.FontProgressBar;
+import archives.tater.penchant.client.FontUtils;
 import archives.tater.penchant.client.KeyMappingExt;
 import archives.tater.penchant.client.gui.screen.PenchantmentScreen;
 import archives.tater.penchant.component.EnchantmentProgress;
@@ -49,7 +49,7 @@ public class PenchantClient implements ClientModInitializer {
     public static Component getProgressTooltip(EnchantmentProgress progress, Holder<@NotNull Enchantment> enchantment, int level, int maxDamage) {
         if (level >= enchantment.value().getMaxLevel())
             return Component.literal("  ")
-                    .append(FontProgressBar.getBar(BAR_WIDTH, BAR_WIDTH))
+                    .append(FontUtils.getBar(BAR_WIDTH, BAR_WIDTH))
                     .append(" ")
                     .append(Component.translatable("penchant.tooltip.progress.max"))
                     .withStyle(ChatFormatting.LIGHT_PURPLE);
@@ -57,7 +57,7 @@ public class PenchantClient implements ClientModInitializer {
         var maxProgress = EnchantmentProgress.getMaxProgress(enchantment, level, maxDamage);
 
         return Component.literal("  ")
-                .append(FontProgressBar.getBar(BAR_WIDTH, BAR_WIDTH * progress.getProgress(enchantment) / maxProgress))
+                .append(FontUtils.getBar(BAR_WIDTH, BAR_WIDTH * progress.getProgress(enchantment) / maxProgress))
                 .append(" ")
                 .append(Component.translatable("penchant.tooltip.progress",
                         Component.literal(Integer.toString(progress.getProgress(enchantment))).withStyle(ChatFormatting.LIGHT_PURPLE),
