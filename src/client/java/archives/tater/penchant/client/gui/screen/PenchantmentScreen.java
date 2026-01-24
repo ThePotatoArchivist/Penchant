@@ -133,8 +133,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         renderBook(guiGraphics, x, y);
 
         var font = Minecraft.getInstance().font;
-        var bookCountText = Component.literal(Integer.toString(menu.getBookCount()))
-                .append(Component.object(BOOK_ICON_TEXTURE));
+        var bookCountText = Component.object(BOOK_ICON_TEXTURE)
+                .append(" " + menu.getBookCount());
         guiGraphics.drawString(font, bookCountText, leftPos + 32 - font.width(bookCountText) / 2, topPos + 66, 0xFF404040, false);
 
         scrollbar.render(guiGraphics);
