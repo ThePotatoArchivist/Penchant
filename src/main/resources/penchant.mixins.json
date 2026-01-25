@@ -6,7 +6,6 @@
     "bookshelf.EnchantingTableBlockMixin",
     "bookshelf.EnchantmentMenuMixin",
     "disable.CreativeModeTabsMixin",
-    "disable.EnchantBookForEmeraldsMixin",
     "disable.EnchantmentHelperMixin",
     "disable.EnchantRandomlyFunctionMixin",
     "disable.ItemStackMixin",

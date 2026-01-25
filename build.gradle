@@ -20,6 +20,7 @@ repositories {
         name = 'ParchmentMC'
         url = 'https://maven.parchmentmc.org'
     }
+	maven { url 'https://jitpack.io' }
 }
 
 loom {
@@ -37,6 +38,7 @@ loom {
 fabricApi {
 	configureDataGeneration {
 		client = true
+		modId = project.archives_base_name
 	}
 }
 
@@ -51,7 +53,8 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
+	modImplementation include("com.github.ThePotatoArchivist:TagExclusion:${project.tagex_version}")
 }
 
 processResources {

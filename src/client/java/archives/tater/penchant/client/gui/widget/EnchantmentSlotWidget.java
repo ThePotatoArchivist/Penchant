@@ -71,11 +71,11 @@ public class EnchantmentSlotWidget extends AbstractButton {
         else
             setTooltip(Tooltip.create(PenchantmentHelper.getName(enchantment).copy()
                     .append("\n")
-                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.xp_cost", xpCost)
-                            .withStyle(hasEnoughXp ? ChatFormatting.GREEN : ChatFormatting.RED))
-                    .append("\n")
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.book_requirement", bookRequirement)
                             .withStyle(hasEnoughBooks ? ChatFormatting.BLUE : ChatFormatting.RED))
+                    .append("\n")
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.xp_cost", xpCost)
+                            .withStyle(hasEnoughXp ? ChatFormatting.GREEN : ChatFormatting.RED))
             ));
 
         active = hasEnoughBooks && hasEnoughXp && isUnlocked && canUse;
