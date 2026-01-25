@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,7 +95,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
 
         access.execute((level, pos) -> {
             bookCount.set(getBookCount(level, pos));
-            hasDisenchanter.set(hasDisenchanter(level, pos) ? 1 : 0);
+            hasDisenchanter.set(player.hasInfiniteMaterials() || hasDisenchanter(level, pos) ? 1 : 0);
         });
     }
 
@@ -189,7 +190,9 @@ public class PenchantmentMenu extends AbstractContainerMenu {
 
     public void sendEnchantments() {
         access.execute((level, pos) -> {
-            var unlockedEnchantments = getUnlockedEnchantments(level, pos);
+            var unlockedEnchantments = player.hasInfiniteMaterials()
+                    ? enchantments.listElements().<Holder<Enchantment>>map(Function.identity()).collect(Collectors.toSet())
+                    : getUnlockedEnchantments(level, pos);
             setUnlockedEnchantments(unlockedEnchantments);
             ServerPlayNetworking.send((ServerPlayer) player, new UnlockedEnchantmentsPayload(unlockedEnchantments));
         });
