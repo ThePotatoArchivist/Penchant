@@ -17,11 +17,14 @@ import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import org.jspecify.annotations.Nullable;
+
+import java.util.List;
 
 public class EnchantmentSlotWidget extends AbstractButton {
     public static final int WIDTH = 101;
@@ -40,7 +43,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
     private final Component text;
     private final @Nullable Component costText;
 
-    private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean remove, boolean showCosts, boolean canUse, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+    private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean remove, boolean showCosts, boolean canUse, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
         super(x, y, WIDTH, HEIGHT, enchantment.value().description());
         this.enchantment = enchantment;
 
@@ -66,27 +69,37 @@ public class EnchantmentSlotWidget extends AbstractButton {
             setTooltip(Tooltip.create(Component.translatable("widget.penchant.enchantment_slot.tooltip.remove", enchantment.value().description())));
         else if (remove)
             setTooltip(Tooltip.create(Component.translatable("widget.penchant.enchantment_slot.tooltip.remove.disabled", enchantment.value().description())));
+        else if (!canUse)
+            setTooltip(Tooltip.create(Component.empty()
+                    .append(PenchantmentHelper.getName(enchantment))
+                    .append("\n ")
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.added").withStyle(ChatFormatting.GRAY))));
         else if (!isUnlocked)
             setTooltip(Tooltip.create(Component.translatable("widget.penchant.enchantment_slot.tooltip.locked").withStyle(ChatFormatting.RED)));
-        else
-            setTooltip(Tooltip.create(PenchantmentHelper.getName(enchantment).copy()
-                    .append("\n")
+        else {
+            var tooltip = PenchantmentHelper.getName(enchantment).copy()
+                    .append("\n ")
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.book_requirement", bookRequirement)
                             .withStyle(hasEnoughBooks ? ChatFormatting.BLUE : ChatFormatting.RED))
-                    .append("\n")
+                    .append("\n ")
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.xp_cost", xpCost)
-                            .withStyle(hasEnoughXp ? ChatFormatting.GREEN : ChatFormatting.RED))
-            ));
+                            .withStyle(hasEnoughXp ? ChatFormatting.GREEN : ChatFormatting.RED));
+            if (!incompatible.isEmpty()) tooltip
+                    .append(Component.literal("\n "))
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.incompatible", ComponentUtils.formatList(incompatible, holder -> holder.value().description()))
+                            .withStyle(ChatFormatting.RED));
+            setTooltip(Tooltip.create(tooltip));
+        }
 
-        active = hasEnoughBooks && hasEnoughXp && isUnlocked && canUse;
+        active = hasEnoughBooks && hasEnoughXp && isUnlocked && canUse && incompatible.isEmpty();
     }
 
-    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean canAdd, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
-        this(x, y, enchantment, false, isUnlocked, canAdd, hasEnoughBooks, hasEnoughXp, isUnlocked);
+    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean canAdd, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+        this(x, y, enchantment, incompatible, false, isUnlocked, canAdd, hasEnoughBooks, hasEnoughXp, isUnlocked);
     }
 
     public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean canRemove) {
-        this(x, y, enchantment, true, false, canRemove, true, true, true);
+        this(x, y, enchantment, List.of(), true, false, canRemove, true, true, true);
     }
 
     @Override

@@ -23,6 +23,7 @@ import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import org.jspecify.annotations.Nullable;
@@ -115,7 +116,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         leftPos + 60,
                         topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                         enchantment,
-                        PenchantmentHelper.canEnchant(stack, enchantment),
+                        PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> !enchantment.equals(other) && !Enchantment.areCompatible(enchantment, other)).toList(),
+                        !PenchantmentHelper.hasEnchantment(stack, enchantment),
                         creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount(),
                         creative || PenchantmentHelper.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
                         menu.isAvailable(enchantment)
