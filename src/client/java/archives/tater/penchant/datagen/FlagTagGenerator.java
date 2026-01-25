@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,17 +19,16 @@ public abstract class FlagTagGenerator extends FabricTagProvider<PenchantFlag> {
     protected void addTags(HolderLookup.Provider provider) {
         var builder = builder(PenchantFlag.ENABLED);
         for (var flag : getFlags()) {
-            builder.add(flag.unwrapKey().orElseThrow());
+            builder.add(PenchantFlag.REGISTRY.getResourceKey(flag).orElseThrow());
         }
     }
 
-    protected abstract Holder<PenchantFlag>[] getFlags();
+    protected abstract PenchantFlag[] getFlags();
 
-    @SafeVarargs
-    public static FabricDataGenerator.Pack.RegistryDependentFactory<FlagTagGenerator> generator(Holder<PenchantFlag>... flags) {
+    public static FabricDataGenerator.Pack.RegistryDependentFactory<FlagTagGenerator> generator(PenchantFlag... flags) {
         return (output, registriesFuture) -> new FlagTagGenerator(output, registriesFuture) {
             @Override
-            protected Holder<PenchantFlag>[] getFlags() {
+            protected PenchantFlag[] getFlags() {
                 return flags;
             }
         };

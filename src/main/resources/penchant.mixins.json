@@ -17,7 +17,9 @@
     "leveling.EnchantCommandMixin",
     "leveling.EnchantRandomlyFunctionMixin",
     "leveling.ItemStackMixin",
-    "table.EnchantingTableBlockMixin"
+    "misc.AnvilMenuMixin",
+    "table.EnchantingTableBlockMixin",
+    "table.EnchantmentMenuMixin"
   ],
   "injectors": {
     "defaultRequire": 1

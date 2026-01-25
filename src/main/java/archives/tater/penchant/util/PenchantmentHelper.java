@@ -1,8 +1,11 @@
 package archives.tater.penchant.util;
 
+import archives.tater.penchant.registry.PenchantFlag;
+
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -14,11 +17,20 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.block.EnchantingTableBlock;
 
+import java.util.List;
 import java.util.function.Consumer;
+
+import static java.lang.Math.abs;
 
 public class PenchantmentHelper {
     private PenchantmentHelper() {}
+
+    public static List<BlockPos> LENIENT_BOOKSHELF_OFFSETS = BlockPos.betweenClosedStream(-3, -1, -3, 3, 2, 3)
+            .filter(blockPos -> abs(blockPos.getX()) >= 2 || abs(blockPos.getZ()) >= 2)
+            .map(BlockPos::immutable)
+            .toList();
 
     public static Component getName(Holder<Enchantment> enchantment) {
         return ComponentUtils.mergeStyles(
@@ -69,5 +81,13 @@ public class PenchantmentHelper {
                 return stack.transmuteCopy(Items.ENCHANTED_BOOK);
         }
         return stack;
+    }
+
+    public static List<BlockPos> getBookshelfOffsets(List<BlockPos> original) {
+        return PenchantFlag.LENIENT_BOOKSHELF_PLACEMENT.isEnabled() ? LENIENT_BOOKSHELF_OFFSETS : original;
+    }
+
+    public static List<BlockPos> getBookshelfOffsets() {
+        return getBookshelfOffsets(EnchantingTableBlock.BOOKSHELF_OFFSETS);
     }
 }

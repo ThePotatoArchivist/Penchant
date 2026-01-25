@@ -21,7 +21,11 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
 
         var tablePack = fabricDataGenerator.createBuiltinResourcePack(Penchant.TABLE_REWORK);
         tablePack.addProvider(TableBlockTagGenerator::new);
-        tablePack.addProvider(FlagTagGenerator.generator(PenchantFlag.REWORK_ENCHANTING_TABLE));
+        tablePack.addProvider(FlagTagGenerator.generator(
+                PenchantFlag.REWORKED_TABLE_MENU,
+                PenchantFlag.LENIENT_BOOKSHELF_PLACEMENT,
+                PenchantFlag.NO_ANVIL_BOOKS
+        ));
         tablePack.addProvider(PackMetaGen.pack(Penchant.TABLE_REWORK));
 	}
 }

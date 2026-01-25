@@ -1,5 +1,7 @@
 {
   "values": [
-    "penchant:rework_enchanting_table"
+    "penchant:reworked_table_menu",
+    "penchant:lenient_bookshelf_placement",
+    "penchant:no_anvil_books"
   ]
 }

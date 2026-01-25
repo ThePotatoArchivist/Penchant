@@ -159,7 +159,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public static Set<Holder<Enchantment>> getUnlockedEnchantments(Level level, BlockPos pos) {
-        return EnchantingTableBlock.BOOKSHELF_OFFSETS.stream()
+        return PenchantmentHelper.getBookshelfOffsets().stream()
                 .filter(offset -> EnchantingTableBlock.isValidBookShelf(level, pos, offset))
                 .map(pos::offset)
                 .map(level::getBlockEntity)
@@ -171,7 +171,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public static int getBookCount(Level level, BlockPos pos) {
-        return EnchantingTableBlock.BOOKSHELF_OFFSETS.stream()
+        return PenchantmentHelper.getBookshelfOffsets().stream()
                 .filter(offset -> EnchantingTableBlock.isValidBookShelf(level, pos, offset))
                 .map(pos::offset)
                 .map(level::getBlockState)
@@ -183,10 +183,8 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public static boolean hasDisenchanter(Level level, BlockPos pos) {
-        return EnchantingTableBlock.BOOKSHELF_OFFSETS.stream()
-                .map(pos::offset)
-                .map(level::getBlockState)
-                .anyMatch(state -> state.is(PenchantBlockTags.DISENCHANTER));
+        return PenchantmentHelper.getBookshelfOffsets().stream()
+                .anyMatch(offset -> level.getBlockState(pos.offset(offset)).is(PenchantBlockTags.DISENCHANTER));
     }
 
     public void sendEnchantments() {
