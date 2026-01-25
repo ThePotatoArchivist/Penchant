@@ -1,0 +1,22 @@
+{
+  "values": [
+    "minecraft:respiration",
+    "minecraft:aqua_affinity",
+    "minecraft:depth_strider",
+    "minecraft:feather_falling",
+    "minecraft:fire_protection",
+    "minecraft:blast_protection",
+    "minecraft:projectile_protection",
+    "minecraft:smite",
+    "minecraft:bane_of_arthropods",
+    "minecraft:sweeping_edge",
+    "minecraft:knockback",
+    "minecraft:punch",
+    "minecraft:multishot",
+    "minecraft:density",
+    "minecraft:breach",
+    "minecraft:looting",
+    "minecraft:luck_of_the_sea",
+    "farmersdelight:backstabbing?"
+  ]
+}

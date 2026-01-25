@@ -1,5 +1,7 @@
 {
   "values": [
-    "#penchant:normal_treasure"
+    "!#minecraft:in_enchanting_table",
+    "!#minecraft:curse",
+    "#penchant:uncommon"
   ]
 }

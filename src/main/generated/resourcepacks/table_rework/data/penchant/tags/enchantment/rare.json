@@ -4,12 +4,11 @@
     "minecraft:fire_aspect",
     "minecraft:flame",
     "minecraft:silk_touch",
+    "minecraft:fortune",
     "minecraft:lunge",
     "minecraft:channeling",
     "minecraft:riptide",
-    "minecraft:fortune",
     "minecraft:thorns",
-    "minecraft:infinity",
-    "minecraft:respiration"
+    "minecraft:infinity"
   ]
 }
