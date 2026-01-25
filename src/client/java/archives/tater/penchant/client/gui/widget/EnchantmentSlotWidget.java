@@ -2,6 +2,7 @@ package archives.tater.penchant.client.gui.widget;
 
 import archives.tater.penchant.Penchant;
 import archives.tater.penchant.network.EnchantPayload;
+import archives.tater.penchant.util.PenchantmentHelper;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
@@ -9,15 +10,18 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FontDescription;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.enchantment.Enchantment;
+
+import org.jspecify.annotations.Nullable;
 
 public class EnchantmentSlotWidget extends AbstractButton {
     public static final int WIDTH = 101;
@@ -29,30 +33,60 @@ public class EnchantmentSlotWidget extends AbstractButton {
     );
     public static final FontDescription.Resource ALT_FONT = new FontDescription.Resource(Minecraft.ALT_FONT);
 
-    private final Holder<Enchantment> enchantment;
-    private final MutableComponent text;
-    private final boolean canAdd;
-    private final boolean hasEnoughBooks;
-    private final boolean hasEnoughXp;
-    private final boolean isUnlocked;
-    private final int cost;
+    public static final int DISABLED_COLOR = 0xFF685E4A;
+    public static final int INSUFFICIENT_COLOR = 0xFF7F1010;
 
-    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean canAdd, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+    private final Holder<Enchantment> enchantment;
+    private final Component text;
+    private final @Nullable Component costText;
+
+    private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean remove, boolean showCosts, boolean canUse, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
         super(x, y, WIDTH, HEIGHT, enchantment.value().description());
         this.enchantment = enchantment;
-        text = enchantment.value().description().copy();
-        if (!isUnlocked && canAdd) text.withStyle(style -> style.withFont(ALT_FONT));
+
+        var text = enchantment.value().description().copy();
+        if (!isUnlocked && canUse) text.withStyle(style -> style.withFont(ALT_FONT));
         if (enchantment.is(EnchantmentTags.CURSE)) text.withStyle(ChatFormatting.DARK_RED);
-        this.canAdd = canAdd;
-        this.hasEnoughBooks = hasEnoughBooks;
-        this.hasEnoughXp = hasEnoughXp;
-        this.isUnlocked = isUnlocked;
-        cost = enchantment.value().getAnvilCost();
-        active = hasEnoughBooks && hasEnoughXp && isUnlocked && canAdd;
+        this.text = text;
+
+        var xpCost = PenchantmentHelper.getXpLevelCost(enchantment);
+        var bookRequirement = PenchantmentHelper.getBookRequirement(enchantment);
+
+        costText = !showCosts ? null : Component.literal(Integer.toString(bookRequirement))
+                .withColor(!canUse ? DISABLED_COLOR :
+                        !hasEnoughBooks ? INSUFFICIENT_COLOR
+                                : 0xFF5555FF)
+                .append(" ")
+                .append(Component.literal(Integer.toString(xpCost))
+                        .withColor(!canUse ? DISABLED_COLOR :
+                                !hasEnoughXp ? INSUFFICIENT_COLOR
+                                        : 0xFF80FF20));
+
+        if (remove && canUse)
+            setTooltip(Tooltip.create(Component.translatable("widget.penchant.enchantment_slot.tooltip.remove", enchantment.value().description())));
+        else if (remove)
+            setTooltip(Tooltip.create(Component.translatable("widget.penchant.enchantment_slot.tooltip.remove.disabled", enchantment.value().description())));
+        else if (!isUnlocked)
+            setTooltip(Tooltip.create(Component.translatable("widget.penchant.enchantment_slot.tooltip.locked").withStyle(ChatFormatting.RED)));
+        else
+            setTooltip(Tooltip.create(PenchantmentHelper.getName(enchantment).copy()
+                    .append("\n")
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.xp_cost", xpCost)
+                            .withStyle(hasEnoughXp ? ChatFormatting.GREEN : ChatFormatting.RED))
+                    .append("\n")
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.book_requirement", bookRequirement)
+                            .withStyle(hasEnoughBooks ? ChatFormatting.BLUE : ChatFormatting.RED))
+            ));
+
+        active = hasEnoughBooks && hasEnoughXp && isUnlocked && canUse;
+    }
+
+    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean canAdd, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+        this(x, y, enchantment, false, isUnlocked, canAdd, hasEnoughBooks, hasEnoughXp, isUnlocked);
     }
 
     public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, boolean canRemove) {
-        this(x, y, enchantment, canRemove, true, true, true);
+        this(x, y, enchantment, true, false, canRemove, true, true, true);
     }
 
     @Override
@@ -63,16 +97,8 @@ public class EnchantmentSlotWidget extends AbstractButton {
 
         guiGraphics.drawString(font, text, getX() + 2, getY() + 2, 0xFF404040, false);
 
-        if (!isUnlocked) return;
-
-        var costText = Integer.toString(cost);
-        var color = !canAdd ? 0xFF685E4A :
-                hasEnoughXp ? 0xFF80FF20 :
-                0xFF7F1010;
-        guiGraphics.drawString(font, costText, getX() + width - 2 - font.width(costText), getY() + 2, color, true);
-
-//        if (isHovered)
-//            guiGraphics.setTooltipForNextFrame(null, mouseX, mouseY);
+        if (costText != null)
+            guiGraphics.drawString(font, costText, getX() + width - 2 - font.width(costText), getY() + 2, 0xFF404040, true);
     }
 
     @Override

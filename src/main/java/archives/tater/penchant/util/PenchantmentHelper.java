@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.max;
 
 public class PenchantmentHelper {
     private PenchantmentHelper() {}
@@ -43,7 +44,7 @@ public class PenchantmentHelper {
     }
 
     public static int getBookRequirement(Holder<Enchantment> enchantment) {
-        return 2 * enchantment.value().getMinCost(1) - 5;
+        return max(2 * enchantment.value().getMinCost(1) - 5, 0);
     }
 
     public static int getXpLevelCost(Holder<Enchantment> enchantment) {
