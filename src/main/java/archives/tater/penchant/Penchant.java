@@ -40,13 +40,18 @@ public class Penchant implements ModInitializer {
     public static final Identifier NO_ANVIL_BOOKS = Penchant.id("no_anvil_books");
     public static final Identifier LOOT_REWORK = Penchant.id("loot_rework");
     public static final Identifier GUARANTEED_DROPS = Penchant.id("guaranteed_drops");
+    public static final Identifier REDUCED_CURSES = Penchant.id("reduced_curses");
 
     private void registerPack(Identifier id) {
+        registerPack(id, PackActivationType.DEFAULT_ENABLED);
+    }
+
+    private void registerPack(Identifier id, PackActivationType activationType) {
         ResourceLoader.registerBuiltinPack(
                 id,
                 FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow(),
                 Component.translatable(id.toLanguageKey("dataPack", "name")),
-                PackActivationType.DEFAULT_ENABLED
+                activationType
         );
     }
 
@@ -75,5 +80,6 @@ public class Penchant implements ModInitializer {
         registerPack(NO_ANVIL_BOOKS);
         registerPack(LOOT_REWORK);
         registerPack(GUARANTEED_DROPS);
+        registerPack(REDUCED_CURSES, PackActivationType.NORMAL);
 	}
 }

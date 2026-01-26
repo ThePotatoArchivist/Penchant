@@ -6,7 +6,15 @@ import archives.tater.penchant.registry.PenchantFlag;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
+import net.minecraft.resources.Identifier;
+
 public class PenchantDataGenerator implements DataGeneratorEntrypoint {
+    private static FabricDataGenerator.Pack createPack(FabricDataGenerator fabricDataGenerator, Identifier id) {
+        var pack = fabricDataGenerator.createBuiltinResourcePack(id);
+        pack.addProvider(PackMetaGen.pack(id));
+        return pack;
+    }
+
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         var pack = fabricDataGenerator.createPack();
@@ -14,33 +22,30 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(EnchantmentTagGenerator::new);
         pack.addProvider(BlockTagGenerator::new);
 
-        var durabilityPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.DURABILITY_REWORK);
+        var durabilityPack = createPack(fabricDataGenerator, Penchant.DURABILITY_REWORK);
         durabilityPack.addProvider(DurabilityEnchantmentGenerator::new);
         durabilityPack.addProvider(DurabilityEnchantmentTagGenerator::new);
-        durabilityPack.addProvider(PackMetaGen.pack(Penchant.DURABILITY_REWORK));
 
-        var bookshelfPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.BOOKSHELF_PLACEMENT);
+        var bookshelfPack = createPack(fabricDataGenerator, Penchant.BOOKSHELF_PLACEMENT);
         bookshelfPack.addProvider(FlagTagGenerator.generator(PenchantFlag.LENIENT_BOOKSHELF_PLACEMENT));
         bookshelfPack.addProvider(BookshelfBlockTagGenerator::new);
-        bookshelfPack.addProvider(PackMetaGen.pack(Penchant.BOOKSHELF_PLACEMENT));
 
-        var anvilPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.NO_ANVIL_BOOKS);
+        var anvilPack = createPack(fabricDataGenerator, Penchant.NO_ANVIL_BOOKS);
         anvilPack.addProvider(FlagTagGenerator.generator(PenchantFlag.NO_ANVIL_BOOKS));
-        anvilPack.addProvider(PackMetaGen.pack(Penchant.NO_ANVIL_BOOKS));
 
-        var tablePack = fabricDataGenerator.createBuiltinResourcePack(Penchant.TABLE_REWORK);
+        var tablePack = createPack(fabricDataGenerator, Penchant.TABLE_REWORK);
         tablePack.addProvider(FlagTagGenerator.generator(PenchantFlag.REWORKED_TABLE_MENU));
         tablePack.addProvider(TableAdvancementGenerator::new);
-        tablePack.addProvider(PackMetaGen.pack(Penchant.TABLE_REWORK));
 
-        var lootPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.LOOT_REWORK);
+        var lootPack = createPack(fabricDataGenerator, Penchant.LOOT_REWORK);
         lootPack.addProvider(LootEnchantmentTagGenerator::new);
         lootPack.addProvider(LootAdvancementGenerator::new);
         lootPack.addProvider(LootEnchantmentProviderGenerator::new);
-        lootPack.addProvider(PackMetaGen.pack(Penchant.LOOT_REWORK));
 
-        var dropPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.GUARANTEED_DROPS);
-        dropPack.addProvider(FlagTagGenerator.generator(PenchantFlag.GUARANTEED_ENCHANTED_DROP));
-        dropPack.addProvider(PackMetaGen.pack(Penchant.GUARANTEED_DROPS));
+        var dropPack = createPack(fabricDataGenerator, Penchant.GUARANTEED_DROPS);
+        dropPack.addProvider(FlagTagGenerator.generator(PenchantFlag.GUARANTEED_ENCHANTED_DROP, PenchantFlag.GUARANTEED_TRIDENT_DROP));
+
+        var noCursePack = createPack(fabricDataGenerator, Penchant.REDUCED_CURSES);
+        noCursePack.addProvider(CurseEnchantmentTagGenerator::new);
 	}
 }

@@ -1,5 +1,6 @@
 {
   "values": [
-    "penchant:guaranteed_enchanted_drop"
+    "penchant:guaranteed_enchanted_drop",
+    "penchant:guaranteed_trident_drop"
   ]
 }

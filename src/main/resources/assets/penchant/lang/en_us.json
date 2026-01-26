@@ -21,6 +21,8 @@
   "dataPack.penchant.loot_rework.description": "Reorganize where enchantments are unlocked & found",
   "dataPack.penchant.guaranteed_drops.name": "Penchant: Guaranteed Drops",
   "dataPack.penchant.guaranteed_drops.description": "Mobs always drop enchanted equipment",
+  "dataPack.penchant.reduced_curses.name": "Penchant: Reduced Curses",
+  "dataPack.penchant.reduced_curses.description": "Curses only appear on mob equipment",
   "advancements.penchant.enchanted_bookshelf.title": "Research & Development",
   "advancements.penchant.enchanted_bookshelf.description": "Unlock enchantments by putting an enchanted book near your enchanting table",
   "advancements.penchant.all_enchantments.title": "Gotta Catch 'Em All",
