@@ -1,0 +1,15 @@
+{
+  "pack": {
+    "description": {
+      "translate": "dataPack.penchant.bookshelf_placement.description"
+    },
+    "max_format": [
+      94,
+      1
+    ],
+    "min_format": [
+      94,
+      1
+    ]
+  }
+}

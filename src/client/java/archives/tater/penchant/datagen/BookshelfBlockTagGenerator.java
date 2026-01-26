@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 
-public class TableBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
-    public TableBlockTagGenerator(FabricDataOutput output, CompletableFuture<Provider> registriesFuture) {
+public class BookshelfBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
+    public BookshelfBlockTagGenerator(FabricDataOutput output, CompletableFuture<Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

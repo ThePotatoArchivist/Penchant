@@ -19,13 +19,17 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
         durabilityPack.addProvider(DurabilityEnchantmentTagGenerator::new);
         durabilityPack.addProvider(PackMetaGen.pack(Penchant.DURABILITY_REWORK));
 
+        var bookshelfPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.BOOKSHELF_PLACEMENT);
+        bookshelfPack.addProvider(FlagTagGenerator.generator(PenchantFlag.LENIENT_BOOKSHELF_PLACEMENT));
+        bookshelfPack.addProvider(BookshelfBlockTagGenerator::new);
+        bookshelfPack.addProvider(PackMetaGen.pack(Penchant.BOOKSHELF_PLACEMENT));
+
+        var anvilPack = fabricDataGenerator.createBuiltinResourcePack(Penchant.NO_ANVIL_BOOKS);
+        anvilPack.addProvider(FlagTagGenerator.generator(PenchantFlag.NO_ANVIL_BOOKS));
+        anvilPack.addProvider(PackMetaGen.pack(Penchant.NO_ANVIL_BOOKS));
+
         var tablePack = fabricDataGenerator.createBuiltinResourcePack(Penchant.TABLE_REWORK);
-        tablePack.addProvider(TableBlockTagGenerator::new);
-        tablePack.addProvider(FlagTagGenerator.generator(
-                PenchantFlag.REWORKED_TABLE_MENU,
-                PenchantFlag.LENIENT_BOOKSHELF_PLACEMENT,
-                PenchantFlag.NO_ANVIL_BOOKS
-        ));
+        tablePack.addProvider(FlagTagGenerator.generator(PenchantFlag.REWORKED_TABLE_MENU));
         tablePack.addProvider(TableAdvancementGenerator::new);
         tablePack.addProvider(PackMetaGen.pack(Penchant.TABLE_REWORK));
 

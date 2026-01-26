@@ -35,7 +35,9 @@ public class Penchant implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final Identifier DURABILITY_REWORK = Penchant.id("durability_rework");
+    public static final Identifier BOOKSHELF_PLACEMENT = Penchant.id("bookshelf_placement");
     public static final Identifier TABLE_REWORK = Penchant.id("table_rework");
+    public static final Identifier NO_ANVIL_BOOKS = Penchant.id("no_anvil_books");
     public static final Identifier LOOT_REWORK = Penchant.id("loot_rework");
 
     private void registerPack(Identifier id) {
@@ -67,7 +69,9 @@ public class Penchant implements ModInitializer {
         });
 
         registerPack(DURABILITY_REWORK);
+        registerPack(BOOKSHELF_PLACEMENT);
         registerPack(TABLE_REWORK);
+        registerPack(NO_ANVIL_BOOKS);
         registerPack(LOOT_REWORK);
 	}
 }
