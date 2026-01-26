@@ -96,11 +96,9 @@ public class LootEnchantmentTagGenerator extends FabricTagProvider<Enchantment> 
                 .tagex_excludeTag(uncommon)
                 .tagex_excludeTag(rare);
         builder(EnchantmentTags.TRADEABLE)
-                .tagex_forceExcludeTag(common)
-                .tagex_forceExcludeTag(EnchantmentTags.CURSE)
+                .tagex_excludeTag(common)
                 .addTag(uncommon);
         builder(EnchantmentTags.ON_RANDOM_LOOT)
-                .tagex_forceExcludeTag(common)
                 .addTag(uncommon)
                 .addTag(rare);
         builder(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
