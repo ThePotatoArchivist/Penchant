@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class AdvancementGenerator extends FabricAdvancementProvider {
     public AdvancementGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
@@ -78,19 +79,20 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
                     .parent(enchantedBookshelf)
                     .requirements(AdvancementRequirements.Strategy.AND);
 
-            enchantments.listElements()
-                    .filter(enchantment -> !LootEnchantmentTagGenerator.COMMON.contains(enchantment.key()))
-                    .forEach(enchantment -> builder.addCriterion(
-                            enchantment.key().identifier().toString(),
-                            InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().withComponents(
-                                    DataComponentMatchers.Builder.components().partial(
-                                            DataComponentPredicates.STORED_ENCHANTMENTS,
-                                            EnchantmentsPredicate.StoredEnchantments.storedEnchantments(List.of(
-                                                    new EnchantmentPredicate(enchantment, MinMaxBounds.Ints.ANY)
-                                            ))
-                                    ).build()
-                            ))
-                    ));
+            Stream.concat(
+                    LootEnchantmentTagGenerator.UNCOMMON.stream().map(enchantments::getOrThrow),
+                    LootEnchantmentTagGenerator.RARE.stream().map(enchantments::getOrThrow)
+            ).forEach(enchantment -> builder.addCriterion(
+                    enchantment.key().identifier().toString(),
+                    InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().withComponents(
+                            DataComponentMatchers.Builder.components().partial(
+                                    DataComponentPredicates.STORED_ENCHANTMENTS,
+                                    EnchantmentsPredicate.StoredEnchantments.storedEnchantments(List.of(
+                                            new EnchantmentPredicate(enchantment, MinMaxBounds.Ints.ANY)
+                                    ))
+                            ).build()
+                    ))
+            ));
         });
 
         var fullLibrary = register(Penchant.id("full_library"), Items.BOOKSHELF, AdvancementType.GOAL, consumer, builder -> builder

@@ -55,7 +55,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
             6,
             19,
             60,
-            102,
+            EnchantmentSlotWidget.WIDTH + 1,
             60,
             this::rebuildWidgets
     );
@@ -75,9 +75,9 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
 
     public PenchantmentScreen(PenchantmentMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        imageWidth = 176;
-        imageHeight = 169;
-        inventoryLabelX = 8;
+        imageWidth = 206;
+        imageHeight = 172;
+        inventoryLabelX = 23;
         inventoryLabelY = imageHeight - 94;
         menu.setSlotChangeListener(this::rebuildWidgets);
     }
@@ -89,7 +89,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         var displayedEnchantments = menu.getDisplayedEnchantments();
         var stack = menu.getEnchantingStack();
         scrollbar.update(
-                leftPos + 162,
+                leftPos + 192,
                 topPos + 14,
                 leftPos + 60,
                 topPos + 14,
@@ -169,7 +169,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                 .append(Component.object(GRINDSTONE_ICON_TEXTURE))
                 .append(FontUtils.THIN_SPACE_TEXT)
                 .append(menu.hasDisenchanter() ? "✔" : "❌");
-        guiGraphics.drawString(font, infoText, leftPos + 32 - font.width(infoText) / 2, topPos + 66, 0xFF606060, false);
+        guiGraphics.drawString(font, infoText, leftPos + 32 - font.width(infoText) / 2, topPos + 18, 0xFF606060, false);
 
         secondSlotBackground.render(menu, guiGraphics, partialTick, leftPos, topPos);
 
@@ -181,7 +181,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         var open = lerp(partialTick, oOpen, this.open);
         var flip = lerp(partialTick, oFlip, this.flip);
         var x0 = x + 14;
-        var y0 = y + 14;
+        var y0 = y + 25;
         var x1 = x0 + 38;
         var y1 = y0 + 31;
         guiGraphics.submitBookModelRenderState(requireNonNull(bookModel), BOOK_TEXTURE, 40.0F, open, flip, x0, y0, x1, y1);

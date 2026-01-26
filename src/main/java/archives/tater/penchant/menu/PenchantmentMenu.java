@@ -74,13 +74,13 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         player = playerInventory.player;
         enchantments = player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
         this.access = access;
-        addSlot(new Slot(enchantSlots, 0, 15, 47) {
+        addSlot(new Slot(enchantSlots, 0, 15, 58) {
             @Override
             public int getMaxStackSize() {
                 return 1;
             }
         });
-        addSlot(new Slot(enchantSlots, 1, 35, 47) {
+        addSlot(new Slot(enchantSlots, 1, 35, 58) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return isEnchantingIngredient(stack) || canDisenchant() && isDisenchantingIngredient(stack);
@@ -91,7 +91,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                 return isDisenchantingIngredient(stack) ? 1 : super.getMaxStackSize(stack);
             }
         });
-        addStandardInventorySlots(playerInventory, 8, 87);
+        addStandardInventorySlots(playerInventory, 23, 90);
 
         access.execute((level, pos) -> {
             bookCount.set(getBookCount(level, pos));

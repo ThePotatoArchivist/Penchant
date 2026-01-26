@@ -27,7 +27,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 public class EnchantmentSlotWidget extends AbstractButton {
-    public static final int WIDTH = 101;
+    public static final int WIDTH = 131;
     public static final int HEIGHT = 12;
     public static final WidgetSprites TEXTURES = new WidgetSprites(
             Penchant.id("container/enchanting_table/slot"),

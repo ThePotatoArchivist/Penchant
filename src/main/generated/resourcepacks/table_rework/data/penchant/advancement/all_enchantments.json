@@ -33,22 +33,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "minecraft:binding_curse": {
-      "conditions": {
-        "items": [
-          {
-            "predicates": {
-              "minecraft:stored_enchantments": [
-                {
-                  "enchantments": "minecraft:binding_curse"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "minecraft:blast_protection": {
       "conditions": {
         "items": [
@@ -121,22 +105,6 @@
               "minecraft:stored_enchantments": [
                 {
                   "enchantments": "minecraft:depth_strider"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "minecraft:efficiency": {
-      "conditions": {
-        "items": [
-          {
-            "predicates": {
-              "minecraft:stored_enchantments": [
-                {
-                  "enchantments": "minecraft:efficiency"
                 }
               ]
             }
@@ -321,22 +289,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "minecraft:mending": {
-      "conditions": {
-        "items": [
-          {
-            "predicates": {
-              "minecraft:stored_enchantments": [
-                {
-                  "enchantments": "minecraft:mending"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "minecraft:multishot": {
       "conditions": {
         "items": [
@@ -449,22 +401,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "minecraft:soul_speed": {
-      "conditions": {
-        "items": [
-          {
-            "predicates": {
-              "minecraft:stored_enchantments": [
-                {
-                  "enchantments": "minecraft:soul_speed"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "minecraft:sweeping_edge": {
       "conditions": {
         "items": [
@@ -481,22 +417,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "minecraft:swift_sneak": {
-      "conditions": {
-        "items": [
-          {
-            "predicates": {
-              "minecraft:stored_enchantments": [
-                {
-                  "enchantments": "minecraft:swift_sneak"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "minecraft:thorns": {
       "conditions": {
         "items": [
@@ -505,38 +425,6 @@
               "minecraft:stored_enchantments": [
                 {
                   "enchantments": "minecraft:thorns"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "minecraft:vanishing_curse": {
-      "conditions": {
-        "items": [
-          {
-            "predicates": {
-              "minecraft:stored_enchantments": [
-                {
-                  "enchantments": "minecraft:vanishing_curse"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "minecraft:wind_burst": {
-      "conditions": {
-        "items": [
-          {
-            "predicates": {
-              "minecraft:stored_enchantments": [
-                {
-                  "enchantments": "minecraft:wind_burst"
                 }
               ]
             }
@@ -561,46 +449,16 @@
   },
   "requirements": [
     [
-      "minecraft:mending"
-    ],
-    [
-      "minecraft:soul_speed"
-    ],
-    [
-      "minecraft:looting"
-    ],
-    [
-      "minecraft:sweeping_edge"
-    ],
-    [
-      "minecraft:lunge"
-    ],
-    [
-      "minecraft:silk_touch"
-    ],
-    [
-      "minecraft:fortune"
-    ],
-    [
-      "minecraft:bane_of_arthropods"
-    ],
-    [
-      "minecraft:swift_sneak"
-    ],
-    [
       "minecraft:respiration"
     ],
     [
-      "minecraft:thorns"
+      "minecraft:aqua_affinity"
     ],
     [
-      "minecraft:density"
+      "minecraft:depth_strider"
     ],
     [
-      "minecraft:frost_walker"
-    ],
-    [
-      "minecraft:riptide"
+      "minecraft:feather_falling"
     ],
     [
       "minecraft:fire_protection"
@@ -609,58 +467,67 @@
       "minecraft:blast_protection"
     ],
     [
-      "minecraft:depth_strider"
-    ],
-    [
       "minecraft:projectile_protection"
-    ],
-    [
-      "minecraft:feather_falling"
-    ],
-    [
-      "minecraft:infinity"
-    ],
-    [
-      "minecraft:luck_of_the_sea"
     ],
     [
       "minecraft:smite"
     ],
     [
-      "minecraft:breach"
+      "minecraft:bane_of_arthropods"
     ],
     [
-      "minecraft:punch"
-    ],
-    [
-      "minecraft:channeling"
-    ],
-    [
-      "minecraft:binding_curse"
-    ],
-    [
-      "minecraft:fire_aspect"
-    ],
-    [
-      "minecraft:aqua_affinity"
+      "minecraft:sweeping_edge"
     ],
     [
       "minecraft:knockback"
     ],
     [
-      "minecraft:efficiency"
-    ],
-    [
-      "minecraft:wind_burst"
+      "minecraft:punch"
     ],
     [
       "minecraft:multishot"
     ],
     [
-      "minecraft:vanishing_curse"
+      "minecraft:density"
+    ],
+    [
+      "minecraft:breach"
+    ],
+    [
+      "minecraft:looting"
+    ],
+    [
+      "minecraft:luck_of_the_sea"
+    ],
+    [
+      "minecraft:frost_walker"
+    ],
+    [
+      "minecraft:fire_aspect"
     ],
     [
       "minecraft:flame"
+    ],
+    [
+      "minecraft:silk_touch"
+    ],
+    [
+      "minecraft:fortune"
+    ],
+    [
+      "minecraft:lunge"
+    ],
+    [
+      "minecraft:channeling"
+    ],
+    [
+      "minecraft:riptide"
+    ],
+    [
+      "minecraft:thorns"
+    ],
+    [
+      "minecraft:infinity"
     ]
   ],
   "sends_telemetry_event": true
