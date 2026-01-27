@@ -1,16 +1,19 @@
 {
-  "type": "minecraft:chest",
   "pools": [
     {
       "bonus_rolls": 0.0,
       "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 4
+        },
         {
           "type": "minecraft:item",
           "functions": [
             {
               "add": false,
               "enchantments": {
-                "minecraft:frost_walker": 1.0
+                "minecraft:multishot": 1.0
               },
               "function": "minecraft:set_enchantments"
             }
@@ -20,5 +23,8 @@
       ],
       "rolls": 1.0
     }
+  ],
+  "targets": [
+    "minecraft:chests/pillager_outpost"
   ]
 }

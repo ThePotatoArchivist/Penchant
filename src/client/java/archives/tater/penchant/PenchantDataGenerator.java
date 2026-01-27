@@ -44,7 +44,6 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
 
         var lootPack = createPack(fabricDataGenerator, Penchant.LOOT_REWORK);
         lootPack.addProvider(FlagTagGenerator.generator(PenchantFlag.ZOMBIE_SPAWN_PICKAXE));
-        lootPack.addProvider(LootLootTableGenerator::new);
         lootPack.addProvider(LootModificationGenerator::new);
         lootPack.addProvider(LootEnchantmentTagGenerator::new);
         lootPack.addProvider(LootAdvancementGenerator::new);

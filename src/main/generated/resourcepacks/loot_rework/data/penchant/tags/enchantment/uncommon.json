@@ -1,8 +1,6 @@
 {
   "values": [
-    "minecraft:respiration",
     "minecraft:aqua_affinity",
-    "minecraft:depth_strider",
     "minecraft:feather_falling",
     "minecraft:fire_protection",
     "minecraft:blast_protection",
@@ -12,7 +10,6 @@
     "minecraft:sweeping_edge",
     "minecraft:knockback",
     "minecraft:punch",
-    "minecraft:multishot",
     "minecraft:density",
     "minecraft:breach",
     "minecraft:looting",

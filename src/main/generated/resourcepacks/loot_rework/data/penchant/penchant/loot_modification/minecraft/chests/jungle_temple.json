@@ -1,21 +1,11 @@
 {
-  "type": "minecraft:chest",
   "pools": [
     {
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "enchantments": {
-                "minecraft:silk_touch": 1.0
-              },
-              "function": "minecraft:set_enchantments"
-            }
-          ],
-          "name": "minecraft:book"
+          "type": "minecraft:empty",
+          "weight": 4
         },
         {
           "type": "minecraft:item",
@@ -23,7 +13,7 @@
             {
               "add": false,
               "enchantments": {
-                "minecraft:fortune": 1.0
+                "minecraft:infinity": 1.0
               },
               "function": "minecraft:set_enchantments"
             }
@@ -33,5 +23,8 @@
       ],
       "rolls": 1.0
     }
+  ],
+  "targets": [
+    "minecraft:chests/jungle_temple"
   ]
 }

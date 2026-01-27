@@ -21,21 +21,25 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
 
     public static final List<ResourceKey<Enchantment>> RARE = List.of(
             Enchantments.FROST_WALKER, // igloo
-            Enchantments.FIRE_ASPECT, // Nether fortress
-            Enchantments.FLAME, // nether fortress
+            Enchantments.FIRE_ASPECT, // nether fortress, ruined portal
+            Enchantments.FLAME, // nether fortress, ruined portal
             Enchantments.SILK_TOUCH, // mineshaft, dungeon
             Enchantments.FORTUNE, // mineshaft, dungeon
-            Enchantments.LUNGE, // jockeys
+            Enchantments.LUNGE, // bastion
+            Enchantments.RESPIRATION, // ocean ruins, shipwreck, buried treasure
+            Enchantments.DEPTH_STRIDER, // ocean ruins, shipwreck, buried treasure
             Enchantments.CHANNELING, // ruins, buried treasure
             Enchantments.RIPTIDE, // ruins, buried treasure
-            Enchantments.THORNS, // dungeon
-            Enchantments.INFINITY // dungeon
+            Enchantments.THORNS, // desert temple
+            Enchantments.INFINITY, // jungle temple
+            Enchantments.MULTISHOT // pillager outpost
+            // wind burst: trial chambers
+            // soul speed: bartering/bastion
+            // swift sneak: ancient city
     );
 
     public static final List<ResourceKey<Enchantment>> UNCOMMON = List.of(
-            Enchantments.RESPIRATION,
             Enchantments.AQUA_AFFINITY,
-            Enchantments.DEPTH_STRIDER,
             Enchantments.FEATHER_FALLING,
             Enchantments.FIRE_PROTECTION,
             Enchantments.BLAST_PROTECTION,
@@ -45,7 +49,6 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
             Enchantments.SWEEPING_EDGE,
             Enchantments.KNOCKBACK,
             Enchantments.PUNCH,
-            Enchantments.MULTISHOT,
             Enchantments.DENSITY,
             Enchantments.BREACH,
             Enchantments.LOOTING,
@@ -75,26 +78,22 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
         var uncommon = TagKey.create(Registries.ENCHANTMENT, Penchant.id("uncommon"));
         var common = TagKey.create(Registries.ENCHANTMENT, Penchant.id("common"));
 
-        //noinspection unchecked
         tag(rare)
-                .add(RARE.toArray(ResourceKey[]::new));
+                .addAll(RARE);
 
-        //noinspection unchecked
         tag(uncommon)
-                .add(UNCOMMON.toArray(ResourceKey[]::new))
+                .addAll(UNCOMMON)
                 .addOptional(ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath("farmersdelight", "backstabbing")));
 
-        //noinspection unchecked
         tag(common)
-                .add(COMMON.toArray(ResourceKey[]::new));
+                .addAll(COMMON);
 
         tag(EnchantmentTags.TREASURE)
                 .addTag(rare);
         tag(EnchantmentTags.NON_TREASURE)
                 .tagex_excludeTag(rare);
         tag(EnchantmentTags.IN_ENCHANTING_TABLE)
-                .tagex_excludeTag(uncommon)
-                .tagex_excludeTag(rare);
+                .tagex_excludeTag(uncommon);
         tag(EnchantmentTags.TRADEABLE)
                 .tagex_excludeTag(common)
                 .addTag(uncommon);

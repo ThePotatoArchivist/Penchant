@@ -449,13 +449,7 @@
   },
   "requirements": [
     [
-      "minecraft:respiration"
-    ],
-    [
       "minecraft:aqua_affinity"
-    ],
-    [
-      "minecraft:depth_strider"
     ],
     [
       "minecraft:feather_falling"
@@ -483,9 +477,6 @@
     ],
     [
       "minecraft:punch"
-    ],
-    [
-      "minecraft:multishot"
     ],
     [
       "minecraft:density"
@@ -518,6 +509,12 @@
       "minecraft:lunge"
     ],
     [
+      "minecraft:respiration"
+    ],
+    [
+      "minecraft:depth_strider"
+    ],
+    [
       "minecraft:channeling"
     ],
     [
@@ -528,6 +525,9 @@
     ],
     [
       "minecraft:infinity"
+    ],
+    [
+      "minecraft:multishot"
     ]
   ],
   "sends_telemetry_event": true

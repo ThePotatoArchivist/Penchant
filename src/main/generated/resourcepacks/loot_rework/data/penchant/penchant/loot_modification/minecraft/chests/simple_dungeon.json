@@ -4,8 +4,34 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:loot_table",
-          "value": "penchant:inject/minecraft/chests/simple_dungeon"
+          "type": "minecraft:empty",
+          "weight": 14
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:silk_touch": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:fortune": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book"
         }
       ],
       "rolls": 1.0

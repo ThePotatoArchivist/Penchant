@@ -4,8 +4,34 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:loot_table",
-          "value": "penchant:inject/minecraft/chests/nether_bridge"
+          "type": "minecraft:empty",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:fire_aspect": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:flame": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book"
         }
       ],
       "rolls": 1.0

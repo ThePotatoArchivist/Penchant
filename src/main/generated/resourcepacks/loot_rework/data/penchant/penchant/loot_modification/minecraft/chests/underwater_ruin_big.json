@@ -1,16 +1,19 @@
 {
-  "type": "minecraft:chest",
   "pools": [
     {
       "bonus_rolls": 0.0,
       "entries": [
         {
+          "type": "minecraft:empty",
+          "weight": 8
+        },
+        {
           "type": "minecraft:item",
           "functions": [
             {
               "add": false,
               "enchantments": {
-                "minecraft:silk_touch": 1.0
+                "minecraft:respiration": 1.0
               },
               "function": "minecraft:set_enchantments"
             }
@@ -23,7 +26,30 @@
             {
               "add": false,
               "enchantments": {
-                "minecraft:fortune": 1.0
+                "minecraft:depth_strider": 1.0
+              },
+              "function": "minecraft:set_enchantments"
+            }
+          ],
+          "name": "minecraft:book"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 18
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "enchantments": {
+                "minecraft:channeling": 1.0
               },
               "function": "minecraft:set_enchantments"
             }
@@ -36,20 +62,7 @@
             {
               "add": false,
               "enchantments": {
-                "minecraft:thorns": 1.0
-              },
-              "function": "minecraft:set_enchantments"
-            }
-          ],
-          "name": "minecraft:book"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "enchantments": {
-                "minecraft:infinity": 1.0
+                "minecraft:riptide": 1.0
               },
               "function": "minecraft:set_enchantments"
             }
@@ -59,5 +72,8 @@
       ],
       "rolls": 1.0
     }
+  ],
+  "targets": [
+    "minecraft:chests/underwater_ruin_big"
   ]
 }

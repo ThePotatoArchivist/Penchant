@@ -1,7 +1,0 @@
-// 1.21.11	-999999999-01-01T00:00:00	penchant:loot_rework/minecraft:chest Loot Table
-1a07e0de84fbefdb2ebbf794ae252675fc1ca7ba resourcepacks/loot_rework/data/penchant/loot_table/inject/minecraft/chests/abandoned_mineshaft.json
-d10a6479aaed31178f14bf04e9778081121bce65 resourcepacks/loot_rework/data/penchant/loot_table/inject/minecraft/chests/buried_treasure.json
-ed21b5ffa177285623453eee93e775a63308f2b8 resourcepacks/loot_rework/data/penchant/loot_table/inject/minecraft/chests/igloo_chest.json
-3e260b81fa74fa6f3cc675d1764a823b07527fad resourcepacks/loot_rework/data/penchant/loot_table/inject/minecraft/chests/nether_bridge.json
-eaf954c89437871748fc8f4ad73ca28ba3ca3630 resourcepacks/loot_rework/data/penchant/loot_table/inject/minecraft/chests/simple_dungeon.json
-d10a6479aaed31178f14bf04e9778081121bce65 resourcepacks/loot_rework/data/penchant/loot_table/inject/minecraft/chests/underwater_ruin_small.json

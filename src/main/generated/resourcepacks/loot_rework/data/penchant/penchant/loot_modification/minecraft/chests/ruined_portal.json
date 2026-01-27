@@ -1,9 +1,12 @@
 {
-  "type": "minecraft:chest",
   "pools": [
     {
       "bonus_rolls": 0.0,
       "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 14
+        },
         {
           "type": "minecraft:item",
           "functions": [
@@ -33,5 +36,8 @@
       ],
       "rolls": 1.0
     }
+  ],
+  "targets": [
+    "minecraft:chests/ruined_portal"
   ]
 }

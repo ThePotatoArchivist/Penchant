@@ -6,9 +6,12 @@
     "minecraft:silk_touch",
     "minecraft:fortune",
     "minecraft:lunge",
+    "minecraft:respiration",
+    "minecraft:depth_strider",
     "minecraft:channeling",
     "minecraft:riptide",
     "minecraft:thorns",
-    "minecraft:infinity"
+    "minecraft:infinity",
+    "minecraft:multishot"
   ]
 }
