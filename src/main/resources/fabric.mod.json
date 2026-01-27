@@ -3,15 +3,15 @@
 	"id": "penchant",
 	"version": "${version}",
 	"name": "Penchant",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A subtle rework of enchanting, centered around leveling up enchantments through usage",
 	"authors": [
 		"Me!"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/mod/penchant",
+		"sources": "https://github.com/ThePotatoArchivist/Penchant"
 	},
-	"license": "CC0-1.0",
+	"license": "LGPL-3.0-or-later",
 	"icon": "assets/penchant/icon.png",
 	"environment": "*",
 	"entrypoints": {
