@@ -25,12 +25,12 @@
   "dataPack.penchant.reduced_curses.description": "Curses only appear on mob equipment",
   "advancements.penchant.enchanted_bookshelf.title": "Research & Development",
   "advancements.penchant.enchanted_bookshelf.description": "Unlock enchantments by putting an enchanted book near your enchanting table",
-  "advancements.penchant.all_enchantments.title": "Gotta Catch 'Em All",
+  "advancements.penchant.all_enchantments.title": "Collector's Edition",
   "advancements.penchant.all_enchantments.description": "Collect enchanted books of every non-table enchantment",
-  "advancements.penchant.full_library.title": "Full Library",
-  "advancements.penchant.full_library.description": "Provide an enchanting table with at least 45 books",
+  "advancements.penchant.full_library.title": "Librarian",
+  "advancements.penchant.full_library.description": "Build an enchanting library with at least 45 books",
   "advancements.penchant.babel.title": "Babel",
-  "advancements.penchant.babel.description": "Provide an enchanting table with over 300 books",
+  "advancements.penchant.babel.description": "Build an enchanting library with over 300 books",
   "advancements.penchant.extract_enchantment.title": "Reverse Engineering",
   "advancements.penchant.extract_enchantment.description": "Extract enchantments from found gear"
 }
