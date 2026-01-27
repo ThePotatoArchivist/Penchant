@@ -274,7 +274,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                     .toList();
             displayedEnchantments = Stream.concat(
                     applicable.stream().filter(enchantment -> availableEnchantments.contains(enchantment) || PenchantmentHelper.hasEnchantment(stack, enchantment)),
-                    applicable.stream().filter(enchantment -> !availableEnchantments.contains(enchantment) && !enchantment.is(EnchantmentTags.CURSE))
+                    applicable.stream().filter(enchantment -> !availableEnchantments.contains(enchantment) && !PenchantmentHelper.hasEnchantment(stack, enchantment) && !enchantment.is(EnchantmentTags.CURSE))
             ).toList();
         } else if (isDisenchanting()) {
             displayedEnchantments = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)

@@ -37,33 +37,47 @@ public class EnchantmentSlotWidget extends AbstractButton {
     public static final FontDescription.Resource ALT_FONT = new FontDescription.Resource(Minecraft.ALT_FONT);
 
     public static final int DISABLED_COLOR = 0xFF685E4A;
-    public static final int INSUFFICIENT_COLOR = 0xFF7F1010;
+    public static final int INSUFFICIENT_COLOR = 0xffff5555;
+    public static final int XP_COLOR = 0xFF80FF20;
+    public static final int BOOK_COLOR = 0XFFFFAA00;
 
     private final Holder<Enchantment> enchantment;
     private final Component text;
     private final @Nullable Component costText;
+    private final boolean isCurse;
 
     private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean remove, boolean showCosts, boolean canUse, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
         super(x, y, WIDTH, HEIGHT, enchantment.value().description());
         this.enchantment = enchantment;
+        isCurse = enchantment.is(EnchantmentTags.CURSE);
 
         var text = enchantment.value().description().copy();
         if (!isUnlocked && canUse) text.withStyle(style -> style.withFont(ALT_FONT));
-        if (enchantment.is(EnchantmentTags.CURSE)) text.withStyle(ChatFormatting.DARK_RED);
         this.text = text;
 
         var xpCost = PenchantmentHelper.getXpLevelCost(enchantment);
         var bookRequirement = PenchantmentHelper.getBookRequirement(enchantment);
 
-        costText = !showCosts ? null : Component.literal(Integer.toString(bookRequirement))
-                .withColor(!canUse ? DISABLED_COLOR :
-                        !hasEnoughBooks ? INSUFFICIENT_COLOR
-                                : 0xFF5555FF)
-                .append(" ")
-                .append(Component.literal(Integer.toString(xpCost))
-                        .withColor(!canUse ? DISABLED_COLOR :
-                                !hasEnoughXp ? INSUFFICIENT_COLOR
-                                        : 0xFF80FF20));
+        if (!showCosts)
+            costText = null;
+        else {
+            var costText = Component.empty();
+            if (!incompatible.isEmpty()) costText
+                    .append(Component.translatable("widget.penchant.enchantment_slot.incompatible")
+                        .withColor(INSUFFICIENT_COLOR))
+                    .append(" ");
+            costText
+                    .append(Component.literal(Integer.toString(bookRequirement))
+                            .withColor(!canUse ? DISABLED_COLOR :
+                                    !hasEnoughBooks ? INSUFFICIENT_COLOR
+                                            : BOOK_COLOR))
+                    .append(" ")
+                    .append(Component.literal(Integer.toString(xpCost))
+                            .withColor(!canUse ? DISABLED_COLOR :
+                                    !hasEnoughXp ? INSUFFICIENT_COLOR
+                                            : XP_COLOR));
+            this.costText = costText;
+        }
 
         if (remove && canUse)
             setTooltip(Tooltip.create(Component.translatable("widget.penchant.enchantment_slot.tooltip.remove", enchantment.value().description())));
@@ -72,22 +86,32 @@ public class EnchantmentSlotWidget extends AbstractButton {
         else if (!canUse)
             setTooltip(Tooltip.create(Component.empty()
                     .append(PenchantmentHelper.getName(enchantment))
-                    .append("\n ")
+                    .append("\n")
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.added").withStyle(ChatFormatting.GRAY))));
-        else if (!isUnlocked)
-            setTooltip(Tooltip.create(Component.translatable("widget.penchant.enchantment_slot.tooltip.locked").withStyle(ChatFormatting.RED)));
-        else {
-            var tooltip = PenchantmentHelper.getName(enchantment).copy()
-                    .append("\n ")
-                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.book_requirement", bookRequirement)
-                            .withStyle(hasEnoughBooks ? ChatFormatting.BLUE : ChatFormatting.RED))
-                    .append("\n ")
-                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.xp_cost", xpCost)
-                            .withStyle(hasEnoughXp ? ChatFormatting.GREEN : ChatFormatting.RED));
+        else if (!isUnlocked) {
+            var name = enchantment.value().description().getString();
+            setTooltip(Tooltip.create(Component.literal(name.substring(0, name.length() * 2 / 3).trim())
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.name_locked"))
+                    .append("\n")
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.locked")
+                            .withStyle(ChatFormatting.RED))
+            ));
+        } else {
+            var tooltip = PenchantmentHelper.getName(enchantment).copy();
             if (!incompatible.isEmpty()) tooltip
-                    .append(Component.literal("\n "))
+                    .append(Component.literal("\n"))
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.incompatible", ComponentUtils.formatList(incompatible, holder -> holder.value().description()))
                             .withStyle(ChatFormatting.RED));
+
+            tooltip
+                    .append("\n")
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.book_requirement", bookRequirement)
+                            .withColor(hasEnoughBooks ? BOOK_COLOR : INSUFFICIENT_COLOR))
+                    .append("\n")
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.xp_cost", xpCost)
+                            .withColor(hasEnoughXp ? XP_COLOR : INSUFFICIENT_COLOR));
+
             setTooltip(Tooltip.create(tooltip));
         }
 
@@ -108,7 +132,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
 
         var font = Minecraft.getInstance().font;
 
-        guiGraphics.drawString(font, text, getX() + 2, getY() + 2, 0xFF404040, false);
+        guiGraphics.drawString(font, text, getX() + 2, getY() + 2, active && isHovered ? 0xFFFCFC7E : isCurse ? 0xFF891d13 : 0xFF332E25, false);
 
         if (costText != null)
             guiGraphics.drawString(font, costText, getX() + width - 2 - font.width(costText), getY() + 2, 0xFF404040, true);
