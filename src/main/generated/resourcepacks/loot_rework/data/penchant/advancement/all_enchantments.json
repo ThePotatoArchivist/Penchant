@@ -401,6 +401,22 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "minecraft:soul_speed": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "minecraft:stored_enchantments": [
+                {
+                  "enchantments": "minecraft:soul_speed"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "minecraft:sweeping_edge": {
       "conditions": {
         "items": [
@@ -417,6 +433,22 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "minecraft:swift_sneak": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "minecraft:stored_enchantments": [
+                {
+                  "enchantments": "minecraft:swift_sneak"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "minecraft:thorns": {
       "conditions": {
         "items": [
@@ -425,6 +457,22 @@
               "minecraft:stored_enchantments": [
                 {
                   "enchantments": "minecraft:thorns"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "minecraft:wind_burst": {
+      "conditions": {
+        "items": [
+          {
+            "predicates": {
+              "minecraft:stored_enchantments": [
+                {
+                  "enchantments": "minecraft:wind_burst"
                 }
               ]
             }
@@ -528,6 +576,15 @@
     ],
     [
       "minecraft:multishot"
+    ],
+    [
+      "minecraft:swift_sneak"
+    ],
+    [
+      "minecraft:soul_speed"
+    ],
+    [
+      "minecraft:wind_burst"
     ]
   ],
   "sends_telemetry_event": true

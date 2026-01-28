@@ -15,6 +15,9 @@ import net.minecraft.core.component.predicates.EnchantmentsPredicate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
+
+import com.google.common.collect.Streams;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -42,10 +45,17 @@ public class LootAdvancementGenerator extends FabricAdvancementProvider {
                     .parent(enchantedBookshelf)
                     .requirements(AdvancementRequirements.Strategy.AND);
 
-            Stream.concat(
-                    LootEnchantmentTagGenerator.UNCOMMON.stream().map(enchantments::getOrThrow),
-                    LootEnchantmentTagGenerator.RARE.stream().map(enchantments::getOrThrow)
-            ).forEach(enchantment -> builder.addCriterion(
+            Streams.concat(
+                    LootEnchantmentTagGenerator.UNCOMMON.stream(),
+                    LootEnchantmentTagGenerator.RARE.stream(),
+                    Stream.of(
+                            Enchantments.SWIFT_SNEAK,
+                            Enchantments.SOUL_SPEED,
+                            Enchantments.WIND_BURST
+                    )
+            )
+                    .map(enchantments::getOrThrow)
+                    .forEach(enchantment -> builder.addCriterion(
                     enchantment.key().identifier().toString(),
                     InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().withComponents(
                             DataComponentMatchers.Builder.components().partial(
