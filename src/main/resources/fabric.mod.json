@@ -3,9 +3,9 @@
 	"id": "penchant",
 	"version": "${version}",
 	"name": "Penchant",
-	"description": "A subtle rework of enchanting, centered around leveling up enchantments through usage",
+	"description": "A rework of enchanting, centered around leveling up enchantments through usage",
 	"authors": [
-		"Me!"
+		"ThePotatoArchivist"
 	],
 	"contact": {
 		"homepage": "https://modrinth.com/mod/penchant",
