@@ -242,13 +242,15 @@ public class PenchantmentMenu extends AbstractContainerMenu {
             }
             access.execute((level, pos) -> {
 
+                var enchantmentLevel = PenchantmentHelper.getEnchantments(stack).getLevel(enchantment);
+
                 var newStack = PenchantmentHelper.updateEnchantments(stack, enchantments -> {
                     enchantments.set(enchantment, 0);
                 });
                 enchantSlots.setItem(0, newStack);
 
                 enchantSlots.setItem(1, PenchantmentHelper.updateEnchantments(ingredientStack, enchantments -> {
-                    enchantments.set(enchantment, 1);
+                    enchantments.set(enchantment, enchantmentLevel);
                 }));
 
                 if (player instanceof ServerPlayer serverPlayer)
