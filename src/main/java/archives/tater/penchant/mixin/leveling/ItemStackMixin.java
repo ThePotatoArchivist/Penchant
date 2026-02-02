@@ -15,6 +15,6 @@ import net.minecraft.world.item.ItemStack;
 public abstract class ItemStackMixin {
     @Inject(at = @At("HEAD"), method = "processDurabilityChange")
 	private void updateProgress(int i, ServerLevel serverLevel, ServerPlayer serverPlayer, CallbackInfoReturnable<Integer> cir) {
-        EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, serverLevel.registryAccess(), serverPlayer);
+        EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, serverPlayer);
 	}
 }

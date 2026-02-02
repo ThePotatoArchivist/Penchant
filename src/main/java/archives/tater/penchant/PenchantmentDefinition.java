@@ -41,20 +41,20 @@ public record PenchantmentDefinition(
         );
     }
 
-    private static final WeakHashMap<HolderLookup.Provider, Map<Holder<Enchantment>, PenchantmentDefinition>> DEFINITION_CACHE = new WeakHashMap<>();
+    private static final Map<Holder<Enchantment>, PenchantmentDefinition> CACHE = new WeakHashMap<>();
 
-    private static Map<Holder<Enchantment>, PenchantmentDefinition> buildCache(HolderLookup.Provider registries) {
+    public static void buildCache(HolderLookup.Provider registries) {
         var definitions = registries.lookupOrThrow(PenchantRegistries.PENCHANTMENT_DEFINITION);
-        return registries.lookupOrThrow(Registries.ENCHANTMENT).listElements()
+        CACHE.putAll(registries.lookupOrThrow(Registries.ENCHANTMENT).listElements()
                 .collect(Collectors.toMap(
                         Function.identity(),
                         holder -> definitions.get(keyOf(holder.key()))
                                 .map(Holder::value)
                                 .orElseGet(() -> createFallback(holder))
-                ));
+                )));
     }
 
-    public static PenchantmentDefinition getDefinition(Holder<Enchantment> enchantment, HolderLookup.Provider registries) {
-        return DEFINITION_CACHE.computeIfAbsent(registries, PenchantmentDefinition::buildCache).get(enchantment);
+    public static PenchantmentDefinition getDefinition(Holder<Enchantment> enchantment) {
+        return CACHE.get(enchantment);
     }
 }

@@ -10,6 +10,7 @@ import archives.tater.penchant.registry.PenchantMenus;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -18,11 +19,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.enchantment.Enchantment;
 
+import static java.util.Objects.requireNonNull;
 import static net.minecraft.util.Util.makeDescriptionId;
 
 
@@ -45,7 +46,7 @@ public class PenchantClient implements ClientModInitializer {
                 .withStyle(ChatFormatting.DARK_GRAY);
     }
 
-    public static Component getProgressTooltip(EnchantmentProgress progress, Holder<Enchantment> enchantment, HolderLookup.Provider registries, int level, int maxDamage) {
+    public static Component getProgressTooltip(EnchantmentProgress progress, Holder<Enchantment> enchantment, int level, int maxDamage) {
         if (level >= enchantment.value().getMaxLevel())
             return Component.literal("  ")
                     .append(FontUtils.getBar(BAR_WIDTH, BAR_WIDTH))
@@ -53,7 +54,7 @@ public class PenchantClient implements ClientModInitializer {
                     .append(Component.translatable("penchant.tooltip.progress.max"))
                     .withStyle(ChatFormatting.LIGHT_PURPLE);
 
-        var maxProgress = EnchantmentProgress.getMaxProgress(enchantment, registries, level, maxDamage);
+        var maxProgress = EnchantmentProgress.getMaxProgress(enchantment, level, maxDamage);
 
         return Component.literal("  ")
                 .append(FontUtils.getBar(BAR_WIDTH, BAR_WIDTH * progress.getProgress(enchantment) / maxProgress))
@@ -69,6 +70,10 @@ public class PenchantClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
         MenuScreens.register(PenchantMenus.PENCHANTMENT_MENU, PenchantmentScreen::new);
+
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            PenchantmentDefinition.buildCache(requireNonNull(client.level).registryAccess());
+        });
 
         ClientPlayNetworking.registerGlobalReceiver(UnlockedEnchantmentsPayload.TYPE, (payload, context) -> {
             if (!(context.player().containerMenu instanceof PenchantmentMenu menu)) {

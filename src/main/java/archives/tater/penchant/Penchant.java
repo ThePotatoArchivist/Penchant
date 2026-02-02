@@ -7,6 +7,7 @@ import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
 import archives.tater.penchant.registry.*;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
@@ -65,6 +66,10 @@ public class Penchant implements ModInitializer {
         PenchantMenus.init();
         PenchantAdvancements.init();
         LootModification.register();
+
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> {
+            PenchantmentDefinition.buildCache(server.registryAccess());
+        });
 
         PayloadTypeRegistry.playS2C().register(UnlockedEnchantmentsPayload.TYPE, UnlockedEnchantmentsPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(EnchantPayload.TYPE, EnchantPayload.CODEC);

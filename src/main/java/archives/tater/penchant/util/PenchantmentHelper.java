@@ -1,5 +1,6 @@
 package archives.tater.penchant.util;
 
+import archives.tater.penchant.PenchantmentDefinition;
 import archives.tater.penchant.registry.PenchantFlag;
 
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -46,6 +47,18 @@ public class PenchantmentHelper {
                         : ChatFormatting.GRAY
                 )
         );
+    }
+
+    public static int getProgressCostFactor(Holder<Enchantment> enchantment, int targetLevel) {
+        return PenchantmentDefinition.getDefinition(enchantment).progressCostFactor().calculate(targetLevel);
+    }
+
+    public static int getBookRequirement(Holder<Enchantment> enchantment) {
+        return PenchantmentDefinition.getDefinition(enchantment).bookRequirement();
+    }
+
+    public static int getXpLevelCost(Holder<Enchantment> enchantment) {
+        return PenchantmentDefinition.getDefinition(enchantment).experienceCost();
     }
 
     public static boolean canEnchantItem(ItemStack stack, Holder<Enchantment> enchantment) {

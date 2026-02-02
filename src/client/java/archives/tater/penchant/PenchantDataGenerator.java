@@ -22,6 +22,7 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(FlagTagGenerator.generator());
         pack.addProvider(EnchantmentTagGenerator::new);
         pack.addProvider(BlockTagGenerator::new);
+//        pack.addProvider(PenchantmentDefinitionGenerator::new);
 
         var durabilityPack = createPack(fabricDataGenerator, Penchant.DURABILITY_REWORK);
         durabilityPack.addProvider(DurabilityEnchantmentGenerator::new);
@@ -50,8 +51,5 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
 
         var noCursePack = createPack(fabricDataGenerator, Penchant.REDUCED_CURSES);
         noCursePack.addProvider(CurseEnchantmentTagGenerator::new);
-
-//        var testPack = createPack(fabricDataGenerator, Penchant.id("test"));
-//        testPack.addProvider(PenchantmentDefinitionGenerator::new);
 	}
 }

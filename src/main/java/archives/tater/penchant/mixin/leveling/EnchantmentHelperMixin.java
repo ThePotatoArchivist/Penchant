@@ -31,6 +31,6 @@ public class EnchantmentHelperMixin {
             at = @At("TAIL")
     )
     private static void addRandomProgress(ItemStack stack, RegistryAccess registries, ResourceKey<EnchantmentProvider> key, DifficultyInstance difficulty, RandomSource random, CallbackInfo ci) {
-        EnchantmentProgress.addRandomProgress(stack, registries, random);
+        EnchantmentProgress.addRandomProgress(stack, random);
     }
 }

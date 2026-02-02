@@ -1,12 +1,11 @@
 package archives.tater.penchant.component;
 
-import archives.tater.penchant.PenchantmentDefinition;
 import archives.tater.penchant.registry.PenchantComponents;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
+import archives.tater.penchant.util.PenchantmentHelper;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -107,20 +106,19 @@ public class EnchantmentProgress {
 
     public static final EnchantmentProgress EMPTY = new EnchantmentProgress(new Object2IntOpenHashMap<>());
 
-    public static int getMaxProgress(Holder<Enchantment> enchantment, HolderLookup.Provider registries, int currentLevel, int maxDurability) {
-        return clamp(maxDurability / 100, 1, 8) *
-                PenchantmentDefinition.getDefinition(enchantment, registries).progressCostFactor().calculate(currentLevel + 1);
+    public static int getMaxProgress(Holder<Enchantment> enchantment, int currentLevel, int maxDurability) {
+        return clamp(maxDurability / 100, 1, 8) * PenchantmentHelper.getProgressCostFactor(enchantment, currentLevel + 1);
     }
 
     public static EnchantmentProgress getProgress(ItemStack stack) {
         return stack.getOrDefault(PenchantComponents.ENCHANTMENT_PROGRESS, EMPTY);
     }
 
-    public static void onDurabilityDamage(ItemStack stack, HolderLookup.Provider registries, @Nullable LivingEntity user) {
-        addToProgress(stack, 1, registries, user);
+    public static void onDurabilityDamage(ItemStack stack, @Nullable LivingEntity user) {
+        addToProgress(stack, 1, user);
     }
 
-    public static void addToProgress(ItemStack stack, int increase, HolderLookup.Provider registries, @Nullable LivingEntity user) {
+    public static void addToProgress(ItemStack stack, int increase, @Nullable LivingEntity user) {
         var enchantments = stack.getEnchantments();
         if (enchantments.isEmpty()) return;
 
@@ -130,12 +128,12 @@ public class EnchantmentProgress {
             if (!enchantment.is(PenchantEnchantmentTags.NO_LEVELING))
                 newProgress.addProgress(enchantment, increase);
 
-        updateEnchantmentsForStack(newProgress, enchantments, stack, registries, user);
+        updateEnchantmentsForStack(newProgress, enchantments, stack, user);
 
         stack.set(PenchantComponents.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
     }
 
-    public static void addRandomProgress(ItemStack stack, HolderLookup.Provider registries, RandomSource random) {
+    public static void addRandomProgress(ItemStack stack, RandomSource random) {
         var enchantments = stack.getEnchantments();
         if (enchantments.isEmpty()) return;
 
@@ -145,7 +143,7 @@ public class EnchantmentProgress {
             var level = enchantments.getLevel(enchantment);
             if (!enchantment.is(PenchantEnchantmentTags.NO_LEVELING) && level < enchantment.value().getMaxLevel())
                 newProgress.setProgress(enchantment,
-                        (int) (random.nextFloat() * getMaxProgress(enchantment, registries, level, stack.getMaxDamage())));
+                        (int) (random.nextFloat() * getMaxProgress(enchantment, level, stack.getMaxDamage())));
         }
 
         if (newProgress.progress.isEmpty()) return;
@@ -156,7 +154,7 @@ public class EnchantmentProgress {
     /**
      * Levels up any necessary enchantments
      */
-    public static boolean updateEnchantments(EnchantmentProgress.Mutable progress, ItemEnchantments.Mutable enchantments, HolderLookup.Provider registries, int maxDamage) {
+    public static boolean updateEnchantments(EnchantmentProgress.Mutable progress, ItemEnchantments.Mutable enchantments, int maxDamage) {
         boolean changed = false;
 
         for (var enchantment : enchantments.keySet()) {
@@ -170,7 +168,7 @@ public class EnchantmentProgress {
                     break;
                 }
 
-                var maxProgress = getMaxProgress(enchantment, registries, level, maxDamage);
+                var maxProgress = getMaxProgress(enchantment, level, maxDamage);
 
                 var progressValue = progress.getProgress(enchantment);
 
@@ -195,10 +193,10 @@ public class EnchantmentProgress {
      *
      * @param stack is mutated
      */
-    public static void updateEnchantmentsForStack(EnchantmentProgress.Mutable progress, ItemEnchantments enchantments, ItemStack stack, HolderLookup.Provider registries, @Nullable LivingEntity user) {
+    public static void updateEnchantmentsForStack(EnchantmentProgress.Mutable progress, ItemEnchantments enchantments, ItemStack stack, @Nullable LivingEntity user) {
         var newEnchantments = new ItemEnchantments.Mutable(enchantments);
 
-        if (!updateEnchantments(progress, newEnchantments, registries, stack.getMaxDamage())) return;
+        if (!updateEnchantments(progress, newEnchantments, stack.getMaxDamage())) return;
         stack.set(DataComponents.ENCHANTMENTS, newEnchantments.toImmutable());
 
         if (user == null) return;
