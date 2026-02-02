@@ -1,6 +1,7 @@
 package archives.tater.penchant.menu;
 
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.PenchantmentDefinition;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
 import archives.tater.penchant.registry.PenchantAdvancements;
 import archives.tater.penchant.registry.PenchantBlockTags;
@@ -202,11 +203,11 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     public void handleEnchant(Holder<Enchantment> enchantment) {
         var stack = getEnchantingStack();
         if (isEnchanting()) {
-            var levelCost = PenchantmentHelper.getXpLevelCost(enchantment);
+            var levelCost = PenchantmentDefinition.getDefinition(enchantment, player.registryAccess()).experienceCost();
             if (!player.hasInfiniteMaterials() && (
                     !PenchantmentHelper.canEnchant(stack, enchantment)
                             || !availableEnchantments.contains(enchantment)
-                            || getBookCount() < PenchantmentHelper.getBookRequirement(enchantment)
+                            || getBookCount() < PenchantmentDefinition.getDefinition(enchantment, player.registryAccess()).bookRequirement()
                             || getPlayerXp() < levelCost
             )) {
                 Penchant.LOGGER.warn("Cannot enchant!");

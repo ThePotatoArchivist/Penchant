@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.client.leveling;
 
-import archives.tater.penchant.*;
+import archives.tater.penchant.PenchantClient;
 import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.registry.PenchantComponents;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
@@ -65,17 +65,23 @@ public class ItemEnchantmentsMixin {
             method = "addToTooltip",
             at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V")
     )
-    private <T> void addProgress(Consumer<T> instance, T text, Operation<Void> original, @Share("enchantmentShare") LocalRef<@Nullable Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef level, @Share("progress") LocalRef<@Nullable EnchantmentProgress> progress, @Local(argsOnly = true) DataComponentGetter components) {
+    private <T> void addProgress(Consumer<T> instance, T text, Operation<Void> original, @Share("enchantmentShare") LocalRef<@Nullable Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef level, @Share("progress") LocalRef<@Nullable EnchantmentProgress> progressShare, @Local(argsOnly = true) TooltipContext context, @Local(argsOnly = true) DataComponentGetter components) {
         original.call(instance, text);
 
         var enchantment = enchantmentShare.get();
         if (enchantment == null) return;
+        var progress = progressShare.get();
+        if (progress == null) return;
+        var registries = context.registries();
+        if (registries == null) return;
+
         if (!PenchantClient.SHOW_PROGRESS_KEYBIND.isDownAnywhere()) return;
         if (!EnchantmentProgress.shouldShowTooltip(enchantment)) return;
 
         original.call(instance, PenchantClient.getProgressTooltip(
-                progress.get(),
+                progress,
                 enchantment,
+                registries,
                 level.get(),
                 components instanceof ItemStack stack ? stack.getMaxDamage() : components.getOrDefault(DataComponents.MAX_DAMAGE, 0)
         ));

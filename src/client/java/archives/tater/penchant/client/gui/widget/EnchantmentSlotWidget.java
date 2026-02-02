@@ -1,6 +1,7 @@
 package archives.tater.penchant.client.gui.widget;
 
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.PenchantmentDefinition;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.util.PenchantmentHelper;
 
@@ -59,8 +60,8 @@ public class EnchantmentSlotWidget extends AbstractButton {
         if (!isUnlocked && canUse) text.withStyle(style -> style.withFont(ALT_FONT));
         this.text = text;
 
-        var xpCost = PenchantmentHelper.getXpLevelCost(enchantment);
-        var bookRequirement = PenchantmentHelper.getBookRequirement(enchantment);
+        var xpCost = PenchantmentDefinition.getDefinition(enchantment, Minecraft.getInstance().player.registryAccess()).experienceCost();
+        var bookRequirement = PenchantmentDefinition.getDefinition(enchantment, Minecraft.getInstance().player.registryAccess()).bookRequirement();
 
         if (!showCosts)
             costText = null;

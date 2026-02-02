@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static java.lang.Math.abs;
-import static java.lang.Math.max;
 
 public class PenchantmentHelper {
     public static final boolean ITEM_DESCRIPTIONS_INSTALLED = FabricLoader.getInstance().isModLoaded("item_descriptions");
@@ -47,14 +46,6 @@ public class PenchantmentHelper {
                         : ChatFormatting.GRAY
                 )
         );
-    }
-
-    public static int getBookRequirement(Holder<Enchantment> enchantment) {
-        return max(2 * enchantment.value().getMinCost(1) - 5, 0);
-    }
-
-    public static int getXpLevelCost(Holder<Enchantment> enchantment) {
-        return enchantment.value().getAnvilCost();
     }
 
     public static boolean canEnchantItem(ItemStack stack, Holder<Enchantment> enchantment) {

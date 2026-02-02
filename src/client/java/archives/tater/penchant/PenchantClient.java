@@ -18,6 +18,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -44,7 +45,7 @@ public class PenchantClient implements ClientModInitializer {
                 .withStyle(ChatFormatting.DARK_GRAY);
     }
 
-    public static Component getProgressTooltip(EnchantmentProgress progress, Holder<Enchantment> enchantment, int level, int maxDamage) {
+    public static Component getProgressTooltip(EnchantmentProgress progress, Holder<Enchantment> enchantment, HolderLookup.Provider registries, int level, int maxDamage) {
         if (level >= enchantment.value().getMaxLevel())
             return Component.literal("  ")
                     .append(FontUtils.getBar(BAR_WIDTH, BAR_WIDTH))
@@ -52,7 +53,7 @@ public class PenchantClient implements ClientModInitializer {
                     .append(Component.translatable("penchant.tooltip.progress.max"))
                     .withStyle(ChatFormatting.LIGHT_PURPLE);
 
-        var maxProgress = EnchantmentProgress.getMaxProgress(enchantment, level, maxDamage);
+        var maxProgress = EnchantmentProgress.getMaxProgress(enchantment, registries, level, maxDamage);
 
         return Component.literal("  ")
                 .append(FontUtils.getBar(BAR_WIDTH, BAR_WIDTH * progress.getProgress(enchantment) / maxProgress))

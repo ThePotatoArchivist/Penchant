@@ -1,6 +1,7 @@
 package archives.tater.penchant.client.gui.screen;
 
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.PenchantmentDefinition;
 import archives.tater.penchant.client.FontUtils;
 import archives.tater.penchant.client.gui.ScrollbarComponent;
 import archives.tater.penchant.client.gui.widget.EnchantmentSlotWidget;
@@ -118,8 +119,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         enchantment,
                         PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> !enchantment.equals(other) && !Enchantment.areCompatible(enchantment, other)).toList(),
                         !PenchantmentHelper.hasEnchantment(stack, enchantment),
-                        creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount(),
-                        creative || PenchantmentHelper.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
+                        creative || PenchantmentDefinition.getDefinition(enchantment, minecraft.player.registryAccess()).bookRequirement() <= menu.getBookCount(),
+                        creative || PenchantmentDefinition.getDefinition(enchantment, minecraft.player.registryAccess()).experienceCost() <=  menu.getPlayerXp(),
                         menu.isAvailable(enchantment)
                 ));
         }

@@ -18,7 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.inventory.AnvilMenu;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -27,7 +28,11 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
 import org.jspecify.annotations.Nullable;
 
 @Mixin(AnvilMenu.class)
-public abstract class AnvilMenuMixin {
+public abstract class AnvilMenuMixin extends ItemCombinerMenu {
+    public AnvilMenuMixin(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, ContainerLevelAccess access, ItemCombinerMenuSlotDefinition slotDefinition) {
+        super(menuType, containerId, inventory, access, slotDefinition);
+    }
+
     @Inject(
             method = "createResult",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getEnchantmentsForCrafting(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/enchantment/ItemEnchantments;", ordinal = 0)
@@ -75,7 +80,7 @@ public abstract class AnvilMenuMixin {
         var progress = progressRef.get();
         if (progress != null) {
             result.set(PenchantComponents.ENCHANTMENT_PROGRESS, progress.toImmutable());
-            EnchantmentProgress.updateEnchantments(progress, instance, result.getMaxDamage());
+            EnchantmentProgress.updateEnchantments(progress, instance, player.registryAccess(), result.getMaxDamage());
         }
         return original.call(instance);
     }
