@@ -37,7 +37,7 @@
 		"minecraft": "~1.21.11",
 		"java": ">=21",
 		"fabric-api": "*",
-		"tagex": "*"
+		"tagex": "^1.1.0"
 	},
 	"suggests": {
 		"another-mod": "*"
