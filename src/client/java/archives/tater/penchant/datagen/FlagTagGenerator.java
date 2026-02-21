@@ -17,7 +17,7 @@ public abstract class FlagTagGenerator extends FabricTagProvider<PenchantFlag> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        var builder = builder(PenchantFlag.ENABLED);
+        var builder = getOrCreateTagBuilder(PenchantFlag.ENABLED);
         for (var flag : getFlags()) {
             builder.add(PenchantFlag.REGISTRY.getResourceKey(flag).orElseThrow());
         }

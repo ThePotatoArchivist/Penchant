@@ -16,7 +16,7 @@ public class BookshelfBlockTagGenerator extends FabricTagProvider.BlockTagProvid
 
     @Override
     protected void addTags(Provider provider) {
-        valueLookupBuilder(BlockTags.ENCHANTMENT_POWER_PROVIDER)
+        getOrCreateTagBuilder(BlockTags.ENCHANTMENT_POWER_PROVIDER)
                 .add(Blocks.CHISELED_BOOKSHELF, Blocks.LECTERN);
     }
 }

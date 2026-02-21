@@ -34,7 +34,7 @@ public class LootModificationGenerator extends FabricDynamicRegistryProvider {
     }
 
     private static void addInject(Entries entries, ResourceKey<LootTable> target, LootPool.Builder... inject) {
-        entries.add(ResourceKey.create(LootModification.KEY, Penchant.id(target.identifier().getNamespace() + "/" + target.identifier().getPath())), new LootModification(
+        entries.add(ResourceKey.create(LootModification.KEY, Penchant.id(target.location().getNamespace() + "/" + target.location().getPath())), new LootModification(
                 List.of(target),
                 Arrays.stream(inject).map(LootPool.Builder::build).toList(),
                 List.of(),
@@ -98,7 +98,7 @@ public class LootModificationGenerator extends FabricDynamicRegistryProvider {
         addInject(entries, BuiltInLootTables.JUNGLE_TEMPLE, createBooks(registry, 4, Enchantments.INFINITY));
         addInject(entries, BuiltInLootTables.DESERT_PYRAMID, createBooks(registry, 9, Enchantments.THORNS));
         addInject(entries, BuiltInLootTables.PILLAGER_OUTPOST, createBooks(registry, 4, Enchantments.MULTISHOT));
-        addInject(entries, BuiltInLootTables.BASTION_OTHER, createBooks(registry, 7, Enchantments.LUNGE));
+//        addInject(entries, BuiltInLootTables.BASTION_OTHER, createBooks(registry, 7, Enchantments.LUNGE));
     }
 
     @Override

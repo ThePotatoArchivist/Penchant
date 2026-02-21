@@ -1,9 +1,7 @@
 package archives.tater.penchant.client.gui;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import static archives.tater.penchant.client.gui.PenchantGuiUtil.containsPoint;
 import static java.lang.Math.max;
@@ -11,7 +9,7 @@ import static java.lang.Math.round;
 import static net.minecraft.util.Mth.clamp;
 
 public class ScrollbarComponent {
-    private final Identifier texture;
+    private final ResourceLocation texture;
     private final int width;
     private final int scrollerHeight;
     private final int trackHeight;
@@ -32,7 +30,7 @@ public class ScrollbarComponent {
     private boolean dragging = true;
     private double mouseYOffset = 0;
 
-    public ScrollbarComponent(Identifier texture, int width, int height, int trackHeight, int regionWidth, int regionHeight, Runnable onScrolled) {
+    public ScrollbarComponent(ResourceLocation texture, int width, int height, int trackHeight, int regionWidth, int regionHeight, Runnable onScrolled) {
         this.texture = texture;
         this.width = width;
         this.scrollerHeight = height;

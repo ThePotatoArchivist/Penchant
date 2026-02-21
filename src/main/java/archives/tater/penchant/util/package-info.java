@@ -1,4 +1,4 @@
-@NullMarked
+@MethodsReturnNonnullByDefault
 package archives.tater.penchant.util;
 
-import org.jspecify.annotations.NullMarked;
+import net.minecraft.MethodsReturnNonnullByDefault;

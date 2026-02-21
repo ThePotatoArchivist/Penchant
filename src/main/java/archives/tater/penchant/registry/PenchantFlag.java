@@ -5,7 +5,7 @@ import archives.tater.penchant.Penchant;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 
 import net.minecraft.core.Registry;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 
@@ -14,9 +14,9 @@ public class PenchantFlag {
     public static final Registry<PenchantFlag> REGISTRY = FabricRegistryBuilder.createSimple(REGISTRY_KEY).buildAndRegister();
     public static final TagKey<PenchantFlag> ENABLED = TagKey.create(REGISTRY_KEY, Penchant.id("enabled"));
 
-    private final Identifier id;
+    private final ResourceLocation id;
 
-    private PenchantFlag(Identifier id) {
+    private PenchantFlag(ResourceLocation id) {
         this.id = id;
     }
 
@@ -29,7 +29,7 @@ public class PenchantFlag {
         return id.toString();
     }
 
-    public static PenchantFlag register(Identifier id) {
+    public static PenchantFlag register(ResourceLocation id) {
         return Registry.register(
                 REGISTRY,
                 ResourceKey.create(REGISTRY_KEY, id),

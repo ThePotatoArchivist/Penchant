@@ -1,6 +1,7 @@
 package archives.tater.penchant.menu;
 
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.mixin.table.ChiseledBookshelfBlockEntityAccessor;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
 import archives.tater.penchant.registry.PenchantAdvancements;
 import archives.tater.penchant.registry.PenchantBlockTags;
@@ -13,8 +14,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -37,7 +38,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EnchantingTableBlock;
-import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 
 import java.util.List;
 import java.util.Set;
@@ -60,7 +60,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     private final DataSlot hasDisenchanter = addDataSlot(DataSlot.standalone());
     private final ContainerLevelAccess access;
     private final Player player;
-    private final Registry<Enchantment> enchantments;
+    private final HolderLookup.RegistryLookup<Enchantment> enchantments;
     private Set<Holder<Enchantment>> availableEnchantments = Set.of();
     private List<Holder<Enchantment>> displayedEnchantments = List.of();
 
@@ -92,7 +92,16 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                 return isDisenchantingIngredient(stack) ? 1 : super.getMaxStackSize(stack);
             }
         });
-        addStandardInventorySlots(playerInventory, 23, 90);
+
+        for(int i = 0; i < 3; ++i) {
+            for(int j = 0; j < 9; ++j) {
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+            }
+        }
+
+        for(int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+        }
 
         access.execute((level, pos) -> {
             bookCount.set(getBookCount(level, pos));
@@ -165,7 +174,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                 .filter(offset -> EnchantingTableBlock.isValidBookShelf(level, pos, offset))
                 .map(pos::offset)
                 .map(level::getBlockEntity)
-                .flatMap(entity -> entity instanceof ChiseledBookShelfBlockEntity bookshelf ? bookshelf.getItems().stream() : Stream.empty())
+                .flatMap(entity -> entity instanceof ChiseledBookshelfBlockEntityAccessor bookshelf ? bookshelf.getItems().stream() : Stream.empty())
                 .flatMap(stack -> PenchantmentHelper.getEnchantments(stack).keySet().stream())
                 .distinct()
                 .filter(enchantment -> !enchantment.is(EnchantmentTags.IN_ENCHANTING_TABLE))

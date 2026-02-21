@@ -14,7 +14,6 @@ public class PenchantComponents {
     private static <T> DataComponentType<T> registerComponent(String path, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, boolean cache, boolean ignoreSwapAnimation) {
         var type = DataComponentType.<T>builder().persistent(codec).networkSynchronized(streamCodec);
         if (cache) type.cacheEncoding();
-        if (ignoreSwapAnimation) type.ignoreSwapAnimation();
         return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Penchant.id(path), type.build());
     }
 

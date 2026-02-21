@@ -1,6 +1,7 @@
 package archives.tater.penchant.util;
 
 import archives.tater.penchant.PenchantmentDefinition;
+import archives.tater.penchant.mixin.leveling.EnchantmentHelperInvoker;
 import archives.tater.penchant.registry.PenchantFlag;
 
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -9,6 +10,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -77,8 +80,12 @@ public class PenchantmentHelper {
         return canEnchantItem(stack, enchantment) && !hasEnchantment(stack, enchantment) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment);
     }
 
+    public static DataComponentType<ItemEnchantments> getComponentType(ItemStack stack) {
+        return EnchantmentHelperInvoker.invokeGetComponentType(stack);
+    }
+
     public static ItemStack updateEnchantments(ItemStack stack, Consumer<ItemEnchantments.Mutable> updater) {
-        var type = stack.is(Items.BOOK) ? DataComponents.STORED_ENCHANTMENTS : EnchantmentHelper.getComponentType(stack);
+        var type = stack.is(Items.BOOK) ? DataComponents.STORED_ENCHANTMENTS : PenchantmentHelper.getComponentType(stack);
         var enchantments = stack.getOrDefault(type, ItemEnchantments.EMPTY);
         var mutable = new ItemEnchantments.Mutable(enchantments);
         updater.accept(mutable);
@@ -103,7 +110,7 @@ public class PenchantmentHelper {
     }
 
     public static int getBookCount(BlockState state) {
-        if (state.hasProperty(ChiseledBookShelfBlock.SLOT_0_OCCUPIED))
+        if (state.hasProperty(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED))
             return (int) ChiseledBookShelfBlock.SLOT_OCCUPIED_PROPERTIES.stream().filter(state::getValue).count();
         if (state.hasProperty(LecternBlock.HAS_BOOK))
             return state.getValue(LecternBlock.HAS_BOOK) ? 1 : 0;

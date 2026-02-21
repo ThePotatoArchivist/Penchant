@@ -10,12 +10,12 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
-import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +23,11 @@ import org.slf4j.LoggerFactory;
 public class Penchant implements ModInitializer {
 	public static final String MOD_ID = "penchant";
 
-    public static Identifier id(String namespace, String path) {
-        return Identifier.fromNamespaceAndPath(namespace, path);
+    public static ResourceLocation id(String namespace, String path) {
+        return ResourceLocation.fromNamespaceAndPath(namespace, path);
     }
 
-    public static Identifier id(String path) {
+    public static ResourceLocation id(String path) {
         return id(MOD_ID, path);
     }
 
@@ -36,20 +36,20 @@ public class Penchant implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static final Identifier DURABILITY_REWORK = Penchant.id("durability_rework");
-    public static final Identifier BOOKSHELF_PLACEMENT = Penchant.id("bookshelf_placement");
-    public static final Identifier TABLE_REWORK = Penchant.id("table_rework");
-    public static final Identifier NO_ANVIL_BOOKS = Penchant.id("no_anvil_books");
-    public static final Identifier LOOT_REWORK = Penchant.id("loot_rework");
-    public static final Identifier GUARANTEED_DROPS = Penchant.id("guaranteed_drops");
-    public static final Identifier REDUCED_CURSES = Penchant.id("reduced_curses");
+    public static final ResourceLocation DURABILITY_REWORK = Penchant.id("durability_rework");
+    public static final ResourceLocation BOOKSHELF_PLACEMENT = Penchant.id("bookshelf_placement");
+    public static final ResourceLocation TABLE_REWORK = Penchant.id("table_rework");
+    public static final ResourceLocation NO_ANVIL_BOOKS = Penchant.id("no_anvil_books");
+    public static final ResourceLocation LOOT_REWORK = Penchant.id("loot_rework");
+    public static final ResourceLocation GUARANTEED_DROPS = Penchant.id("guaranteed_drops");
+    public static final ResourceLocation REDUCED_CURSES = Penchant.id("reduced_curses");
 
-    private void registerPack(Identifier id) {
-        registerPack(id, PackActivationType.DEFAULT_ENABLED);
+    private void registerPack(ResourceLocation id) {
+        registerPack(id, ResourcePackActivationType.DEFAULT_ENABLED);
     }
 
-    private void registerPack(Identifier id, PackActivationType activationType) {
-        ResourceLoader.registerBuiltinPack(
+    private void registerPack(ResourceLocation id, ResourcePackActivationType activationType) {
+        ResourceManagerHelper.registerBuiltinResourcePack(
                 id,
                 FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow(),
                 Component.translatable(id.toLanguageKey("dataPack", "name")),
@@ -88,6 +88,6 @@ public class Penchant implements ModInitializer {
         registerPack(NO_ANVIL_BOOKS);
         registerPack(LOOT_REWORK);
         registerPack(GUARANTEED_DROPS);
-        registerPack(REDUCED_CURSES, PackActivationType.NORMAL);
+        registerPack(REDUCED_CURSES, ResourcePackActivationType.NORMAL);
 	}
 }

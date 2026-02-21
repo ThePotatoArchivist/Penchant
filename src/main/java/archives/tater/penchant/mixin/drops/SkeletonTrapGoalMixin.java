@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.animal.equine.SkeletonTrapGoal;
-import net.minecraft.world.entity.monster.skeleton.Skeleton;
+import net.minecraft.world.entity.animal.horse.SkeletonTrapGoal;
+import net.minecraft.world.entity.monster.Skeleton;
 
 @Mixin(SkeletonTrapGoal.class)
 public class SkeletonTrapGoalMixin {

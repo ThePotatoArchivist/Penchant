@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -16,7 +16,7 @@ import net.minecraft.world.item.Items;
 public class ZombieMixin {
     @ModifyArg(
             method = "populateDefaultEquipmentSlots",
-            at = @At(value = "INVOKE:LAST", target = "Lnet/minecraft/world/entity/monster/zombie/Zombie;setItemSlot(Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/item/ItemStack;)V"),
+            at = @At(value = "INVOKE:LAST", target = "Lnet/minecraft/world/entity/monster/Zombie;setItemSlot(Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/item/ItemStack;)V"),
             index = 1
     )
     private ItemStack spawnPickaxe(ItemStack original, @Local(argsOnly = true) RandomSource random) {

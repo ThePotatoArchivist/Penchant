@@ -34,6 +34,18 @@ repositories {
         name = "Xander Maven"
         url = "https://maven.isxander.dev/releases"
     }
+	maven { url "https://maven.shedaniel.me/" }
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 loom {
@@ -65,9 +77,11 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation include("com.github.ThePotatoArchivist:TagExclusion:${project.tagex_version}")
+	modImplementation include("com.github.ThePotatoArchivist:TagExclusion:${project.tagex_version}") {
+		exclude group: "net.fabricmc.fabric-api"
+	}
 	implementation include("folk.sisby:kaleido-config:${project.kaleido_version}")
 
     modCompileOnly modLocalRuntime("cc.cassian.item-descriptions:item-descriptions-fabric:${project.item_descriptions_version}+${project.minecraft_version}") {

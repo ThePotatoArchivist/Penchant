@@ -19,7 +19,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.objects.AtlasSprite;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -34,18 +34,18 @@ import static net.minecraft.util.Mth.clamp;
 import static net.minecraft.util.Mth.lerp;
 
 public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu> {
-    private static final Identifier TEXTURE = Penchant.id("textures/gui/container/enchanting_table.png");
-    private static final Identifier BOOK_TEXTURE = Identifier.withDefaultNamespace("textures/entity/enchanting_table_book.png");
-    private static final Identifier SCROLLLER_TEXTURE = Penchant.id("container/enchanting_table/scroller");
+    private static final ResourceLocation TEXTURE = Penchant.id("textures/gui/container/enchanting_table.png");
+    private static final ResourceLocation BOOK_TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/enchanting_table_book.png");
+    private static final ResourceLocation SCROLLLER_TEXTURE = Penchant.id("container/enchanting_table/scroller");
     private static final AtlasSprite BOOK_ICON_TEXTURE = new AtlasSprite(AtlasIds.GUI, Penchant.id("container/enchanting_table/book"));
     private static final AtlasSprite GRINDSTONE_ICON_TEXTURE = new AtlasSprite(AtlasIds.GUI, Penchant.id("container/enchanting_table/grindstone"));
-    public static final Identifier LAPIS_LAZULI_SLOT_TEXTURE = Identifier.withDefaultNamespace("container/slot/lapis_lazuli");
-    public static final Identifier BOOK_SLOT_TEXTURE = Penchant.id("container/slot/book");
-    private static final List<Identifier> INGREDIENT_SLOT_TEXTURES = List.of(
+    public static final ResourceLocation LAPIS_LAZULI_SLOT_TEXTURE = ResourceLocation.withDefaultNamespace("container/slot/lapis_lazuli");
+    public static final ResourceLocation BOOK_SLOT_TEXTURE = Penchant.id("container/slot/book");
+    private static final List<ResourceLocation> INGREDIENT_SLOT_TEXTURES = List.of(
             LAPIS_LAZULI_SLOT_TEXTURE,
             BOOK_SLOT_TEXTURE
     );
-    private static final List<Identifier> INGREDIENT_SLOT_TEXTURES_NO_DISENCHANT = List.of(
+    private static final List<ResourceLocation> INGREDIENT_SLOT_TEXTURES_NO_DISENCHANT = List.of(
             LAPIS_LAZULI_SLOT_TEXTURE
     );
     private static final Component ENCHANTING_SLOT_TOOLTIP = Component.translatable("container.penchant.enchant.slot.enchant");

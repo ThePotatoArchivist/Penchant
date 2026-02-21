@@ -11,11 +11,11 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
 import java.util.Optional;
@@ -27,10 +27,10 @@ import static archives.tater.penchant.datagen.DatagenUtil.registerAdvancement;
 
 public class TableAdvancementGenerator extends FabricAdvancementProvider {
 
-    public static final Identifier ENCHANTED_BOOKSHELF = Penchant.id("enchanted_bookshelf");
-    public static final Identifier FULL_LIBRARY = Penchant.id("full_library");
-    public static final Identifier BABEL = Penchant.id("babel");
-    public static final Identifier EXTRACT_ENCHANTMENT = Penchant.id("extract_enchantment");
+    public static final ResourceLocation ENCHANTED_BOOKSHELF = Penchant.id("enchanted_bookshelf");
+    public static final ResourceLocation FULL_LIBRARY = Penchant.id("full_library");
+    public static final ResourceLocation BABEL = Penchant.id("babel");
+    public static final ResourceLocation EXTRACT_ENCHANTMENT = Penchant.id("extract_enchantment");
 
     public TableAdvancementGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup);
@@ -39,7 +39,7 @@ public class TableAdvancementGenerator extends FabricAdvancementProvider {
     @Override
     public void generateAdvancement(HolderLookup.Provider provider, Consumer<AdvancementHolder> consumer) {
         var enchantments = provider.lookupOrThrow(Registries.ENCHANTMENT);
-        var enchanter = createEmptyAdvancement(Identifier.withDefaultNamespace("story/enchant_item"));
+        var enchanter = createEmptyAdvancement(ResourceLocation.withDefaultNamespace("story/enchant_item"));
 
         var enchantedBookshelf = registerAdvancement(ENCHANTED_BOOKSHELF, Items.CHISELED_BOOKSHELF, AdvancementType.TASK, consumer, builder -> builder
                 .parent(enchanter)

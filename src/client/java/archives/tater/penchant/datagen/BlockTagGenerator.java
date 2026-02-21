@@ -17,7 +17,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider wrapperLookup) {
-        valueLookupBuilder(PenchantBlockTags.DISENCHANTER)
+        getOrCreateTagBuilder(PenchantBlockTags.DISENCHANTER)
                 .add(Blocks.GRINDSTONE);
     }
 }

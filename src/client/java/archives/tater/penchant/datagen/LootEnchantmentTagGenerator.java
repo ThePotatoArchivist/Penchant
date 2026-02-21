@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.EnchantmentTagsProvider;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.TagKey;
@@ -25,7 +25,7 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
             Enchantments.FLAME, // nether fortress, ruined portal
             Enchantments.SILK_TOUCH, // mineshaft, dungeon
             Enchantments.FORTUNE, // mineshaft, dungeon
-            Enchantments.LUNGE, // bastion
+//            Enchantments.LUNGE, // bastion
             Enchantments.RESPIRATION, // ocean ruins, shipwreck, buried treasure
             Enchantments.DEPTH_STRIDER, // ocean ruins, shipwreck, buried treasure
             Enchantments.CHANNELING, // ruins, buried treasure
@@ -83,7 +83,7 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
 
         tag(uncommon)
                 .addAll(UNCOMMON)
-                .addOptional(ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath("farmersdelight", "backstabbing")));
+                .addOptional(ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.fromNamespaceAndPath("farmersdelight", "backstabbing")));
 
         tag(common)
                 .addAll(COMMON);

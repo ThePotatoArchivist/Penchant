@@ -6,11 +6,11 @@ import archives.tater.penchant.registry.PenchantFlag;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class PenchantDataGenerator implements DataGeneratorEntrypoint {
 
-    private static FabricDataGenerator.Pack createPack(FabricDataGenerator fabricDataGenerator, Identifier id) {
+    private static FabricDataGenerator.Pack createPack(FabricDataGenerator fabricDataGenerator, ResourceLocation id) {
         var pack = fabricDataGenerator.createBuiltinResourcePack(id);
         pack.addProvider(PackMetaGen.pack(id));
         return pack;

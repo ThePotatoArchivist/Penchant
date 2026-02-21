@@ -8,12 +8,10 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.criterion.*;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.predicates.DataComponentPredicates;
-import net.minecraft.core.component.predicates.EnchantmentsPredicate;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 
@@ -29,7 +27,7 @@ import static archives.tater.penchant.datagen.DatagenUtil.registerAdvancement;
 
 public class LootAdvancementGenerator extends FabricAdvancementProvider {
 
-    public static final Identifier ALL_ENCHANTMENTS = Penchant.id("all_enchantments");
+    public static final ResourceLocation ALL_ENCHANTMENTS = Penchant.id("all_enchantments");
 
     public LootAdvancementGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup);
@@ -56,15 +54,15 @@ public class LootAdvancementGenerator extends FabricAdvancementProvider {
             )
                     .map(enchantments::getOrThrow)
                     .forEach(enchantment -> builder.addCriterion(
-                    enchantment.key().identifier().toString(),
-                    InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().withComponents(
-                            DataComponentMatchers.Builder.components().partial(
-                                    DataComponentPredicates.STORED_ENCHANTMENTS,
-                                    EnchantmentsPredicate.StoredEnchantments.storedEnchantments(List.of(
+                    enchantment.key().location().toString(),
+                    InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item()
+                            .withSubPredicate(
+                                    ItemSubPredicates.STORED_ENCHANTMENTS,
+                                    ItemEnchantmentsPredicate.StoredEnchantments.storedEnchantments(List.of(
                                             new EnchantmentPredicate(enchantment, MinMaxBounds.Ints.ANY)
                                     ))
                             ).build()
-                    ))
+                    )
             ));
         });
     }

@@ -7,13 +7,13 @@ import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.TooltipProvider;
 
 @SuppressWarnings("ConstantValue")
 @Mixin(ItemStack.class)
@@ -30,11 +30,13 @@ public class ItemStackMixin {
         return original || UnbreakableEffect.isUnbreakable((ItemStack) (Object) this);
     }
 
+    @Definition(id = "tooltipProvider", local = @Local(type = TooltipProvider.class))
+    @Expression("tooltipProvider != null")
     @WrapOperation(
-            method = "addUnitComponentToTooltip",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z")
+            method = "addToTooltip",
+            at = @At("MIXINEXTRAS:EXPRESSION")
     )
-    private boolean unbreakableEnchantmentTooltip(ItemStack instance, DataComponentType<Unit> dataComponentType, Operation<Boolean> original) {
-        return original.call(instance, dataComponentType) || dataComponentType == DataComponents.UNBREAKABLE && UnbreakableEffect.isUnbreakable((ItemStack) (Object) this);
+    private boolean unbreakableEnchantmentTooltip(Object left, Object right, Operation<Boolean> original) {
+        return original.call(left, right) || left == DataComponents.UNBREAKABLE && UnbreakableEffect.isUnbreakable((ItemStack) (Object) this);
     }
 }

@@ -5,7 +5,7 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 
 import java.util.Optional;
@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public class DatagenUtil {
     private DatagenUtil() {}
 
-    static AdvancementHolder registerAdvancement(Identifier id, ItemLike icon, AdvancementType type, Consumer<AdvancementHolder> consumer, Consumer<Advancement.Builder> init) {
+    static AdvancementHolder registerAdvancement(ResourceLocation id, ItemLike icon, AdvancementType type, Consumer<AdvancementHolder> consumer, Consumer<Advancement.Builder> init) {
         var builder = Advancement.Builder.advancement()
                 .display(new DisplayInfo(
                         icon.asItem().getDefaultInstance(),
@@ -32,7 +32,7 @@ public class DatagenUtil {
         return advancement;
     }
 
-    static AdvancementHolder createEmptyAdvancement(Identifier id) {
+    static AdvancementHolder createEmptyAdvancement(ResourceLocation id) {
         return Advancement.Builder.advancement().build(id);
     }
 }

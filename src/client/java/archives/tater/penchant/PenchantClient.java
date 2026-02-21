@@ -18,23 +18,26 @@ import net.fabricmc.loader.api.FabricLoader;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+
 import static java.util.Objects.requireNonNull;
-import static net.minecraft.util.Util.makeDescriptionId;
+import static net.minecraft.Util.makeDescriptionId;
 
 
 public class PenchantClient implements ClientModInitializer {
-    private static KeyMappingExt keybind(Identifier id, int key, KeyMapping.Category category) {
+    private static KeyMappingExt keybind(ResourceLocation id, int key, String category) {
         return (KeyMappingExt) KeyBindingHelper.registerKeyBinding(new KeyMappingExt(makeDescriptionId("key", id), Type.KEYSYM, key, category));
     }
 
-    private static final KeyMapping.Category PENCHANT_CATEGORY = KeyMapping.Category.register(Penchant.id(Penchant.MOD_ID));
+    private static final String PENCHANT_CATEGORY = "category." + Penchant.MOD_ID + "." + Penchant.MOD_ID; // TODO
     public static final KeyMappingExt SHOW_PROGRESS_KEYBIND = keybind(
             Penchant.id("show_progress"),
             InputConstants.KEY_LCONTROL,
@@ -42,6 +45,10 @@ public class PenchantClient implements ClientModInitializer {
     );
 
     public static final PenchantClientConfig CONFIG = PenchantClientConfig.createToml(FabricLoader.getInstance().getConfigDir(), Penchant.MOD_ID, "client", PenchantClientConfig.class);
+
+    // Used by mixins
+    @ApiStatus.Internal
+    public static final ThreadLocal<@Nullable ItemStack> tooltipItem = new ThreadLocal<>();
 
     public static boolean shouldShowProgress() {
         return CONFIG.alwaysShowTooltipProgress || SHOW_PROGRESS_KEYBIND.isDownAnywhere();
