@@ -19,6 +19,6 @@ public class CurseEnchantmentTagGenerator extends EnchantmentTagsProvider {
         tag(EnchantmentTags.ON_RANDOM_LOOT)
                 .tagex_forceExcludeTag(EnchantmentTags.CURSE);
         tag(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
-                .forceAddTag(EnchantmentTags.CURSE);
+                .tagex_forceAddTag(EnchantmentTags.CURSE);
     }
 }

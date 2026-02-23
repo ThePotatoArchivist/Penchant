@@ -83,7 +83,7 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
 
         tag(uncommon)
                 .addAll(UNCOMMON)
-                .addOptional(ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.fromNamespaceAndPath("farmersdelight", "backstabbing")));
+                .addOptional(ResourceLocation.fromNamespaceAndPath("farmersdelight", "backstabbing"));
 
         tag(common)
                 .addAll(COMMON);

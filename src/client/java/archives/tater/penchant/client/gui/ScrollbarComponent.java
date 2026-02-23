@@ -74,7 +74,6 @@ public class ScrollbarComponent {
     public void render(GuiGraphics guiGraphics) {
         if (!canScroll()) return;
         guiGraphics.blitSprite(
-                RenderPipelines.GUI_TEXTURED,
                 texture,
                 width,
                 scrollerHeight,
@@ -94,21 +93,21 @@ public class ScrollbarComponent {
         return true;
     }
 
-    public boolean mouseClicked(MouseButtonEvent event) {
-        if (!containsPoint(x, y, width, trackHeight, event.x(), event.y())) return false;
+    public boolean mouseClicked(double mouseX, double mouseY) {
+        if (!containsPoint(x, y, width, trackHeight, mouseX, mouseY)) return false;
 
-        if (containsPoint(x, getScrollerY(), width, scrollerHeight, event.x(), event.y())) {
+        if (containsPoint(x, getScrollerY(), width, scrollerHeight, mouseX, mouseY)) {
             dragging = true;
-            mouseYOffset = event.y() - getScrollerY();
+            mouseYOffset = mouseY - getScrollerY();
         } else
-            setPositionForOffset(event.y() - y);
+            setPositionForOffset(mouseY - y);
 
         return true;
     }
 
-    public boolean mouseDragged(MouseButtonEvent event) {
+    public boolean mouseDragged(double mouseY) {
         if (!dragging) return false;
-        setPositionForOffset(event.y() - y - mouseYOffset);
+        setPositionForOffset(mouseY - y - mouseYOffset);
         return true;
     }
 
