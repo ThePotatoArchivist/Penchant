@@ -26,7 +26,6 @@
     "leveling.EnchantWithLevelsFunctionMixin",
     "leveling.ItemStackMixin",
     "table.ChiseledBookshelfBlockEntityAccessor",
-    "table.ChiseledBookshelfBlockEntityMixin",
     "table.EnchantingTableBlockMixin",
     "table.EnchantmentMenuMixin"
   ],

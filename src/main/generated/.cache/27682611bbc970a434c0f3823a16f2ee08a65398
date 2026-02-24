@@ -1,10 +1,10 @@
-// 1.21.11	-999999999-01-01T00:00:00	penchant:loot_rework/Tags for minecraft:enchantment
-b16213add332f1fec5f71b19b529f162db87761e resourcepacks/loot_rework/data/minecraft/tags/enchantment/in_enchanting_table.json
-9d44703fe99df07160117fdb47b18ce6f3cb17ab resourcepacks/loot_rework/data/minecraft/tags/enchantment/non_treasure.json
-e1a25d2d7a3f10936ecb7ff20c378027fe7bcc4f resourcepacks/loot_rework/data/minecraft/tags/enchantment/on_mob_spawn_equipment.json
-e1a25d2d7a3f10936ecb7ff20c378027fe7bcc4f resourcepacks/loot_rework/data/minecraft/tags/enchantment/on_random_loot.json
+// 1.21.1	2026-02-23T21:39:39.262074806	penchant:loot_rework/Tags for minecraft:enchantment
+c986d4594676c545f96a3a86a90978c6f8a45314 resourcepacks/loot_rework/data/penchant/tags/enchantment/rare.json
+76b5424fe0228a32530cc82b1e19a754719d8d28 resourcepacks/loot_rework/data/penchant/tags/enchantment/common.json
 71cb78549d5832a26c00dff644a3a513f983eecb resourcepacks/loot_rework/data/minecraft/tags/enchantment/tradeable.json
 0257c0a6f6a856243104e4dceda7c3acbd79bbd6 resourcepacks/loot_rework/data/minecraft/tags/enchantment/treasure.json
-76b5424fe0228a32530cc82b1e19a754719d8d28 resourcepacks/loot_rework/data/penchant/tags/enchantment/common.json
-3eed309b897d5e11cd9ea506900746f0ed80d228 resourcepacks/loot_rework/data/penchant/tags/enchantment/rare.json
+e1a25d2d7a3f10936ecb7ff20c378027fe7bcc4f resourcepacks/loot_rework/data/minecraft/tags/enchantment/on_mob_spawn_equipment.json
 1f520433be5446b5fc3413be4e6fbad04f80401e resourcepacks/loot_rework/data/penchant/tags/enchantment/uncommon.json
+e1a25d2d7a3f10936ecb7ff20c378027fe7bcc4f resourcepacks/loot_rework/data/minecraft/tags/enchantment/on_random_loot.json
+9d44703fe99df07160117fdb47b18ce6f3cb17ab resourcepacks/loot_rework/data/minecraft/tags/enchantment/non_treasure.json
+b16213add332f1fec5f71b19b529f162db87761e resourcepacks/loot_rework/data/minecraft/tags/enchantment/in_enchanting_table.json
