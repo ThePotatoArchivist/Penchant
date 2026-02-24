@@ -3,6 +3,8 @@
   "package": "archives.tater.penchant.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "keymapping.KeyEntryMixin",
+    "keymapping.KeyMappingMixin",
     "leveling.BitmapProviderMixin",
     "leveling.EnchantmentScreenMixin"
   ],
@@ -12,5 +14,8 @@
   "mixins": [
     "leveling.ItemEnchantmentsMixin",
     "leveling.ItemStackMixin"
-  ]
+  ],
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  }
 }

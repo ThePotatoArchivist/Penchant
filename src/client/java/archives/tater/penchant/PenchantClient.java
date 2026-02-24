@@ -1,7 +1,7 @@
 package archives.tater.penchant;
 
 import archives.tater.penchant.client.FontUtils;
-import archives.tater.penchant.client.KeyMappingExt;
+import archives.tater.penchant.client.ScreenKeyMapping;
 import archives.tater.penchant.client.PenchantClientConfig;
 import archives.tater.penchant.client.gui.screen.PenchantmentScreen;
 import archives.tater.penchant.component.EnchantmentProgress;
@@ -33,12 +33,12 @@ import static net.minecraft.Util.makeDescriptionId;
 
 
 public class PenchantClient implements ClientModInitializer {
-    private static KeyMappingExt keybind(ResourceLocation id, int key, String category) {
-        return (KeyMappingExt) KeyBindingHelper.registerKeyBinding(new KeyMappingExt(makeDescriptionId("key", id), Type.KEYSYM, key, category));
+    private static ScreenKeyMapping keybind(ResourceLocation id, int key, String category) {
+        return (ScreenKeyMapping) KeyBindingHelper.registerKeyBinding(new ScreenKeyMapping(makeDescriptionId("key", id), Type.KEYSYM, key, category));
     }
 
-    private static final String PENCHANT_CATEGORY = "category." + Penchant.MOD_ID + "." + Penchant.MOD_ID; // TODO
-    public static final KeyMappingExt SHOW_PROGRESS_KEYBIND = keybind(
+    private static final String PENCHANT_CATEGORY = "key.category." + Penchant.MOD_ID + "." + Penchant.MOD_ID;
+    public static final ScreenKeyMapping SHOW_PROGRESS_KEYBIND = keybind(
             Penchant.id("show_progress"),
             InputConstants.KEY_LCONTROL,
             PENCHANT_CATEGORY
