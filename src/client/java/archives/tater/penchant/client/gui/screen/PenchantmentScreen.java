@@ -33,8 +33,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private static final ResourceLocation TEXTURE = Penchant.id("textures/gui/container/enchanting_table.png");
     private static final ResourceLocation BOOK_TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/enchanting_table_book.png");
     private static final ResourceLocation SCROLLLER_TEXTURE = Penchant.id("container/enchanting_table/scroller");
-    public static final ResourceLocation LAPIS_LAZULI_SLOT_TEXTURE = ResourceLocation.withDefaultNamespace("container/slot/lapis_lazuli");
-    public static final ResourceLocation BOOK_SLOT_TEXTURE = Penchant.id("container/slot/book");
+    public static final ResourceLocation LAPIS_LAZULI_SLOT_TEXTURE = ResourceLocation.withDefaultNamespace("item/empty_slot_lapis_lazuli");
+    public static final ResourceLocation BOOK_SLOT_TEXTURE = Penchant.id("item/empty_slot_book");
     private static final List<ResourceLocation> INGREDIENT_SLOT_TEXTURES = List.of(
             LAPIS_LAZULI_SLOT_TEXTURE,
             BOOK_SLOT_TEXTURE
@@ -162,7 +162,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         renderBook(guiGraphics, x, y, partialTick);
 
         var font = Minecraft.getInstance().font;
-        var infoText = FontUtils.BOOK_TEXT.copy()
+        var infoText = Component.empty()
+                .append(FontUtils.BOOK_TEXT)
                 .append(FontUtils.THIN_SPACE_TEXT)
                 .append(Integer.toString(menu.getBookCount()))
                 .append(" ")
@@ -181,7 +182,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         var flip = lerp(partialTick, this.oFlip, this.flip);
         Lighting.setupForEntityInInventory();
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x + 33f, y + 31f, 100f);
+        guiGraphics.pose().translate(x + 33f, y + 42f, 100f);
         var h = 40f;
         guiGraphics.pose().scale(-h, h, h);
         guiGraphics.pose().mulPose(Axis.XP.rotationDegrees(25f));
