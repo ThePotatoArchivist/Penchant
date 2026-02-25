@@ -15,7 +15,7 @@ public class DatagenUtil {
     private DatagenUtil() {}
 
     static AdvancementHolder registerAdvancement(Identifier id, ItemLike icon, AdvancementType type, Consumer<AdvancementHolder> consumer, Consumer<Advancement.Builder> init) {
-        var builder = Advancement.Builder.advancement()
+        var builder = Advancement.Builder.recipeAdvancement() // to avoid sending telemetry
                 .display(new DisplayInfo(
                         icon.asItem().getDefaultInstance(),
                         Component.translatable(id.toLanguageKey("advancements", "title")),

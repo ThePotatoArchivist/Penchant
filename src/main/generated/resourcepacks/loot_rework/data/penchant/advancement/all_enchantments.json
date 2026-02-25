@@ -586,6 +586,5 @@
     [
       "minecraft:wind_burst"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }
