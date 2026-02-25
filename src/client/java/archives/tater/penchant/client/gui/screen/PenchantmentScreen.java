@@ -106,6 +106,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                         enchantment,
                         getIncompatible(menu.getIngredientStack(), enchantment),
+                        !PenchantmentHelper.hasEnchantment(menu.getIngredientStack(), enchantment),
                         creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount()
                 ));
             else
@@ -115,6 +116,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         enchantment,
                         getIncompatible(stack, enchantment),
                         !PenchantmentHelper.hasEnchantment(stack, enchantment),
+                        creative || !menu.getIngredientStack().isEmpty(),
                         creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount(),
                         creative || PenchantmentHelper.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
                         menu.isAvailable(enchantment)

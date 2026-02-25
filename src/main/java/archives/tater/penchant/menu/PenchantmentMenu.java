@@ -149,12 +149,12 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     public boolean canDisenchant() {
         if (!hasDisenchanter()) return false;
         var stack = getEnchantingStack();
-        return stack.isEmpty() || PenchantmentHelper.getEnchantments(stack).keySet().stream().anyMatch(enchantment -> !enchantment.is(EnchantmentTags.CURSE));
+        return stack.isEmpty() || !PenchantmentHelper.getEnchantments(stack).isEmpty();
     }
 
     public boolean isEnchanting() {
         var ingredientStack = getIngredientStack();
-        return isEnchantingIngredient(ingredientStack) || player.hasInfiniteMaterials() && ingredientStack.isEmpty();
+        return isEnchantingIngredient(ingredientStack) || ingredientStack.isEmpty();
     }
 
     public boolean isDisenchanting() {
@@ -216,6 +216,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
             if (!player.hasInfiniteMaterials() && (
                     !PenchantmentHelper.canEnchant(stack, enchantment)
                             || !availableEnchantments.contains(enchantment)
+                            || getIngredientStack().isEmpty()
                             || getBookCount() < PenchantmentHelper.getBookRequirement(enchantment)
                             || getPlayerXp() < levelCost
             )) {

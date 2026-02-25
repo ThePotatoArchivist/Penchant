@@ -24,6 +24,5 @@
     [
       "has_enchantment"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }

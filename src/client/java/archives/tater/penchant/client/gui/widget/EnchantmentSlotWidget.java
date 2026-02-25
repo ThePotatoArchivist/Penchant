@@ -49,7 +49,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
     private final @Nullable Component costText;
     private final boolean isCurse;
 
-    private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean remove, boolean showXpCost, boolean showBookCost, boolean canUse, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+    private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean remove, boolean showXpCost, boolean showBookCost, boolean canUse, boolean hasIngredient, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
         super(x, y, WIDTH, HEIGHT, enchantment.value().description());
         this.enchantment = enchantment;
         isCurse = enchantment.is(EnchantmentTags.CURSE);
@@ -126,15 +126,15 @@ public class EnchantmentSlotWidget extends AbstractButton {
             setTooltip(Tooltip.create(tooltip));
         }
 
-        active = hasEnoughBooks && hasEnoughXp && isUnlocked && canUse && incompatible.isEmpty();
+        active = hasIngredient && hasEnoughBooks && hasEnoughXp && isUnlocked && canUse && incompatible.isEmpty();
     }
 
-    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean canAdd, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
-        this(x, y, enchantment, isUnlocked ? incompatible : List.of(), false, isUnlocked, isUnlocked, canAdd, hasEnoughBooks, hasEnoughXp, isUnlocked);
+    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean canAdd, boolean hasIngredient, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+        this(x, y, enchantment, isUnlocked ? incompatible : List.of(), false, isUnlocked, isUnlocked, canAdd, hasIngredient, hasEnoughBooks, hasEnoughXp, isUnlocked);
     }
 
-    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean hasEnoughBooks) {
-        this(x, y, enchantment, incompatible, true, false, true, true, hasEnoughBooks, true, true);
+    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean canRemove, boolean hasEnoughBooks) {
+        this(x, y, enchantment, incompatible, true, false, true, canRemove, true, hasEnoughBooks, true, true);
     }
 
     @Override
