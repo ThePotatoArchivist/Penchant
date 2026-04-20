@@ -39,7 +39,7 @@ public class EnchantingTableBlockMixin {
 
     @ModifyExpressionValue(
             method = "isValidBookShelf",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z", ordinal = 1)
+            at = @At(value = "INVOKE:LAST", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z")
     )
     private static boolean allowObstruction(boolean original) {
         return original || PenchantFlag.LENIENT_BOOKSHELF_PLACEMENT.isEnabled();
