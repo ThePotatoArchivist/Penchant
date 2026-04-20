@@ -1,7 +1,7 @@
-// 1.21.1	2026-02-25T01:43:05.350261085	Penchant/Tags for minecraft:enchantment
+// 1.21.1	2026-04-19T19:05:12.815741384	Penchant/Tags for minecraft:enchantment
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/penchant/tags/enchantment/disabled.json
-8d0c083a5a48885abd03acaf164921d41f9e90bc data/minecraft/tags/enchantment/on_traded_equipment.json
-8d0c083a5a48885abd03acaf164921d41f9e90bc data/minecraft/tags/enchantment/on_mob_spawn_equipment.json
-8d0c083a5a48885abd03acaf164921d41f9e90bc data/minecraft/tags/enchantment/on_random_loot.json
-8d0c083a5a48885abd03acaf164921d41f9e90bc data/minecraft/tags/enchantment/tradeable.json
-8d0c083a5a48885abd03acaf164921d41f9e90bc data/minecraft/tags/enchantment/in_enchanting_table.json
+043dc28d763578818deb55b114019842176e3d41 data/minecraft/tags/enchantment/on_traded_equipment.json
+043dc28d763578818deb55b114019842176e3d41 data/minecraft/tags/enchantment/on_mob_spawn_equipment.json
+043dc28d763578818deb55b114019842176e3d41 data/minecraft/tags/enchantment/on_random_loot.json
+043dc28d763578818deb55b114019842176e3d41 data/minecraft/tags/enchantment/tradeable.json
+043dc28d763578818deb55b114019842176e3d41 data/minecraft/tags/enchantment/in_enchanting_table.json

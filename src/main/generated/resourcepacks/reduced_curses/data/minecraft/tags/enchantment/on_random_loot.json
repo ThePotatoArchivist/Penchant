@@ -1,5 +1,6 @@
 {
-  "values": [
-    "!#minecraft:curse"
-  ]
+  "remove": [
+    "#minecraft:curse"
+  ],
+  "values": []
 }

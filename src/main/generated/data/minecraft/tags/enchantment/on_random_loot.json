@@ -1,5 +1,6 @@
 {
-  "values": [
-    "!#penchant:disabled"
-  ]
+  "remove": [
+    "#penchant:disabled"
+  ],
+  "values": []
 }
