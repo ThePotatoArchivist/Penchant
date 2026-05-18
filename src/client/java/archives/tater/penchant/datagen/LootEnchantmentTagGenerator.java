@@ -79,7 +79,8 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
         var common = TagKey.create(Registries.ENCHANTMENT, Penchant.id("common"));
 
         tag(rare)
-                .addAll(RARE);
+                .addAll(RARE)
+                .addOptional(ResourceLocation.fromNamespaceAndPath("veinminer-enchantment", "veinminer"));
 
         tag(uncommon)
                 .addAll(UNCOMMON)

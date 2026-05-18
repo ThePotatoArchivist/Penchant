@@ -11,6 +11,10 @@
     "minecraft:riptide",
     "minecraft:thorns",
     "minecraft:infinity",
-    "minecraft:multishot"
+    "minecraft:multishot",
+    {
+      "id": "veinminer-enchantment:veinminer",
+      "required": false
+    }
   ]
 }

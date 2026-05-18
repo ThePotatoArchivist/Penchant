@@ -1,6 +1,11 @@
 {
   "values": [
     "minecraft:chiseled_bookshelf",
-    "minecraft:lectern"
+    "minecraft:lectern",
+    "#c:bookshelves",
+    {
+      "id": "#blueprint:wooden_chiseled_bookshelves",
+      "required": false
+    }
   ]
 }

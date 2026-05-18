@@ -1,4 +1,4 @@
-// 1.21.1	2026-04-19T19:05:12.819153035	penchant:reduced_curses/Tags for minecraft:enchantment
+// 1.21.1	2026-05-17T21:59:13.143256641	penchant:reduced_curses/Tags for minecraft:enchantment
 3ceffaedd37f5d46ab121825ecce95d561ed4311 resourcepacks/reduced_curses/data/minecraft/tags/enchantment/on_mob_spawn_equipment.json
-52bd61560ade5307949c2e6406348b14930d9c45 resourcepacks/reduced_curses/data/minecraft/tags/enchantment/on_random_loot.json
 52bd61560ade5307949c2e6406348b14930d9c45 resourcepacks/reduced_curses/data/minecraft/tags/enchantment/tradeable.json
+52bd61560ade5307949c2e6406348b14930d9c45 resourcepacks/reduced_curses/data/minecraft/tags/enchantment/on_random_loot.json
