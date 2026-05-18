@@ -3,10 +3,10 @@ package archives.tater.penchant.datagen;
 import archives.tater.penchant.Penchant;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.tags.EnchantmentTagsProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.EnchantmentTags;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
+public class LootEnchantmentTagGenerator extends FabricTagsProvider<Enchantment> {
 
     public static final List<ResourceKey<Enchantment>> RARE = List.of(
             Enchantments.FROST_WALKER, // igloo
@@ -73,7 +73,7 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
     }
 
     public LootEnchantmentTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, registriesFuture);
+        super(output, Registries.ENCHANTMENT, registriesFuture);
     }
 
     @Override
@@ -82,31 +82,31 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
         var uncommon = TagKey.create(Registries.ENCHANTMENT, Penchant.id("uncommon"));
         var common = TagKey.create(Registries.ENCHANTMENT, Penchant.id("common"));
 
-        tag(rare)
+        builder(rare)
                 .addAll(RARE)
                 .addOptional(createKey("veinminer-enchantment", "veinminer"))
                 .addOptional(createKey("veinminer_enchantment", "veinminer"));
 
-        tag(uncommon)
+        builder(uncommon)
                 .addAll(UNCOMMON)
                 .addOptional(createKey("farmersdelight", "backstabbing"));
 
-        tag(common)
+        builder(common)
                 .addAll(COMMON);
 
-        tag(EnchantmentTags.TREASURE)
+        builder(EnchantmentTags.TREASURE)
                 .addTag(rare);
-        tag(EnchantmentTags.NON_TREASURE)
-                .tagex_excludeTag(rare);
-        tag(EnchantmentTags.IN_ENCHANTING_TABLE)
-                .tagex_excludeTag(uncommon);
-        tag(EnchantmentTags.TRADEABLE)
-                .tagex_excludeTag(common)
+        builder(EnchantmentTags.NON_TREASURE)
+                .removeTag(rare);
+        builder(EnchantmentTags.IN_ENCHANTING_TABLE)
+                .removeTag(uncommon);
+        builder(EnchantmentTags.TRADEABLE)
+                .removeTag(common)
                 .addTag(uncommon);
-        tag(EnchantmentTags.ON_RANDOM_LOOT)
+        builder(EnchantmentTags.ON_RANDOM_LOOT)
                 .addTag(uncommon)
                 .addTag(rare);
-        tag(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
+        builder(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
                 .addTag(uncommon)
                 .addTag(rare);
     }

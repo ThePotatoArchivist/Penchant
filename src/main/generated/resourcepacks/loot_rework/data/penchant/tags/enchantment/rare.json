@@ -13,7 +13,13 @@
     "minecraft:thorns",
     "minecraft:infinity",
     "minecraft:multishot",
-    "veinminer-enchantment:veinminer?",
-    "veinminer_enchantment:veinminer?"
+    {
+      "id": "veinminer-enchantment:veinminer",
+      "required": false
+    },
+    {
+      "id": "veinminer_enchantment:veinminer",
+      "required": false
+    }
   ]
 }

@@ -1,5 +1,6 @@
 {
-  "values": [
-    "!#minecraft:curse"
-  ]
+  "fabric:remove": [
+    "#minecraft:curse"
+  ],
+  "values": []
 }

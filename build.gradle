@@ -59,7 +59,6 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	implementation include("com.github.ThePotatoArchivist:TagExclusion:${project.tagex_version}")
 	implementation include("folk.sisby:kaleido-config:${project.kaleido_version}")
 
     compileOnly localRuntime("cc.cassian.item-descriptions:item-descriptions-fabric:${project.item_descriptions_version}") {
