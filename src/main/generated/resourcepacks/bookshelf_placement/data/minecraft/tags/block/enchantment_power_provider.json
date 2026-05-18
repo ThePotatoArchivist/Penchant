@@ -1,6 +1,7 @@
 {
   "values": [
     "minecraft:chiseled_bookshelf",
-    "minecraft:lectern"
+    "minecraft:lectern",
+    "#c:bookshelves"
   ]
 }

@@ -2,6 +2,7 @@ package archives.tater.penchant.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.tags.BlockTags;
@@ -17,6 +18,7 @@ public class BookshelfBlockTagGenerator extends FabricTagsProvider.BlockTagsProv
     @Override
     protected void addTags(Provider provider) {
         valueLookupBuilder(BlockTags.ENCHANTMENT_POWER_PROVIDER)
-                .add(Blocks.CHISELED_BOOKSHELF, Blocks.LECTERN);
+                .add(Blocks.CHISELED_BOOKSHELF, Blocks.LECTERN)
+                .forceAddTag(ConventionalBlockTags.BOOKSHELVES);
     }
 }
