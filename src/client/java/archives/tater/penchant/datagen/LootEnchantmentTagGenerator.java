@@ -80,7 +80,7 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
 
         tag(rare)
                 .addAll(RARE)
-                .addOptional(ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath("veinminer-enchantment", "veinminer")));
+                .addOptional(ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath("veinminer-enchantment", "veinminer")))
                 .addOptional(ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath("veinminer_enchantment", "veinminer")));
 
         tag(uncommon)
