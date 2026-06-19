@@ -2,6 +2,7 @@ package archives.tater.penchant;
 
 import archives.tater.penchant.datagen.*;
 import archives.tater.penchant.registry.PenchantFlag;
+import archives.tater.penchant.registry.PenchantModules;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -24,32 +25,32 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(BlockTagGenerator::new);
 //        pack.addProvider(PenchantmentDefinitionGenerator::new);
 
-        var durabilityPack = createPack(fabricDataGenerator, Penchant.DURABILITY_REWORK);
+        var durabilityPack = createPack(fabricDataGenerator, PenchantModules.DURABILITY_REWORK);
         durabilityPack.addProvider(DurabilityEnchantmentGenerator::new);
         durabilityPack.addProvider(DurabilityEnchantmentTagGenerator::new);
 
-        var bookshelfPack = createPack(fabricDataGenerator, Penchant.BOOKSHELF_PLACEMENT);
+        var bookshelfPack = createPack(fabricDataGenerator, PenchantModules.BOOKSHELF_PLACEMENT);
         bookshelfPack.addProvider(FlagTagGenerator.generator(PenchantFlag.LENIENT_BOOKSHELF_PLACEMENT));
         bookshelfPack.addProvider(BookshelfBlockTagGenerator::new);
 
-        var anvilPack = createPack(fabricDataGenerator, Penchant.NO_ANVIL_BOOKS);
+        var anvilPack = createPack(fabricDataGenerator, PenchantModules.NO_ANVIL_BOOKS);
         anvilPack.addProvider(FlagTagGenerator.generator(PenchantFlag.NO_ANVIL_BOOKS));
 
-        var tablePack = createPack(fabricDataGenerator, Penchant.TABLE_REWORK);
+        var tablePack = createPack(fabricDataGenerator, PenchantModules.TABLE_REWORK);
         tablePack.addProvider(FlagTagGenerator.generator(PenchantFlag.REWORKED_TABLE_MENU));
         tablePack.addProvider(TableAdvancementGenerator::new);
 
-        var lootPack = createPack(fabricDataGenerator, Penchant.LOOT_REWORK);
+        var lootPack = createPack(fabricDataGenerator, PenchantModules.LOOT_REWORK);
         lootPack.addProvider(FlagTagGenerator.generator(PenchantFlag.ZOMBIE_SPAWN_PICKAXE));
         lootPack.addProvider(LootModificationGenerator::new);
         lootPack.addProvider(LootEnchantmentTagGenerator::new);
         lootPack.addProvider(LootAdvancementGenerator::new);
         lootPack.addProvider(LootEnchantmentProviderGenerator::new);
 
-        var dropPack = createPack(fabricDataGenerator, Penchant.GUARANTEED_DROPS);
+        var dropPack = createPack(fabricDataGenerator, PenchantModules.GUARANTEED_DROPS);
         dropPack.addProvider(FlagTagGenerator.generator(PenchantFlag.GUARANTEED_ENCHANTED_DROP, PenchantFlag.GUARANTEED_TRIDENT_DROP));
 
-        var noCursePack = createPack(fabricDataGenerator, Penchant.REDUCED_CURSES);
+        var noCursePack = createPack(fabricDataGenerator, PenchantModules.REDUCED_CURSES);
         noCursePack.addProvider(CurseEnchantmentTagGenerator::new);
 	}
 }

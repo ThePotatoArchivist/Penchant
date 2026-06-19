@@ -37,7 +37,7 @@ public record LootModification(
 
     public static final ResourceKey<Registry<LootModification>> KEY = ResourceKey.createRegistryKey(Penchant.id("loot_modification"));
 
-    public static void register() {
+    public static void init() {
         DynamicRegistries.register(KEY, CODEC);
 
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
