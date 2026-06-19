@@ -1,6 +1,7 @@
 package archives.tater.penchant.util;
 
 import archives.tater.penchant.PenchantmentDefinition;
+import archives.tater.penchant.api.CanEnchantCallback;
 import archives.tater.penchant.registry.PenchantFlag;
 
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -62,7 +63,9 @@ public class PenchantmentHelper {
     }
 
     public static boolean canEnchantItem(ItemStack stack, Holder<Enchantment> enchantment) {
-        return stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE);
+        return CanEnchantCallback.ITEM.invoker().canEnchant(stack, enchantment).orElseGet(() ->
+                stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)
+        );
     }
 
     public static ItemEnchantments getEnchantments(ItemStack stack) {
@@ -74,7 +77,9 @@ public class PenchantmentHelper {
     }
 
     public static boolean canEnchant(ItemStack stack, Holder<Enchantment> enchantment) {
-        return canEnchantItem(stack, enchantment) && !hasEnchantment(stack, enchantment) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment);
+        return CanEnchantCallback.STACK.invoker().canEnchant(stack, enchantment).orElseGet(() ->
+                canEnchantItem(stack, enchantment) && !hasEnchantment(stack, enchantment) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment)
+        );
     }
 
     public static ItemStack updateEnchantments(ItemStack stack, Consumer<ItemEnchantments.Mutable> updater) {
