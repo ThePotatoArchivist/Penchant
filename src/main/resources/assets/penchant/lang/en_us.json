@@ -9,7 +9,7 @@
   "container.penchant.enchant.slot.ingredient.disenchant": "Add Lapis Lazuli for enchanting or book for disenchanting",
   "widget.penchant.enchantment_slot.incompatible": "!",
   "widget.penchant.enchantment_slot.tooltip.added": "Added",
-  "widget.penchant.enchantment_slot.tooltip.name_locked": "...?",
+  "widget.penchant.enchantment_slot.tooltip.name_locked": ". . . ?",
   "widget.penchant.enchantment_slot.tooltip.locked": "Unknown enchantment! Find a corresponding book and place it in nearby shelves to unlock",
   "widget.penchant.enchantment_slot.tooltip.remove": "Remove %s from item",
   "widget.penchant.enchantment_slot.tooltip.xp_cost": "Costs %s levels",
