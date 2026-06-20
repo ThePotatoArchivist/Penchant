@@ -11,7 +11,7 @@
   "widget.penchant.enchantment_slot.tooltip.added": "Зачаровано",
   "widget.penchant.enchantment_slot.tooltip.name_locked": ". . . ?",
   "widget.penchant.enchantment_slot.tooltip.locked": "Неизвестное зачарование! Найдите соответствующую книгу и разместите ее в близлежащую полку, чтобы разблокировать",
-  "widget.penchant.enchantment_slot.tooltip.remove": "Снять %s из предмета",
+  "widget.penchant.enchantment_slot.tooltip.remove": "Снять %s с предмета",
   "widget.penchant.enchantment_slot.tooltip.xp_cost": "Стоит %s уровней",
   "widget.penchant.enchantment_slot.tooltip.book_requirement": "Требуется %s книг",
   "widget.penchant.enchantment_slot.tooltip.incompatible": "Несовместимо с %s",
