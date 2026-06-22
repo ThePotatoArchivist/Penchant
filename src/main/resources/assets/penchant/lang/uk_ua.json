@@ -9,7 +9,7 @@
   "container.penchant.enchant.slot.ingredient.disenchant": "Розмістіть лазурит, щоб зачарувати або книгу, щоб розчарувати",
   "widget.penchant.enchantment_slot.incompatible": "!",
   "widget.penchant.enchantment_slot.tooltip.added": "Зачаровано",
-  "widget.penchant.enchantment_slot.tooltip.name_locked": ". . . ?",
+  "widget.penchant.enchantment_slot.tooltip.name_locked": " . . . ?",
   "widget.penchant.enchantment_slot.tooltip.locked": "Невідоме зачарування! Знайдіть відповідну книгу та покладіть її на найближчу полицю, щоб розблокувати",
   "widget.penchant.enchantment_slot.tooltip.remove": "Зняти «%s» з предмета",
   "widget.penchant.enchantment_slot.tooltip.xp_cost": "Коштує %s рівнів",
