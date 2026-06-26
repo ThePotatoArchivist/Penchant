@@ -1,7 +1,6 @@
 {
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:empty",
@@ -11,7 +10,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:silk_touch": 1.0
               },
@@ -24,7 +22,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:fortune": 1.0
               },

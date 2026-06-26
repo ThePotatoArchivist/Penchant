@@ -1,7 +1,6 @@
 {
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:empty",
@@ -11,7 +10,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:respiration": 1.0
               },
@@ -24,7 +22,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:depth_strider": 1.0
               },
@@ -37,7 +34,6 @@
       "rolls": 1.0
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:empty",
@@ -47,7 +43,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:channeling": 1.0
               },
@@ -60,7 +55,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "enchantments": {
                 "minecraft:riptide": 1.0
               },

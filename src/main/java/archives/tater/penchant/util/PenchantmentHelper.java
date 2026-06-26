@@ -51,7 +51,7 @@ public class PenchantmentHelper {
     }
 
     public static int getProgressCostFactor(Holder<Enchantment> enchantment, int targetLevel) {
-        return PenchantmentDefinition.getDefinition(enchantment).progressCostFactor().calculate(targetLevel);
+        return PenchantmentDefinition.getDefinition(enchantment).getProgressCostFactor(targetLevel);
     }
 
     public static int getBookRequirement(Holder<Enchantment> enchantment) {

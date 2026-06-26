@@ -29,6 +29,10 @@ public record PenchantmentDefinition(
             Enchantment.Cost.CODEC.fieldOf("progress_cost_factor").forGetter(PenchantmentDefinition::progressCostFactor)
     ).apply(instance, PenchantmentDefinition::new));
 
+    public int getProgressCostFactor(int targetLevel) {
+        return max(progressCostFactor.calculate(targetLevel), 1);
+    }
+
     public static ResourceKey<PenchantmentDefinition> keyOf(ResourceKey<Enchantment> enchantment) {
         return ResourceKey.create(PenchantRegistries.PENCHANTMENT_DEFINITION, enchantment.identifier());
     }
