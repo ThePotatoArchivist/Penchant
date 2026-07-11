@@ -79,7 +79,7 @@ public class ItemEnchantmentsMixin {
                 progress.get(),
                 enchantment,
                 level.get(),
-                components instanceof ItemStack stack ? stack.getMaxDamage() : components.getOrDefault(DataComponents.MAX_DAMAGE, 0)
+                components
         ));
     }
 
