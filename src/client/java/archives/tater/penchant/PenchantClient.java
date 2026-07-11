@@ -23,6 +23,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import static java.util.Objects.requireNonNull;
@@ -42,6 +43,8 @@ public class PenchantClient implements ClientModInitializer {
     );
 
     public static final PenchantClientConfig CONFIG = PenchantClientConfig.createToml(FabricLoader.getInstance().getConfigDir(), Penchant.MOD_ID, "client", PenchantClientConfig.class);
+
+    public static final ScopedValue<ItemStack> TOOLTIP_ITEM = ScopedValue.newInstance();
 
     public static boolean shouldShowProgress() {
         return CONFIG.alwaysShowTooltipProgress || SHOW_PROGRESS_KEYBIND.isDownAnywhere();

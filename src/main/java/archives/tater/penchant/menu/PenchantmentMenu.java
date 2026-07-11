@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -157,7 +158,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public static boolean isDisenchantingIngredient(ItemStack stack) {
-        return stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK);
+        return stack.is(Items.BOOK) || EnchantmentHelper.getComponentType(stack) == DataComponents.STORED_ENCHANTMENTS;
     }
 
     public static Set<Holder<Enchantment>> getUnlockedEnchantments(Level level, BlockPos pos) {
@@ -216,9 +217,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
             }
             access.execute((level, pos) -> {
                 player.onEnchantmentPerformed(stack, levelCost);
-                var result = PenchantmentHelper.updateEnchantments(stack, enchantments -> {
-                    enchantments.set(enchantment, 1);
-                });
+                var result = PenchantmentHelper.enchant(stack, enchantment);
                 enchantSlots.setItem(0, result);
 
                 if (!player.hasInfiniteMaterials())
@@ -241,17 +240,12 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                 return;
             }
             access.execute((level, pos) -> {
-
-                var enchantmentLevel = PenchantmentHelper.getEnchantments(stack).getLevel(enchantment);
-
                 var newStack = PenchantmentHelper.updateEnchantments(stack, enchantments -> {
                     enchantments.set(enchantment, 0);
                 });
                 enchantSlots.setItem(0, newStack);
 
-                enchantSlots.setItem(1, PenchantmentHelper.updateEnchantments(ingredientStack, enchantments -> {
-                    enchantments.set(enchantment, enchantmentLevel);
-                }));
+                enchantSlots.setItem(1, PenchantmentHelper.enchant(ingredientStack, enchantment));
 
                 if (player instanceof ServerPlayer serverPlayer)
                     PenchantAdvancements.EXTRACT_ENCHANTMENT.trigger(serverPlayer, newStack, enchantment);

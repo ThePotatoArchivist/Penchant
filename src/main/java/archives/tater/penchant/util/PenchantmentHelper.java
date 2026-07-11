@@ -79,14 +79,8 @@ public class PenchantmentHelper {
         );
     }
 
-    public static ItemStack updateEnchantments(ItemStack stack, Consumer<ItemEnchantments.Mutable> updater) {
-        var type = stack.is(Items.BOOK) ? DataComponents.STORED_ENCHANTMENTS : EnchantmentHelper.getComponentType(stack);
-        var enchantments = stack.getOrDefault(type, ItemEnchantments.EMPTY);
-        var mutable = new ItemEnchantments.Mutable(enchantments);
-        updater.accept(mutable);
-        var newEnchantments = mutable.toImmutable();
-        stack.set(type, newEnchantments);
-        if (newEnchantments.isEmpty()) {
+    public static ItemStack fixBookType(ItemStack stack) {
+        if (getEnchantments(stack).isEmpty()) {
             if (stack.is(Items.ENCHANTED_BOOK))
                 return stack.transmuteCopy(Items.BOOK);
         } else {
@@ -94,6 +88,24 @@ public class PenchantmentHelper {
                 return stack.transmuteCopy(Items.ENCHANTED_BOOK);
         }
         return stack;
+    }
+
+    public static ItemStack updateEnchantments(ItemStack stack, Consumer<ItemEnchantments.Mutable> updater) {
+        // not using EnchantmentHelper.updateEnchantments because it doesn't allow enchanting normal books
+        var type = stack.is(Items.BOOK) ? DataComponents.STORED_ENCHANTMENTS : EnchantmentHelper.getComponentType(stack);
+        var enchantments = stack.getOrDefault(type, ItemEnchantments.EMPTY);
+        var mutable = new ItemEnchantments.Mutable(enchantments);
+        updater.accept(mutable);
+        var newEnchantments = mutable.toImmutable();
+        stack.set(type, newEnchantments);
+
+        return fixBookType(stack);
+    }
+
+    public static ItemStack enchant(ItemStack stack, Holder<Enchantment> enchantment) {
+        var effectiveStack = stack.is(Items.BOOK) ? stack.transmuteCopy(Items.ENCHANTED_BOOK) : stack;
+        effectiveStack.enchant(enchantment, 1);
+        return fixBookType(effectiveStack);
     }
 
     public static List<BlockPos> getBookshelfOffsets(List<BlockPos> original) {

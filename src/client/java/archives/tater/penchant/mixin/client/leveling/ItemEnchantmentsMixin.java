@@ -1,9 +1,10 @@
 package archives.tater.penchant.mixin.client.leveling;
 
-import archives.tater.penchant.*;
+import archives.tater.penchant.PenchantClient;
 import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.registry.PenchantComponents;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
+import archives.tater.penchant.registry.PenchantItemTags;
 import archives.tater.penchant.util.PenchantmentHelper;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -45,7 +46,7 @@ public class ItemEnchantmentsMixin {
             at = @At("HEAD")
     )
     private void getProgress(TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag, DataComponentGetter dataComponentGetter, CallbackInfo ci, @Share("progress") LocalRef<EnchantmentProgress> progress) {
-        if (dataComponentGetter.get(DataComponents.STORED_ENCHANTMENTS) == null)
+        if (dataComponentGetter.get(DataComponents.STORED_ENCHANTMENTS) == null && !PenchantClient.TOOLTIP_ITEM.orElse(ItemStack.EMPTY).is(PenchantItemTags.MAX_LEVEL_ENCHANTMENTS))
             progress.set(dataComponentGetter.getOrDefault(PenchantComponents.ENCHANTMENT_PROGRESS, EnchantmentProgress.EMPTY));
     }
 
@@ -53,14 +54,15 @@ public class ItemEnchantmentsMixin {
             method = "addToTooltip",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;")
     )
-    private Component hideLevel(Holder<Enchantment> holder, int i, Operation<Component> original, @Share("progress") LocalRef<@Nullable EnchantmentProgress> progress, @Share("enchantmentShare") LocalRef<@Nullable Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef level) {
-        if (holder.is(PenchantEnchantmentTags.NO_LEVELING)) return original.call(holder, i);
-        if (progress.get() == null) return PenchantmentHelper.getName(holder);
-        enchantmentShare.set(holder);
-        level.set(i);
-        return original.call(holder, i);
+    private Component hideLevel(Holder<Enchantment> enchantment, int level, Operation<Component> original, @Share("progress") LocalRef<@Nullable EnchantmentProgress> progress, @Share("enchantmentShare") LocalRef<@Nullable Holder<Enchantment>> enchantmentShare, @Share("level") LocalIntRef shareLevel) {
+        if (enchantment.is(PenchantEnchantmentTags.NO_LEVELING)) return original.call(enchantment, level);
+        if (progress.get() == null) return PenchantmentHelper.getName(enchantment);
+        enchantmentShare.set(enchantment);
+        shareLevel.set(level);
+        return original.call(enchantment, level);
     }
 
+    @SuppressWarnings("unchecked")
     @WrapOperation(
             method = "addToTooltip",
             at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V")
@@ -73,7 +75,7 @@ public class ItemEnchantmentsMixin {
         if (!PenchantClient.shouldShowProgress()) return;
         if (!EnchantmentProgress.shouldShowTooltip(enchantment)) return;
 
-        original.call(instance, PenchantClient.getProgressTooltip(
+        instance.accept((T) PenchantClient.getProgressTooltip(
                 progress.get(),
                 enchantment,
                 level.get(),
