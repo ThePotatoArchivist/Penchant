@@ -7,14 +7,11 @@ import archives.tater.penchant.registry.PenchantFlag;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.loader.api.FabricLoader;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.network.chat.Style;
-import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -24,6 +21,8 @@ import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -40,13 +39,11 @@ public class PenchantmentHelper {
             .map(BlockPos::immutable)
             .toList();
 
+    public static ScopedValue<@Nullable Unit> NO_LEVEL_NAME_CONTEXT = ScopedValue.newInstance();
+
     public static Component getName(Holder<Enchantment> enchantment) {
-        return ComponentUtils.mergeStyles(
-                enchantment.value().description().copy(),
-                Style.EMPTY.withColor(enchantment.is(EnchantmentTags.CURSE)
-                        ? ChatFormatting.RED
-                        : ChatFormatting.GRAY
-                )
+        return ScopedValue.where(NO_LEVEL_NAME_CONTEXT, Unit.INSTANCE).call(() ->
+                Enchantment.getFullname(enchantment, 1)
         );
     }
 
