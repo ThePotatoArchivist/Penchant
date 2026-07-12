@@ -99,6 +99,7 @@ public class LootModificationGenerator extends FabricDynamicRegistryProvider {
         addInject(entries, BuiltInLootTables.DESERT_PYRAMID, createBooks(registry, 9, Enchantments.THORNS));
         addInject(entries, BuiltInLootTables.PILLAGER_OUTPOST, createBooks(registry, 4, Enchantments.MULTISHOT));
         addInject(entries, BuiltInLootTables.BASTION_OTHER, createBooks(registry, 7, Enchantments.LUNGE));
+        addInject(entries, BuiltInLootTables.TRIAL_CHAMBERS_REWARD_RARE, createBooks(registry, 11, Enchantments.DENSITY, Enchantments.BREACH));
     }
 
     @Override

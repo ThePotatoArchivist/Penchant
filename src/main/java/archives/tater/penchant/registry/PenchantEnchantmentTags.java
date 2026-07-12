@@ -9,10 +9,18 @@ import net.minecraft.world.item.enchantment.Enchantment;
 public class PenchantEnchantmentTags {
     private PenchantEnchantmentTags() {}
 
-    private static TagKey<Enchantment> of(String path) {
+    private static TagKey<Enchantment> create(String path) {
         return TagKey.create(Registries.ENCHANTMENT, Penchant.id(path));
     }
 
-    public static final TagKey<Enchantment> DISABLED = of("disabled");
-    public static final TagKey<Enchantment> NO_LEVELING = of("no_leveling");
+    // behavior
+    public static final TagKey<Enchantment> DISABLED = create("disabled");
+    public static final TagKey<Enchantment> NO_LEVELING = create("no_leveling");
+
+    // categories
+    public static final TagKey<Enchantment> UNIQUE = create("unique");
+    public static final TagKey<Enchantment> RARE = create("rare");
+    public static final TagKey<Enchantment> UNCOMMON = create("uncommon");
+    public static final TagKey<Enchantment> COMMON = create("common");
+
 }
