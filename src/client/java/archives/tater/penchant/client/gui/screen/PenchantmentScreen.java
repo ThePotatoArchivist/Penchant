@@ -119,7 +119,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                         enchantment,
                         getIncompatible(stack, enchantment),
-                        !PenchantmentHelper.hasEnchantment(stack, enchantment),
+                        PenchantmentHelper.canEnchant(stack, enchantment),
+                        PenchantmentHelper.hasEnchantment(stack, enchantment),
                         creative || !menu.getIngredientStack().isEmpty(),
                         creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount(),
                         creative || PenchantmentHelper.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
@@ -129,7 +130,9 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     }
 
     private List<Holder<Enchantment>> getIncompatible(ItemStack stack, Holder<Enchantment> enchantment) {
-        return PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> !enchantment.equals(other) && !Enchantment.areCompatible(enchantment, other)).toList();
+        return PenchantmentHelper.hasEnchantment(stack, enchantment)
+                ? List.of()
+                : PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> !enchantment.equals(other) && !Enchantment.areCompatible(enchantment, other)).toList();
     }
 
     @Override

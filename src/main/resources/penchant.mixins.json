@@ -20,10 +20,12 @@
     "leveling.CreativeModeTabsMixin",
     "leveling.EnchantmentHelperMixin",
     "leveling.EnchantmentMenuMixin",
+    "leveling.EnchantmentMixin",
     "leveling.EnchantRandomlyFunctionMixin",
     "leveling.EnchantWithLevelsFunctionMixin",
     "leveling.ItemDisplayBuilderMixin",
     "leveling.ItemStackMixin",
+    "randomenchantment.ItemStackMixin",
     "table.EnchantingTableBlockMixin",
     "table.EnchantmentMenuMixin"
   ],

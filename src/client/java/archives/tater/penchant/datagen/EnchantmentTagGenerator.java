@@ -4,6 +4,7 @@ import archives.tater.penchant.registry.PenchantEnchantmentTags;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEnchantmentTags;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -32,5 +33,8 @@ public class EnchantmentTagGenerator extends FabricTagsProvider<Enchantment> {
                 .removeTag(PenchantEnchantmentTags.DISABLED);
         builder(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
                 .removeTag(PenchantEnchantmentTags.DISABLED);
+
+        builder(ConventionalEnchantmentTags.HIDDEN_FROM_RECIPE_VIEWERS)
+                .addTag(PenchantEnchantmentTags.DISABLED);
     }
 }

@@ -7,12 +7,14 @@ import archives.tater.penchant.client.gui.screen.PenchantmentScreen;
 import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.UnlockedEnchantmentsPayload;
+import archives.tater.penchant.registry.PenchantComponents;
 import archives.tater.penchant.registry.PenchantMenus;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.item.v1.ItemComponentTooltipProviderRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -21,8 +23,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import static java.util.Objects.requireNonNull;
@@ -43,6 +48,8 @@ public class PenchantClient implements ClientModInitializer {
 
     public static final PenchantClientConfig CONFIG = PenchantClientConfig.createToml(FabricLoader.getInstance().getConfigDir(), Penchant.MOD_ID, "client", PenchantClientConfig.class);
 
+    public static final ScopedValue<ItemStack> TOOLTIP_ITEM = ScopedValue.newInstance();
+
     public static boolean shouldShowProgress() {
         return CONFIG.alwaysShowTooltipProgress || SHOW_PROGRESS_KEYBIND.isDownAnywhere();
     }
@@ -60,7 +67,7 @@ public class PenchantClient implements ClientModInitializer {
                 .withStyle(ChatFormatting.DARK_GRAY);
     }
 
-    public static Component getProgressTooltip(EnchantmentProgress progress, Holder<Enchantment> enchantment, int level, int maxDamage) {
+    public static Component getProgressTooltip(EnchantmentProgress progress, Holder<Enchantment> enchantment, int level, DataComponentGetter components) {
         if (level >= enchantment.value().getMaxLevel())
             return Component.literal("  ")
                     .append(FontUtils.getBar(getBarWidth(), getBarWidth()))
@@ -68,7 +75,7 @@ public class PenchantClient implements ClientModInitializer {
                     .append(Component.translatable("penchant.tooltip.progress.max"))
                     .withStyle(ChatFormatting.LIGHT_PURPLE);
 
-        var maxProgress = EnchantmentProgress.getMaxProgress(enchantment, level, maxDamage);
+        var maxProgress = EnchantmentProgress.getMaxProgress(enchantment, level, components);
 
         return Component.literal("  ")
                 .append(FontUtils.getBar(getBarWidth(), getBarWidth() * progress.getProgress(enchantment) / maxProgress))
@@ -96,5 +103,7 @@ public class PenchantClient implements ClientModInitializer {
             }
             menu.setUnlockedEnchantments(payload.unlocked());
         });
+
+        ItemComponentTooltipProviderRegistry.addBefore(DataComponents.STORED_ENCHANTMENTS, PenchantComponents.RANDOM_ENCHANTMENT);
 	}
 }

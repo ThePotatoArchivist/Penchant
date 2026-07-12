@@ -7,14 +7,11 @@ import archives.tater.penchant.registry.PenchantFlag;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.loader.api.FabricLoader;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.network.chat.Style;
-import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -24,6 +21,8 @@ import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
+
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -40,13 +39,11 @@ public class PenchantmentHelper {
             .map(BlockPos::immutable)
             .toList();
 
+    public static ScopedValue<@Nullable Unit> NO_LEVEL_NAME_CONTEXT = ScopedValue.newInstance();
+
     public static Component getName(Holder<Enchantment> enchantment) {
-        return ComponentUtils.mergeStyles(
-                enchantment.value().description().copy(),
-                Style.EMPTY.withColor(enchantment.is(EnchantmentTags.CURSE)
-                        ? ChatFormatting.RED
-                        : ChatFormatting.GRAY
-                )
+        return ScopedValue.where(NO_LEVEL_NAME_CONTEXT, Unit.INSTANCE).call(() ->
+                Enchantment.getFullname(enchantment, 1)
         );
     }
 
@@ -77,19 +74,13 @@ public class PenchantmentHelper {
     }
 
     public static boolean canEnchant(ItemStack stack, Holder<Enchantment> enchantment) {
-        return CanEnchantCallback.STACK.invoker().canEnchant(stack, enchantment).orElseGet(() ->
-                canEnchantItem(stack, enchantment) && !hasEnchantment(stack, enchantment) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment)
+        return !hasEnchantment(stack, enchantment) && CanEnchantCallback.STACK.invoker().canEnchant(stack, enchantment).orElseGet(() ->
+                canEnchantItem(stack, enchantment) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment)
         );
     }
 
-    public static ItemStack updateEnchantments(ItemStack stack, Consumer<ItemEnchantments.Mutable> updater) {
-        var type = stack.is(Items.BOOK) ? DataComponents.STORED_ENCHANTMENTS : EnchantmentHelper.getComponentType(stack);
-        var enchantments = stack.getOrDefault(type, ItemEnchantments.EMPTY);
-        var mutable = new ItemEnchantments.Mutable(enchantments);
-        updater.accept(mutable);
-        var newEnchantments = mutable.toImmutable();
-        stack.set(type, newEnchantments);
-        if (newEnchantments.isEmpty()) {
+    public static ItemStack fixBookType(ItemStack stack) {
+        if (getEnchantments(stack).isEmpty()) {
             if (stack.is(Items.ENCHANTED_BOOK))
                 return stack.transmuteCopy(Items.BOOK);
         } else {
@@ -97,6 +88,24 @@ public class PenchantmentHelper {
                 return stack.transmuteCopy(Items.ENCHANTED_BOOK);
         }
         return stack;
+    }
+
+    public static ItemStack updateEnchantments(ItemStack stack, Consumer<ItemEnchantments.Mutable> updater) {
+        // not using EnchantmentHelper.updateEnchantments because it doesn't allow enchanting normal books
+        var type = stack.is(Items.BOOK) ? DataComponents.STORED_ENCHANTMENTS : EnchantmentHelper.getComponentType(stack);
+        var enchantments = stack.getOrDefault(type, ItemEnchantments.EMPTY);
+        var mutable = new ItemEnchantments.Mutable(enchantments);
+        updater.accept(mutable);
+        var newEnchantments = mutable.toImmutable();
+        stack.set(type, newEnchantments);
+
+        return fixBookType(stack);
+    }
+
+    public static ItemStack enchant(ItemStack stack, Holder<Enchantment> enchantment) {
+        var effectiveStack = stack.is(Items.BOOK) ? stack.transmuteCopy(Items.ENCHANTED_BOOK) : stack;
+        effectiveStack.enchant(enchantment, 1);
+        return fixBookType(effectiveStack);
     }
 
     public static List<BlockPos> getBookshelfOffsets(List<BlockPos> original) {

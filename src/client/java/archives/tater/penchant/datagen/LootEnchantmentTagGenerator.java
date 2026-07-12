@@ -102,6 +102,7 @@ public class LootEnchantmentTagGenerator extends FabricTagsProvider<Enchantment>
                 .removeTag(uncommon);
         builder(EnchantmentTags.TRADEABLE)
                 .removeTag(common)
+                .removeTag(rare)
                 .addTag(uncommon);
         builder(EnchantmentTags.ON_RANDOM_LOOT)
                 .addTag(uncommon)

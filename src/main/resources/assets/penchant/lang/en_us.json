@@ -29,6 +29,8 @@
   "dataPack.penchant.guaranteed_drops.description": "Mobs always drop enchanted equipment",
   "dataPack.penchant.reduced_curses.name": "Reduced Curses [Penchant]",
   "dataPack.penchant.reduced_curses.description": "Curses only appear on mob equipment",
+  "dataPack.penchant.randomized_librarians.name": "Randomized Librarians [Penchant]",
+  "dataPack.penchant.randomized_librarians.description": "Librarians sell a different book each time",
   "advancements.penchant.enchanted_bookshelf.title": "Research & Development",
   "advancements.penchant.enchanted_bookshelf.description": "Unlock an enchantment by placing an enchanted book near your enchanting table",
   "advancements.penchant.all_enchantments.title": "Omnimancy",
@@ -38,5 +40,6 @@
   "advancements.penchant.babel.title": "Babel",
   "advancements.penchant.babel.description": "Build an enchanting library with over 300 books",
   "advancements.penchant.extract_enchantment.title": "Reverse Engineering",
-  "advancements.penchant.extract_enchantment.description": "Extract enchantments from found gear"
+  "advancements.penchant.extract_enchantment.description": "Extract enchantments from found gear",
+  "penchant.tooltip.random_enchantment": "Random Enchantment"
 }

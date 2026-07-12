@@ -51,7 +51,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
     private final @Nullable Component costText;
     private final boolean isCurse;
 
-    private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean remove, boolean showXpCost, boolean showBookCost, boolean canUse, boolean hasIngredient, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+    private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean remove, boolean showXpCost, boolean showBookCost, boolean canUse, boolean alreadyAdded, boolean hasIngredient, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
         super(x, y, WIDTH, HEIGHT, enchantment.value().description());
         this.enchantment = enchantment;
         isCurse = enchantment.is(EnchantmentTags.CURSE);
@@ -65,25 +65,25 @@ public class EnchantmentSlotWidget extends AbstractButton {
 
         {
             var costTexts = new ArrayList<Component>(3);
-            if (!incompatible.isEmpty()) costTexts.add(
+            if (!canUse && !incompatible.isEmpty()) costTexts.add(
                     Component.translatable("widget.penchant.enchantment_slot.incompatible")
                             .withColor(INSUFFICIENT_COLOR)
             );
             if (showBookCost) costTexts.add(Component.literal(Integer.toString(bookRequirement))
-                    .withColor(!canUse ? DISABLED_COLOR :
+                    .withColor(alreadyAdded ? DISABLED_COLOR :
                             !hasEnoughBooks ? INSUFFICIENT_COLOR
                                     : BOOK_COLOR)
             );
             if (showXpCost) costTexts.add(
                     Component.literal(Integer.toString(xpCost))
-                            .withColor(!canUse ? DISABLED_COLOR :
+                            .withColor(alreadyAdded ? DISABLED_COLOR :
                                     !hasEnoughXp ? INSUFFICIENT_COLOR
                                             : XP_COLOR)
             );
             this.costText = ComponentUtils.formatList(costTexts, Component.literal(" "));
         }
 
-        if (!canUse)
+        if (alreadyAdded)
             setTooltip(Tooltip.create(Component.empty()
                     .append(PenchantmentHelper.getName(enchantment))
                     .append("\n")
@@ -102,9 +102,9 @@ public class EnchantmentSlotWidget extends AbstractButton {
                     ? Component.translatable("widget.penchant.enchantment_slot.tooltip.remove", enchantment.value().description())
                     : PenchantmentHelper.getName(enchantment).copy();
 
-            if (!incompatible.isEmpty()) tooltip
+            if (!canUse && !incompatible.isEmpty()) tooltip
                     .append(Component.literal("\n"))
-                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.incompatible", ComponentUtils.formatList(incompatible, holder -> holder.value().description()))
+                    .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.incompatible", ComponentUtils.formatList(incompatible, Component.literal(", "), holder -> holder.value().description()))
                             .withStyle(ChatFormatting.RED));
 
             if (showBookCost) tooltip
@@ -128,15 +128,15 @@ public class EnchantmentSlotWidget extends AbstractButton {
             setTooltip(Tooltip.create(tooltip));
         }
 
-        active = hasIngredient && hasEnoughBooks && hasEnoughXp && isUnlocked && canUse && incompatible.isEmpty();
+        active = hasIngredient && hasEnoughBooks && hasEnoughXp && isUnlocked && canUse;
     }
 
-    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean canAdd, boolean hasIngredient, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
-        this(x, y, enchantment, isUnlocked ? incompatible : List.of(), false, isUnlocked, isUnlocked, canAdd, hasIngredient, hasEnoughBooks, hasEnoughXp, isUnlocked);
+    public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean canAdd, boolean alreadyAdded, boolean hasIngredient, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
+        this(x, y, enchantment, isUnlocked ? incompatible : List.of(), false, isUnlocked, isUnlocked, canAdd, alreadyAdded, hasIngredient, hasEnoughBooks, hasEnoughXp, isUnlocked);
     }
 
     public EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean canRemove, boolean hasEnoughBooks) {
-        this(x, y, enchantment, incompatible, true, false, true, canRemove, true, hasEnoughBooks, true, true);
+        this(x, y, enchantment, incompatible, true, false, true, canRemove, false, true, hasEnoughBooks, true, true);
     }
 
     @Override
