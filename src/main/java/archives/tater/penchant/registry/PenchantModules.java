@@ -17,6 +17,7 @@ public class PenchantModules {
     public static final Identifier LOOT_REWORK = Penchant.id("loot_rework");
     public static final Identifier GUARANTEED_DROPS = Penchant.id("guaranteed_drops");
     public static final Identifier REDUCED_CURSES = Penchant.id("reduced_curses");
+    public static final Identifier RANDOMIZED_LIBRARIANS = Penchant.id("randomized_librarians");
 
     private static void registerPack(Identifier id) {
         registerPack(id, PackActivationType.DEFAULT_ENABLED);
@@ -39,5 +40,6 @@ public class PenchantModules {
         registerPack(LOOT_REWORK);
         registerPack(GUARANTEED_DROPS);
         registerPack(REDUCED_CURSES, PackActivationType.NORMAL);
+        registerPack(RANDOMIZED_LIBRARIANS, PackActivationType.NORMAL);
     }
 }

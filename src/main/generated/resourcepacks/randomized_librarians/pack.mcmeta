@@ -1,0 +1,15 @@
+{
+  "pack": {
+    "description": {
+      "translate": "dataPack.penchant.randomized_librarians.description"
+    },
+    "max_format": [
+      107,
+      1
+    ],
+    "min_format": [
+      107,
+      1
+    ]
+  }
+}

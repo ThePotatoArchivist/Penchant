@@ -53,5 +53,8 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
 
         var noCursePack = createPack(fabricDataGenerator, PenchantModules.REDUCED_CURSES);
         noCursePack.addProvider(CurseEnchantmentTagGenerator::new);
+
+        var librarianPack = createPack(fabricDataGenerator, PenchantModules.RANDOMIZED_LIBRARIANS);
+        librarianPack.addProvider(VillagerTradeGenerator::new);
 	}
 }

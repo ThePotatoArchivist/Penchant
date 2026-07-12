@@ -38,5 +38,6 @@
   "advancements.penchant.babel.title": "Babel",
   "advancements.penchant.babel.description": "Build an enchanting library with over 300 books",
   "advancements.penchant.extract_enchantment.title": "Reverse Engineering",
-  "advancements.penchant.extract_enchantment.description": "Extract enchantments from found gear"
+  "advancements.penchant.extract_enchantment.description": "Extract enchantments from found gear",
+  "penchant.tooltip.random_enchantment": "Random Enchantment"
 }
