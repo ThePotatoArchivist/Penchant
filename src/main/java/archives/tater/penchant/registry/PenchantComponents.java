@@ -58,8 +58,12 @@ public class PenchantComponents {
 
     public static void init() {
         DefaultItemComponentEvents.MODIFY.register(context -> {
-            context.modify(item -> item.components().has(DataComponents.MAX_DAMAGE), (builder, item) ->
-                    builder.set(ENCHANTMENT_PROGRESS_COST_FACTOR, clamp(item.components().getOrDefault(DataComponents.MAX_DAMAGE, 0) / 100, 1, 8)));
+            context.modify(
+                    item -> item.components().has(DataComponents.MAX_DAMAGE) &&
+                            !item.components().has(ENCHANTMENT_PROGRESS_COST_FACTOR),
+                    (builder, item) ->
+                            builder.set(ENCHANTMENT_PROGRESS_COST_FACTOR, clamp(item.components().getOrDefault(DataComponents.MAX_DAMAGE, 0) / 100, 1, 8))
+            );
         });
     }
 }
