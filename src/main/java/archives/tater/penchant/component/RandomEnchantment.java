@@ -23,11 +23,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -46,47 +43,18 @@ public record RandomEnchantment(Optional<HolderSet<Enchantment>> options, boolea
             RandomEnchantment::new
     );
 
-    public static ItemStack resolve(ItemStack stack, ServerLevel level) {
+    public static void resolve(ItemStack stack, ServerLevel level) {
         var randomEnchantment = stack.remove(PenchantComponents.RANDOM_ENCHANTMENT);
-        if (randomEnchantment == null) return stack;
+        if (randomEnchantment == null) return;
         var builder = EnchantRandomlyFunction.randomEnchantment()
                 .withOptions(randomEnchantment.options);
         if (!randomEnchantment.onlyCompatible) builder.allowingIncompatibleEnchantments();
         var context = new LootContext.Builder(new LootParams.Builder(level).create(LootContextParamSets.EMPTY)).create(Optional.empty());
-        return builder.build().apply(stack, context);
+        builder.build().apply(stack, context);
     }
 
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
         consumer.accept(Component.translatable("penchant.tooltip.random_enchantment").withStyle(ChatFormatting.GRAY));
-    }
-
-    public static class LootFunction extends LootItemConditionalFunction {
-
-        public static final MapCodec<LootFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> commonFields(instance).and(
-                RandomEnchantment.MAP_CODEC.forGetter(function -> function.randomEnchantment)
-        ).apply(instance, LootFunction::new));
-
-        private final RandomEnchantment randomEnchantment;
-
-        public LootFunction(RandomEnchantment randomEnchantment) {
-            this(List.of(), randomEnchantment);
-        }
-
-        public LootFunction(List<LootItemCondition> predicates, RandomEnchantment randomEnchantment) {
-            super(predicates);
-            this.randomEnchantment = randomEnchantment;
-        }
-
-        @Override
-        public MapCodec<? extends LootFunction> codec() {
-            return CODEC;
-        }
-
-        @Override
-        protected ItemStack run(ItemStack itemStack, LootContext context) {
-            itemStack.set(PenchantComponents.RANDOM_ENCHANTMENT, randomEnchantment);
-            return itemStack;
-        }
     }
 }

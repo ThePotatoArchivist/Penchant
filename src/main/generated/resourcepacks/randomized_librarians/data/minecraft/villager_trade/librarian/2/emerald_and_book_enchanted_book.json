@@ -2,14 +2,13 @@
   "additional_wants": {
     "id": "minecraft:book"
   },
-  "given_item_modifiers": [
-    {
-      "function": "penchant:random_enchantment",
-      "only_compatible": false,
-      "options": "#minecraft:tradeable"
-    }
-  ],
   "gives": {
+    "components": {
+      "penchant:random_enchantment": {
+        "only_compatible": false,
+        "options": "#minecraft:tradeable"
+      }
+    },
     "id": "minecraft:enchanted_book"
   },
   "max_uses": 1.0,

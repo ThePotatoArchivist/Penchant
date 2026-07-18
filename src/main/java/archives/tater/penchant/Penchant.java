@@ -40,7 +40,6 @@ public class Penchant implements ModInitializer {
         PenchantEnchantments.init();
         PenchantMenus.init();
         PenchantAdvancements.init();
-        PenchantLootFunctions.init();
         PenchantModules.init();
         LootModification.init();
 

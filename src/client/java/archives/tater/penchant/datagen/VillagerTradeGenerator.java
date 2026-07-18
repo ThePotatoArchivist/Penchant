@@ -1,11 +1,13 @@
 package archives.tater.penchant.datagen;
 
 import archives.tater.penchant.component.RandomEnchantment;
+import archives.tater.penchant.registry.PenchantComponents;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
@@ -27,15 +29,17 @@ public class VillagerTradeGenerator extends FabricDynamicRegistryProvider {
         return new VillagerTrade(
                 new TradeCost(Items.EMERALD, emeraldCost),
                 Optional.of(new TradeCost(Items.BOOK, 1)),
-                new ItemStackTemplate(Items.ENCHANTED_BOOK),
+                new ItemStackTemplate(Items.ENCHANTED_BOOK, DataComponentPatch.builder()
+                        .set(PenchantComponents.RANDOM_ENCHANTMENT, new RandomEnchantment(
+                                Optional.of(registries.getOrThrow(EnchantmentTags.TRADEABLE)),
+                                false
+                        ))
+                        .build()),
                 maxUses,
                 xp,
                 0.2f,
                 Optional.empty(),
-                List.of(new RandomEnchantment.LootFunction(new RandomEnchantment(
-                        Optional.of(registries.getOrThrow(EnchantmentTags.TRADEABLE)),
-                        false
-                )))
+                List.of()
         );
     }
 
