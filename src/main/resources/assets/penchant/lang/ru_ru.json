@@ -29,6 +29,8 @@
   "dataPack.penchant.guaranteed_drops.description": "С мобов всегда будет выпадать зачарованное снаряжение",
   "dataPack.penchant.reduced_curses.name": "Меньше проклятий [Penchant]",
   "dataPack.penchant.reduced_curses.description": "Проклятия появляются только на снаряжении мобов",
+  "dataPack.penchant.randomized_librarians.name": "Случайные библиотекари [Penchant]",
+  "dataPack.penchant.randomized_librarians.description": "Библиотекари продают разную книгу каждый раз",
   "advancements.penchant.enchanted_bookshelf.title": "Исследования и разработки",
   "advancements.penchant.enchanted_bookshelf.description": "Разблокируйте зачарование, расположив зачарованную книгу рядом со столом зачарования",
   "advancements.penchant.all_enchantments.title": "Омнимантия",
@@ -39,6 +41,7 @@
   "advancements.penchant.babel.description": "Постройте библиотеку зачарования с более чем 300 книгами",
   "advancements.penchant.extract_enchantment.title": "Обратная разработка",
   "advancements.penchant.extract_enchantment.description": "Извлеките зачарования из найденного снаряжения",
-  "modmenu.descriptionTranslation.penchant": "Переработка заклинаний, направленная на повышение уровня заклинаний посредством их использования.",
-  "fml.menu.mods.info.description.penchant": "Переработка заклинаний, направленная на повышение уровня заклинаний посредством их использования."
+  "modmenu.descriptionTranslation.penchant": "Переработка зачарований, направленная на повышение уровня зачарований посредством их использования.",
+  "fml.menu.mods.info.description.penchant": "Переработка зачарований, направленная на повышение уровня зачарований посредством их использования.",
+  "penchant.tooltip.random_enchantment": "Случайное зачарование"
 }

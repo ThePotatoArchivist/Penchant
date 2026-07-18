@@ -29,6 +29,8 @@
   "dataPack.penchant.guaranteed_drops.description": "З мобів завжди випадатиме зачароване спорядження",
   "dataPack.penchant.reduced_curses.name": "Менше проклять [Penchant]",
   "dataPack.penchant.reduced_curses.description": "Прокляття з'являються лише на спорядженні мобів",
+  "dataPack.penchant.randomized_librarians.name": "Випадкові бібліотекарі [Penchant]",
+  "dataPack.penchant.randomized_librarians.description": "Бібліотекарі продають різну книгу щоразу",
   "advancements.penchant.enchanted_bookshelf.title": "Дослідження та розроблення",
   "advancements.penchant.enchanted_bookshelf.description": "Розблокуйте зачарування, поклавши зачаровану книгу біля свого стола зачарування",
   "advancements.penchant.all_enchantments.title": "Омнімантія",
@@ -40,5 +42,6 @@
   "advancements.penchant.extract_enchantment.title": "Зворотне проєктування",
   "advancements.penchant.extract_enchantment.description": "Видобудьте зачарування зі знайденого спорядження",
   "modmenu.descriptionTranslation.penchant": "Переробка зачарувань, спрямована на підвищення Їхнього рівня шляхом використання.",
-  "fml.menu.mods.info.description.penchant": "Переробка зачарувань, спрямована на підвищення Їхнього рівня шляхом використання."
+  "fml.menu.mods.info.description.penchant": "Переробка зачарувань, спрямована на підвищення Їхнього рівня шляхом використання.",
+  "penchant.tooltip.random_enchantment": "Випадкове зачарування"
 }
