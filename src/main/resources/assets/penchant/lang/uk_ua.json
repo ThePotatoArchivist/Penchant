@@ -2,6 +2,7 @@
   "penchant.tooltip.progress": "%s/%s",
   "penchant.tooltip.progress.max": "МАКС",
   "penchant.tooltip.progress.key": "[%s] Переглянути прогрес",
+  "penchant.tooltip.random_enchantment": "Випадкове зачарування",
   "key.category.penchant.penchant": "Penchant",
   "key.penchant.show_progress": "Показати прогрес зачарування",
   "container.penchant.enchant.slot.enchant": "Розмістіть спорядження, щоб зачарувати",
@@ -42,6 +43,5 @@
   "advancements.penchant.extract_enchantment.title": "Зворотне проєктування",
   "advancements.penchant.extract_enchantment.description": "Видобудьте зачарування зі знайденого спорядження",
   "modmenu.descriptionTranslation.penchant": "Переробка зачарувань, спрямована на підвищення Їхнього рівня шляхом використання.",
-  "fml.menu.mods.info.description.penchant": "Переробка зачарувань, спрямована на підвищення Їхнього рівня шляхом використання.",
-  "penchant.tooltip.random_enchantment": "Випадкове зачарування"
+  "fml.menu.mods.info.description.penchant": "Переробка зачарувань, спрямована на підвищення Їхнього рівня шляхом використання."
 }
