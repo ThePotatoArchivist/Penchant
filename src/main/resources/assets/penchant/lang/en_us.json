@@ -2,6 +2,7 @@
   "penchant.tooltip.progress": "%s/%s",
   "penchant.tooltip.progress.max": "MAX",
   "penchant.tooltip.progress.key": "[%s] See progress",
+  "penchant.tooltip.random_enchantment": "Random Enchantment",
   "key.category.penchant.penchant": "Penchant",
   "key.penchant.show_progress": "Show Enchantment Progress",
   "container.penchant.enchant.slot.enchant": "Add equipment to modify enchantments",
@@ -41,5 +42,5 @@
   "advancements.penchant.babel.description": "Build an enchanting library with over 300 books",
   "advancements.penchant.extract_enchantment.title": "Reverse Engineering",
   "advancements.penchant.extract_enchantment.description": "Extract enchantments from found gear",
-  "penchant.tooltip.random_enchantment": "Random Enchantment"
+  "tag.item.penchant.max_level_enchantments": "Max Level Enchantable"
 }

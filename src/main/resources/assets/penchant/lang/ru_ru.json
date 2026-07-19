@@ -2,6 +2,7 @@
   "penchant.tooltip.progress": "%s/%s",
   "penchant.tooltip.progress.max": "МАКС",
   "penchant.tooltip.progress.key": "[%s] Просмотреть прогресс",
+  "penchant.tooltip.random_enchantment": "Случайное зачарование",
   "key.category.penchant.penchant": "Penchant",
   "key.penchant.show_progress": "Показать прогресс зачарования",
   "container.penchant.enchant.slot.enchant": "Добавьте снаряжение, чтобы зачаровать",
@@ -42,6 +43,5 @@
   "advancements.penchant.extract_enchantment.title": "Обратная разработка",
   "advancements.penchant.extract_enchantment.description": "Извлеките зачарования из найденного снаряжения",
   "modmenu.descriptionTranslation.penchant": "Переработка зачарований, направленная на повышение уровня зачарований посредством их использования.",
-  "fml.menu.mods.info.description.penchant": "Переработка зачарований, направленная на повышение уровня зачарований посредством их использования.",
-  "penchant.tooltip.random_enchantment": "Случайное зачарование"
+  "fml.menu.mods.info.description.penchant": "Переработка зачарований, направленная на повышение уровня зачарований посредством их использования."
 }

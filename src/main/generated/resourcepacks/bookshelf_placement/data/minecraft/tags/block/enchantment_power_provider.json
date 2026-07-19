@@ -2,6 +2,10 @@
   "values": [
     "minecraft:chiseled_bookshelf",
     "minecraft:lectern",
-    "#c:bookshelves"
+    "#c:bookshelves",
+    {
+      "id": "#c:chiseled_bookshelves",
+      "required": false
+    }
   ]
 }
