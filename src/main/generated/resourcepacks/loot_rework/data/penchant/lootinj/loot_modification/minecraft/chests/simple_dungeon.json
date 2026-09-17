@@ -4,14 +4,14 @@
       "entries": [
         {
           "type": "minecraft:empty",
-          "weight": 11
+          "weight": 14
         },
         {
           "type": "minecraft:item",
           "modifier": {
             "type": "minecraft:set_enchantments",
             "enchantments": {
-              "minecraft:density": 1
+              "minecraft:silk_touch": 1
             }
           },
           "name": "minecraft:book"
@@ -21,7 +21,7 @@
           "modifier": {
             "type": "minecraft:set_enchantments",
             "enchantments": {
-              "minecraft:breach": 1
+              "minecraft:fortune": 1
             }
           },
           "name": "minecraft:book"
@@ -30,7 +30,5 @@
       "rolls": 1
     }
   ],
-  "targets": [
-    "minecraft:chests/trial_chambers/reward_rare"
-  ]
+  "targets": "minecraft:chests/simple_dungeon"
 }

@@ -4,14 +4,14 @@
       "entries": [
         {
           "type": "minecraft:empty",
-          "weight": 4
+          "weight": 9
         },
         {
           "type": "minecraft:item",
           "modifier": {
             "type": "minecraft:set_enchantments",
             "enchantments": {
-              "minecraft:infinity": 1
+              "minecraft:thorns": 1
             }
           },
           "name": "minecraft:book"
@@ -20,7 +20,5 @@
       "rolls": 1
     }
   ],
-  "targets": [
-    "minecraft:chests/jungle_temple"
-  ]
+  "targets": "minecraft:chests/desert_pyramid"
 }

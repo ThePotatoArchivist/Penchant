@@ -20,7 +20,5 @@
       "rolls": 1
     }
   ],
-  "targets": [
-    "minecraft:chests/igloo_chest"
-  ]
+  "targets": "minecraft:chests/igloo_chest"
 }

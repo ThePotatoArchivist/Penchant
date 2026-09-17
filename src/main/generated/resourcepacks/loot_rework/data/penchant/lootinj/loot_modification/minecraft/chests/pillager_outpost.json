@@ -4,14 +4,14 @@
       "entries": [
         {
           "type": "minecraft:empty",
-          "weight": 7
+          "weight": 4
         },
         {
           "type": "minecraft:item",
           "modifier": {
             "type": "minecraft:set_enchantments",
             "enchantments": {
-              "minecraft:lunge": 1
+              "minecraft:multishot": 1
             }
           },
           "name": "minecraft:book"
@@ -20,7 +20,5 @@
       "rolls": 1
     }
   ],
-  "targets": [
-    "minecraft:chests/bastion_other"
-  ]
+  "targets": "minecraft:chests/pillager_outpost"
 }

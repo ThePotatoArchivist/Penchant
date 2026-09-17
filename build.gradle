@@ -30,6 +30,10 @@ repositories {
         name = "Xander Maven"
         url = "https://maven.isxander.dev/releases"
     }
+	maven {
+		name = "JitPack"
+		url = "https://jitpack.io"
+	}
 }
 
 loom {
@@ -60,6 +64,8 @@ dependencies {
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	implementation include("folk.sisby:kaleido-config:${project.kaleido_version}")
+
+	implementation include("com.github.ThePotatoArchivist:LootInj:${project.lootinj_version}")
 
     compileOnly("cc.cassian.item-descriptions:item-descriptions-fabric:${project.item_descriptions_version}") {
 		exclude group: "net.fabricmc.fabric-api"

@@ -11,7 +11,7 @@
           "modifier": {
             "type": "minecraft:set_enchantments",
             "enchantments": {
-              "minecraft:multishot": 1
+              "minecraft:infinity": 1
             }
           },
           "name": "minecraft:book"
@@ -20,7 +20,5 @@
       "rolls": 1
     }
   ],
-  "targets": [
-    "minecraft:chests/pillager_outpost"
-  ]
+  "targets": "minecraft:chests/jungle_temple"
 }

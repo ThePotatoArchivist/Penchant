@@ -1,6 +1,5 @@
 package archives.tater.penchant;
 
-import archives.tater.penchant.loot.LootModification;
 import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.registry.*;
@@ -48,7 +47,6 @@ public class Penchant implements ModInitializer {
         PenchantMenus.init();
         PenchantAdvancements.init();
         PenchantModules.init();
-        LootModification.init();
 
         ServerLifecycleEvents.SERVER_STARTED.register(server ->
             PenchantmentDefinition.buildCache(server.registryAccess())

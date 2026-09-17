@@ -4,14 +4,14 @@
       "entries": [
         {
           "type": "minecraft:empty",
-          "weight": 18
+          "weight": 14
         },
         {
           "type": "minecraft:item",
           "modifier": {
             "type": "minecraft:set_enchantments",
             "enchantments": {
-              "minecraft:respiration": 1
+              "minecraft:fire_aspect": 1
             }
           },
           "name": "minecraft:book"
@@ -21,7 +21,7 @@
           "modifier": {
             "type": "minecraft:set_enchantments",
             "enchantments": {
-              "minecraft:depth_strider": 1
+              "minecraft:flame": 1
             }
           },
           "name": "minecraft:book"
@@ -30,7 +30,5 @@
       "rolls": 1
     }
   ],
-  "targets": [
-    "minecraft:chests/shipwreck_treasure"
-  ]
+  "targets": "minecraft:chests/ruined_portal"
 }

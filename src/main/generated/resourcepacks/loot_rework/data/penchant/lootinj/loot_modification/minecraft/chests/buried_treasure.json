@@ -55,7 +55,5 @@
       "rolls": 1
     }
   ],
-  "targets": [
-    "minecraft:chests/buried_treasure"
-  ]
+  "targets": "minecraft:chests/buried_treasure"
 }
