@@ -1,8 +1,8 @@
 package archives.tater.penchant.datagen;
 
+import archives.tater.lootinj.api.LootInj;
+import archives.tater.lootinj.api.LootModification;
 import archives.tater.penchant.Penchant;
-import archives.tater.penchant.loot.LootModification;
-import archives.tater.penchant.registry.PenchantRegistries;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
@@ -19,10 +19,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
 
 import static net.minecraft.world.level.storage.loot.LootPool.lootPool;
 import static net.minecraft.world.level.storage.loot.entries.EmptyLootItem.emptyItem;
@@ -35,12 +32,11 @@ public class LootModificationGenerator extends FabricDynamicRegistryProvider {
     }
 
     private static void addInject(Entries entries, ResourceKey<LootTable> target, LootPool.Builder... inject) {
-        entries.add(ResourceKey.create(PenchantRegistries.LOOT_MODIFICATION, Penchant.id(target.identifier().getNamespace() + "/" + target.identifier().getPath())), new LootModification(
-                List.of(target),
-                Arrays.stream(inject).map(LootPool.Builder::build).toList(),
-                List.of(),
-                Optional.empty()
-        ));
+        entries.add(ResourceKey.create(LootInj.LOOT_MODIFICATION, Penchant.id(target.identifier().getNamespace() + "/" + target.identifier().getPath())), LootModification.builder()
+                .target(target)
+                .pools(Arrays.stream(inject).map(LootPool.Builder::build).toList())
+                .build()
+        );
     }
 
     @SafeVarargs
@@ -83,15 +79,13 @@ public class LootModificationGenerator extends FabricDynamicRegistryProvider {
         addInject(entries, BuiltInLootTables.ABANDONED_MINESHAFT, createBooks(registry, 8, Enchantments.SILK_TOUCH, Enchantments.FORTUNE));
         addInject(entries, BuiltInLootTables.SIMPLE_DUNGEON, createBooks(registry, 14, Enchantments.SILK_TOUCH, Enchantments.FORTUNE));
         addInject(entries, BuiltInLootTables.SHIPWRECK_TREASURE, createBooks(registry, 18, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER));
-        entries.add(ResourceKey.create(PenchantRegistries.LOOT_MODIFICATION, Penchant.id("minecraft/chests/underwater_ruin")), new LootModification(
-                List.of(BuiltInLootTables.UNDERWATER_RUIN_SMALL, BuiltInLootTables.UNDERWATER_RUIN_BIG),
-                Stream.of(
-                        createBooks(registry, 8, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER),
-                        createBooks(registry, 18, Enchantments.CHANNELING, Enchantments.RIPTIDE)
-                ).map(LootPool.Builder::build).toList(),
-                List.of(),
-                Optional.empty()
-        ));
+        entries.add(ResourceKey.create(LootInj.LOOT_MODIFICATION, Penchant.id("minecraft/chests/underwater_ruin")), LootModification.builder()
+                .target(BuiltInLootTables.UNDERWATER_RUIN_SMALL)
+                .target(BuiltInLootTables.UNDERWATER_RUIN_BIG)
+                .pool(createBooks(registry, 8, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER))
+                .pool(createBooks(registry, 18, Enchantments.CHANNELING, Enchantments.RIPTIDE))
+                .build()
+        );
         addInject(entries, BuiltInLootTables.BURIED_TREASURE,
                 createBooks(registry, Enchantments.CHANNELING, Enchantments.RIPTIDE),
                 createBooks(registry, 8, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER)

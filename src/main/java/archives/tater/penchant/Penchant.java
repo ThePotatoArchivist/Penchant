@@ -2,7 +2,6 @@ package archives.tater.penchant;
 
 import archives.tater.penchant.compat.PenchantCompat;
 import archives.tater.penchant.component.EnchantmentProgress;
-import archives.tater.penchant.loot.LootModification;
 import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.registry.*;
@@ -55,7 +54,6 @@ public class Penchant implements ModInitializer {
         PenchantMenus.init();
         PenchantAdvancements.init();
         PenchantModules.init();
-        LootModification.init();
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (!(entity instanceof Enemy) && !entity.is(PenchantEntityTags.KILL_LEVELS_UP_EQUIPMENT)) return;

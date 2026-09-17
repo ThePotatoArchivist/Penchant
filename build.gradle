@@ -77,6 +77,7 @@ dependencies {
 
 	implementation "maven.modrinth:hcapi:${project.hcapi_version}"
 	implementation include("folk.sisby:kaleido-config:${project.kaleido_version}")
+    implementation include("maven.modrinth:lootinj:${project.lootinj_version}")
 
 	compileOnly("cc.cassian.item-descriptions:item-descriptions-fabric:${project.item_descriptions_version}") {
 		exclude group: "net.fabricmc.fabric-api"
