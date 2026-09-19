@@ -40,5 +40,8 @@
 	},
 	"suggests": {
 		"another-mod": "*"
+	},
+	"custom": {
+		"launchpad:compatible": true
 	}
 }

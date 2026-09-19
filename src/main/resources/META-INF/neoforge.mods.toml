@@ -1,0 +1,24 @@
+license="LGPL-3.0-or-later"
+issueTrackerURL="https://github.com/ThePotatoArchivist/Penchant"
+
+[properties]
+"launchpad:placeholder"=true
+
+[[mods]]
+modId="penchant"
+version="0.5.5+mc26.1.2+launchpad"
+displayName="Penchant"
+displayURL="https://modrinth.com/mod/penchant"
+logoFile="assets/penchant/icon.png"
+authors="ThePotatoArchivist"
+description='''
+A rework of enchanting, centered around leveling up enchantments through usage
+'''
+
+[[dependencies.penchant]]
+modId="launchpad"
+type="required"
+versionRange="*"
+ordering="NONE"
+side="BOTH"
+
