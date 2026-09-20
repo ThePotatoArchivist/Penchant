@@ -68,8 +68,6 @@ dependencies {
     compileOnly localRuntime("cc.cassian.item-descriptions:item-descriptions-fabric:${project.item_descriptions_version}") {
 		exclude group: "net.fabricmc.fabric-api"
 	}
-
-	implementation "org.sinytra.launchpad:launchpad:${project.launchpad_version}"
 }
 
 processResources {

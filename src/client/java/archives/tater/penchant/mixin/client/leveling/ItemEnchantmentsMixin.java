@@ -7,7 +7,6 @@ import archives.tater.penchant.registry.PenchantEnchantmentTags;
 import archives.tater.penchant.registry.PenchantItemTags;
 import archives.tater.penchant.util.PenchantmentHelper;
 
-import net.fabricmc.fabric.api.item.v1.FabricTooltipFlag;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
@@ -67,7 +66,7 @@ public class ItemEnchantmentsMixin {
             at = @At("TAIL")
     )
     private void addHint(TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components, CallbackInfo ci, @Share("progress") LocalRef<@Nullable EnchantmentProgress> progress) {
-        if (progress.get() == null || enchantments.isEmpty() || (!PenchantClient.shouldShowKeyHint() && !((FabricTooltipFlag) flag).shouldDisplayAllInformation())) return;
+        if (progress.get() == null || enchantments.isEmpty() || (!PenchantClient.shouldShowKeyHint() && !flag.shouldDisplayAllInformation())) return;
 
         consumer.accept(PenchantClient.getProgressKeyHint());
     }

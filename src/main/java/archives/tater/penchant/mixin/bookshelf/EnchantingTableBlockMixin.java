@@ -6,33 +6,25 @@ import archives.tater.penchant.util.PenchantmentHelper;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-
 import org.objectweb.asm.Opcodes;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EnchantingTableBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
 @Mixin(EnchantingTableBlock.class)
 public class EnchantingTableBlockMixin {
-    @Definition(id = "is", method = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z")
-    @Definition(id = "ENCHANTMENT_POWER_PROVIDER", field = "Lnet/minecraft/tags/BlockTags;ENCHANTMENT_POWER_PROVIDER:Lnet/minecraft/tags/TagKey;")
-    @Expression("?.is(ENCHANTMENT_POWER_PROVIDER)")
-    @WrapOperation(
+    @ModifyReturnValue(
             method = "isValidBookShelf",
-            at = @At("MIXINEXTRAS:EXPRESSION")
+            at = @At("RETURN")
     )
-    private static boolean checkChiseled(BlockState instance, TagKey<Block> tagKey, Operation<Boolean> original) {
-        if (!original.call(instance, tagKey)) return false;
-        return PenchantmentHelper.getBookCount(instance) > 0;
+    private static boolean checkChiseled(boolean original, Level level, BlockPos pos, BlockPos offset) {
+        return original && PenchantmentHelper.getBookCount(level.getBlockState(pos.offset(offset))) > 0;
     }
 
     @ModifyExpressionValue(
