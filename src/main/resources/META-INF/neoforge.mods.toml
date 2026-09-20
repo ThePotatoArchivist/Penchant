@@ -6,7 +6,7 @@ issueTrackerURL="https://github.com/ThePotatoArchivist/Penchant"
 
 [[mods]]
 modId="penchant"
-version="0.5.5+mc26.1.2+launchpad"
+version="0.5.6+mc26.1.2"
 displayName="Penchant"
 displayURL="https://modrinth.com/mod/penchant"
 logoFile="assets/penchant/icon.png"
