@@ -1,7 +1,6 @@
 package archives.tater.penchant.client.gui.screen;
 
 import archives.tater.penchant.Penchant;
-import archives.tater.penchant.PenchantCompat;
 import archives.tater.penchant.client.FontUtils;
 import archives.tater.penchant.client.gui.ScrollbarComponent;
 import archives.tater.penchant.client.gui.widget.EnchantmentSlotWidget;
@@ -28,7 +27,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import org.jspecify.annotations.Nullable;
-import org.vulpixel.enchiridion.world.item.enchantment.category.EnchantmentCategoryHelper;
 
 import java.util.List;
 
@@ -136,23 +134,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private List<Holder<Enchantment>> getIncompatible(ItemStack stack, Holder<Enchantment> enchantment, HolderLookup.Provider registries) {
         if (PenchantmentHelper.hasEnchantment(stack, enchantment)) return List.of();
 
-        return PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> areIncompatible(enchantment, other, registries, stack)).toList();
-    }
-
-    private static boolean areIncompatible(Holder<Enchantment> first, Holder<Enchantment> second, HolderLookup.Provider registries, ItemStack stack) {
-        if (first.equals(second)) return false;
-        if (!Enchantment.areCompatible(first, second)) return true;
-
-        if (PenchantCompat.ENCHIRIDION_INSTALLED) {
-            var firstCategory = EnchantmentCategoryHelper.getFirstEnchantmentCategoryForEnchantment(registries, first).orElse(null);
-            var secondCategory = EnchantmentCategoryHelper.getFirstEnchantmentCategoryForEnchantment(registries, second).orElse(null);
-            if (firstCategory != null && firstCategory.equals(secondCategory)) {
-                if (EnchantmentCategoryHelper.isCategoryLimitReached(firstCategory, stack, first))
-                    return true;
-            }
-        }
-
-        return false;
+        return PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> !PenchantmentHelper.areCompatible(enchantment, other, stack, registries)).toList();
     }
 
     @Override
