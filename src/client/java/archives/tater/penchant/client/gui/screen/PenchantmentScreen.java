@@ -1,6 +1,7 @@
 package archives.tater.penchant.client.gui.screen;
 
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.PenchantCompat;
 import archives.tater.penchant.client.FontUtils;
 import archives.tater.penchant.client.gui.ScrollbarComponent;
 import archives.tater.penchant.client.gui.widget.EnchantmentSlotWidget;
@@ -16,6 +17,7 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.book.BookModel;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.objects.AtlasSprite;
@@ -26,6 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import org.jspecify.annotations.Nullable;
+import org.vulpixel.enchiridion.world.item.enchantment.category.EnchantmentCategoryHelper;
 
 import java.util.List;
 
@@ -99,6 +102,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
 
         var creative = requireNonNull(minecraft.player).hasInfiniteMaterials();
         if (!menu.isEnchanting() && !menu.isDisenchanting()) return;
+        var registries = minecraft.level.registryAccess();
         var disenchanting = menu.isDisenchanting();
         for (var i = 0; i < 5; i++) {
             var index = scrollbar.getPosition() + i;
@@ -109,7 +113,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         leftPos + 60,
                         topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                         enchantment,
-                        getIncompatible(menu.getIngredientStack(), enchantment),
+                        getIncompatible(menu.getIngredientStack(), enchantment, registries),
                         !PenchantmentHelper.hasEnchantment(menu.getIngredientStack(), enchantment),
                         creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount()
                 ));
@@ -118,7 +122,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         leftPos + 60,
                         topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
                         enchantment,
-                        getIncompatible(stack, enchantment),
+                        getIncompatible(stack, enchantment, registries),
                         PenchantmentHelper.canEnchant(stack, enchantment),
                         PenchantmentHelper.hasEnchantment(stack, enchantment),
                         creative || !menu.getIngredientStack().isEmpty(),
@@ -129,10 +133,26 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         }
     }
 
-    private List<Holder<Enchantment>> getIncompatible(ItemStack stack, Holder<Enchantment> enchantment) {
-        return PenchantmentHelper.hasEnchantment(stack, enchantment)
-                ? List.of()
-                : PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> !enchantment.equals(other) && !Enchantment.areCompatible(enchantment, other)).toList();
+    private List<Holder<Enchantment>> getIncompatible(ItemStack stack, Holder<Enchantment> enchantment, HolderLookup.Provider registries) {
+        if (PenchantmentHelper.hasEnchantment(stack, enchantment)) return List.of();
+
+        return PenchantmentHelper.getEnchantments(stack).keySet().stream().filter(other -> areIncompatible(enchantment, other, registries, stack)).toList();
+    }
+
+    private static boolean areIncompatible(Holder<Enchantment> first, Holder<Enchantment> second, HolderLookup.Provider registries, ItemStack stack) {
+        if (first.equals(second)) return false;
+        if (!Enchantment.areCompatible(first, second)) return true;
+
+        if (PenchantCompat.ENCHIRIDION_INSTALLED) {
+            var firstCategory = EnchantmentCategoryHelper.getFirstEnchantmentCategoryForEnchantment(registries, first).orElse(null);
+            var secondCategory = EnchantmentCategoryHelper.getFirstEnchantmentCategoryForEnchantment(registries, second).orElse(null);
+            if (firstCategory != null && firstCategory.equals(secondCategory)) {
+                if (EnchantmentCategoryHelper.isCategoryLimitReached(firstCategory, stack, first))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
