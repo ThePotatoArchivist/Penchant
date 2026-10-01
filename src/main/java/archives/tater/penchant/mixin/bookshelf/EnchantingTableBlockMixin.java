@@ -24,7 +24,7 @@ public class EnchantingTableBlockMixin {
             at = @At("RETURN")
     )
     private static boolean checkChiseled(boolean original, Level level, BlockPos pos, BlockPos offset) {
-        return original && PenchantmentHelper.getBookCount(level.getBlockState(pos.offset(offset))) > 0;
+        return original && PenchantmentHelper.getBookCount(level, pos.offset(offset)) > 0;
     }
 
     @ModifyExpressionValue(

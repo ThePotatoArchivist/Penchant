@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -42,6 +41,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static archives.tater.penchant.util.PenchantUtil.streamOrdered;
+import static net.minecraft.util.Mth.floor;
 
 public class PenchantmentMenu extends AbstractContainerMenu {
     private final Container enchantSlots = new SimpleContainer(2) {
@@ -173,13 +173,11 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public static int getBookCount(Level level, BlockPos pos) {
-        return PenchantmentHelper.getBookshelfOffsets().stream()
+        return floor(PenchantmentHelper.getBookshelfOffsets().stream()
                 .filter(offset -> EnchantingTableBlock.isValidBookShelf(level, pos, offset))
                 .map(pos::offset)
-                .map(level::getBlockState)
-                .filter(state -> state.is(BlockTags.ENCHANTMENT_POWER_PROVIDER))
-                .mapToInt(PenchantmentHelper::getBookCount)
-                .sum();
+                .mapToDouble(offsetPos -> PenchantmentHelper.getBookCount(level, offsetPos))
+                .sum());
     }
 
     public static boolean hasDisenchanter(Level level, BlockPos pos) {

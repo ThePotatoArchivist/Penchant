@@ -19,10 +19,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.LecternBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
 import org.jspecify.annotations.Nullable;
 
@@ -126,7 +126,8 @@ public class PenchantmentHelper {
         return getBookshelfOffsets(EnchantingTableBlock.BOOKSHELF_OFFSETS);
     }
 
-    public static int getBookCount(BlockState state) {
+    public static float getBookCount(BlockGetter level, BlockPos pos) {
+        var state = level.getBlockState(pos);
         if (state.hasProperty(ChiseledBookShelfBlock.SLOT_0_OCCUPIED))
             return (int) ChiseledBookShelfBlock.SLOT_OCCUPIED_PROPERTIES.stream().filter(state::getValue).count();
         if (state.hasProperty(LecternBlock.HAS_BOOK))
