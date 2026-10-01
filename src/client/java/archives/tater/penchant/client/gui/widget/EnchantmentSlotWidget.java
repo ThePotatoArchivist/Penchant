@@ -1,6 +1,7 @@
 package archives.tater.penchant.client.gui.widget;
 
 import archives.tater.penchant.Penchant;
+import archives.tater.penchant.PenchantCompat;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.util.PenchantmentHelper;
 
@@ -16,12 +17,14 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
@@ -46,16 +49,19 @@ public class EnchantmentSlotWidget extends AbstractButton {
     public static final int INSUFFICIENT_COLOR = 0xffff5555;
     public static final int XP_COLOR = 0xFF80FF20;
     public static final int BOOK_COLOR = 0XFFFFAA00;
+    public static final int CURSE_TEXT_COLOR = 0xFF891d13;
+    public static final int BASE_TEXT_COLOR = 0xFF332E25;
+    public static final int HOVER_TEXT_COLOR = 0xFFFCFC7E;
 
     private final Holder<Enchantment> enchantment;
     private final Component text;
     private final @Nullable Component costText;
-    private final boolean isCurse;
+    private final int baseColor;
 
     private EnchantmentSlotWidget(int x, int y, Holder<Enchantment> enchantment, List<Holder<Enchantment>> incompatible, boolean remove, boolean showXpCost, boolean showBookCost, boolean canUse, boolean alreadyAdded, boolean hasIngredient, boolean hasEnoughBooks, boolean hasEnoughXp, boolean isUnlocked) {
         super(x, y, WIDTH, HEIGHT, enchantment.value().description());
         this.enchantment = enchantment;
-        isCurse = enchantment.is(EnchantmentTags.CURSE);
+        baseColor = isUnlocked || alreadyAdded ? getBaseColor(enchantment, Minecraft.getInstance().level.registryAccess()) : BASE_TEXT_COLOR;
 
         var text = enchantment.value().description().copy();
         if (!isUnlocked && !alreadyAdded) text.withStyle(style -> style.withFont(ALT_FONT));
@@ -146,7 +152,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
 
         var font = Minecraft.getInstance().font;
 
-        graphics.text(font, text, getX() + 2, getY() + 2, active && isHovered ? 0xFFFCFC7E : isCurse ? 0xFF891d13 : 0xFF332E25, false);
+        graphics.text(font, text, getX() + 2, getY() + 2, active && isHovered ? HOVER_TEXT_COLOR : baseColor, false);
 
         if (costText != null)
             graphics.text(font, costText, getX() + width - 2 - font.width(costText), getY() + 2, 0xFF404040, true);
@@ -160,5 +166,13 @@ public class EnchantmentSlotWidget extends AbstractButton {
     @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
 
+    }
+
+    private static int getBaseColor(Holder<Enchantment> enchantment, HolderLookup.Provider registries) {
+        if (PenchantCompat.ENCHIRIDION_INSTALLED) {
+            var category = PenchantCompat.getCategoryOrUncategorized(enchantment, registries);
+            return ARGB.opaque(category.value().visuals().textColor().getValue());
+        }
+        return enchantment.is(EnchantmentTags.CURSE) ? CURSE_TEXT_COLOR : BASE_TEXT_COLOR;
     }
 }
