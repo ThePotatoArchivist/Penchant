@@ -1,5 +1,5 @@
 plugins {
-    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -9,7 +9,6 @@ group = project.maven_group
 base {
 	archivesName = project.archives_base_name
 }
-
 repositories {
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
@@ -17,19 +16,31 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 	maven { url 'https://jitpack.io' }
-    maven {
-        name = "cassian's maven"
-        url = "https://maven.cassian.cc"
-    }
-    maven {
-        name = "Terraformers"
-        url = "https://maven.terraformersmc.com/"
-    }
-    maven { url 'https://repo.sleeping.town/' }
-    maven {
-        name = "Xander Maven"
-        url = "https://maven.isxander.dev/releases"
-    }
+	maven {
+		name = "cassian's maven"
+		url = "https://maven.cassian.cc"
+	}
+	maven {
+		name = "Terraformers"
+		url = "https://maven.terraformersmc.com/"
+	}
+	maven { url 'https://repo.sleeping.town/' }
+	maven {
+		name = "Xander Maven"
+		url = "https://maven.isxander.dev/releases"
+	}
+	maven {
+		name "sylv's maven"
+		url "https://maven.sylv.gay/releases"
+	}
+	maven {
+		name "Greenhouse Maven (Releases)"
+		url "https://maven.greenhouse.lgbt/releases"
+	}
+	maven {
+		name "Greenhouse Maven (Snapshots)"
+		url "https://maven.greenhouse.lgbt/snapshots"
+	}
 }
 
 loom {
@@ -62,6 +73,10 @@ dependencies {
 	implementation include("folk.sisby:kaleido-config:${project.kaleido_version}")
 
     compileOnly localRuntime("cc.cassian.item-descriptions:item-descriptions-fabric:${project.item_descriptions_version}") {
+		exclude group: "net.fabricmc.fabric-api"
+	}
+
+	compileOnly localRuntime("org.vulpixel.enchiridion:enchiridion:${project.enchiridion_version}") {
 		exclude group: "net.fabricmc.fabric-api"
 	}
 }

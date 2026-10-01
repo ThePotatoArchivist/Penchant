@@ -146,7 +146,7 @@ public class EnchantmentProgress {
             var level = enchantments.getLevel(enchantment);
             if (!enchantment.is(PenchantEnchantmentTags.NO_LEVELING) && level < enchantment.value().getMaxLevel())
                 newProgress.setProgress(enchantment,
-                        (int) (random.nextFloat() * getMaxProgress(enchantment, level, stack)));
+                        (int) (0.5f * random.nextFloat() * getMaxProgress(enchantment, level, stack)));
         }
 
         if (newProgress.progress.isEmpty()) return;

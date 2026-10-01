@@ -2,6 +2,7 @@ package archives.tater.penchant.util;
 
 import archives.tater.penchant.PenchantmentDefinition;
 import archives.tater.penchant.api.CanEnchantCallback;
+import archives.tater.penchant.api.EnchantmentCompatibleCallback;
 import archives.tater.penchant.registry.PenchantFlag;
 
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -9,6 +10,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Unit;
@@ -76,6 +78,14 @@ public class PenchantmentHelper {
     public static boolean canEnchant(ItemStack stack, Holder<Enchantment> enchantment) {
         return !hasEnchantment(stack, enchantment) && CanEnchantCallback.STACK.invoker().canEnchant(stack, enchantment).orElseGet(() ->
                 canEnchantItem(stack, enchantment) && stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment)
+        );
+    }
+
+    public static boolean areCompatible(Holder<Enchantment> enchantment, Holder<Enchantment> existing, ItemStack stack, HolderLookup.Provider registries) {
+        if (enchantment.equals(existing)) return true;
+
+        return EnchantmentCompatibleCallback.EVENT.invoker().areCompatible(enchantment, existing, stack, registries).orElseGet(() ->
+                Enchantment.areCompatible(enchantment, existing)
         );
     }
 

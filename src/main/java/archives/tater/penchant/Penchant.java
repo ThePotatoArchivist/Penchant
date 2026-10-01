@@ -41,6 +41,7 @@ public class Penchant implements ModInitializer {
 
     @Override
 	public void onInitialize() {
+        PenchantCompat.init();
         PenchantRegistries.init();
         PenchantFlag.init();
         PenchantComponents.init();
