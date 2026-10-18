@@ -5,6 +5,7 @@
   "mixins": [
     "anvil.AnvilMenuMixin",
     "bookshelf.EnchantingTableBlockMixin",
+    "compat.modestmagic.AltarBlockEntityMixin",
     "compat.modestmagic.TabletSmithingRecipeMixin",
     "disable.CreativeModeTabsMixin",
     "disable.EnchantmentHelperMixin",
