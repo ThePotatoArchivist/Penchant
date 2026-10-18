@@ -5,6 +5,7 @@
   "mixins": [
     "anvil.AnvilMenuMixin",
     "bookshelf.EnchantingTableBlockMixin",
+    "compat.modestmagic.TabletSmithingRecipeMixin",
     "disable.CreativeModeTabsMixin",
     "disable.EnchantmentHelperMixin",
     "disable.EnchantRandomlyFunctionMixin",
@@ -31,6 +32,7 @@
     "table.EnchantingTableBlockMixin",
     "table.EnchantmentMenuMixin"
   ],
+  "plugin": "PenchantMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   },

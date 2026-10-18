@@ -41,6 +41,17 @@ repositories {
 		name "Greenhouse Maven (Snapshots)"
 		url "https://maven.greenhouse.lgbt/snapshots"
 	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 loom {
@@ -79,6 +90,8 @@ dependencies {
 	compileOnly("org.vulpixel.enchiridion:enchiridion:${project.enchiridion_version}") {
 		exclude group: "net.fabricmc.fabric-api"
 	}
+
+	compileOnly "maven.modrinth:modest-magic:${project.modest_magic_version}"
 }
 
 processResources {
