@@ -15,6 +15,7 @@ import org.vulpixel.enchiridion.world.item.enchantment.category.EnchiridionEncha
 
 public class PenchantCompat {
     public static final boolean ENCHIRIDION_INSTALLED = FabricLoader.getInstance().isModLoaded("enchiridion");
+    public static final boolean MODEST_MAGIC_INSTALLED = FabricLoader.getInstance().isModLoaded("modestmagic");
 
     public static Holder.Reference<EnchantmentCategory> getCategoryOrUncategorized(Holder<Enchantment> enchantment, HolderLookup.Provider registries) {
         return EnchantmentCategoryHelper.getFirstEnchantmentCategoryForEnchantment(registries, enchantment).orElseGet(() -> registries.getOrThrow(EnchiridionEnchantmentCategories.UNCATEGORIZED));
