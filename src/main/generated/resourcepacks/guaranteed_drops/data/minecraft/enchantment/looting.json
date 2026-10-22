@@ -7,31 +7,61 @@
     "penchant:equipment_drops": [
       {
         "effect": {
-          "effect": {
-            "type": "minecraft:add",
-            "value": {
-              "type": "minecraft:linear",
-              "base": 0.35,
-              "per_level_above_first": 0.35
-            }
-          },
-          "equipment_condition": {
-            "predicates": {
-              "minecraft:enchantments": [
-                {
-                  "enchantments": "#penchant:ignore_guaranteed_drop"
-                }
-              ]
-            }
+          "type": "minecraft:add",
+          "value": {
+            "type": "minecraft:linear",
+            "base": 0.35,
+            "per_level_above_first": 0.35
           }
         },
         "enchanted": "attacker",
         "requirements": {
-          "type": "minecraft:entity_properties",
-          "entity": "attacker",
-          "predicate": {
-            "minecraft:entity_type": "minecraft:player"
-          }
+          "type": "minecraft:all_of",
+          "terms": [
+            {
+              "type": "minecraft:any_of",
+              "terms": [
+                {
+                  "type": "penchant:dropped_equipment",
+                  "item": {
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantments": "#penchant:looting_guaranteed_drop"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "minecraft:all_of",
+                  "terms": [
+                    {
+                      "type": "penchant:dropped_equipment",
+                      "item": {
+                        "items": "minecraft:trident"
+                      },
+                      "slot": "mainhand"
+                    },
+                    {
+                      "type": "minecraft:entity_properties",
+                      "entity": "this",
+                      "predicate": {
+                        "minecraft:entity_type": "minecraft:drowned"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "minecraft:entity_properties",
+              "entity": "attacker",
+              "predicate": {
+                "minecraft:entity_type": "minecraft:player"
+              }
+            }
+          ]
         }
       }
     ]

@@ -18,7 +18,9 @@ public class DropEnchantmentTagGenerator extends FabricTagsProvider<Enchantment>
 
     @Override
     protected void addTags(HolderLookup.Provider registries) {
-        builder(PenchantEnchantmentTags.IGNORE_GUARANTEED_DROP)
-                .forceAddTag(PenchantEnchantmentTags.COMMON);
+        builder(PenchantEnchantmentTags.LOOTING_GUARANTEED_DROP)
+                .forceAddTag(PenchantEnchantmentTags.UNCOMMON)
+                .forceAddTag(PenchantEnchantmentTags.RARE)
+                .forceAddTag(PenchantEnchantmentTags.UNIQUE);
     }
 }

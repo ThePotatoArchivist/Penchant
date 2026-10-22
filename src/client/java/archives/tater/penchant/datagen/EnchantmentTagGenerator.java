@@ -24,6 +24,7 @@ public class EnchantmentTagGenerator extends FabricTagsProvider<Enchantment> {
         builder(PenchantEnchantmentTags.DISABLED);
         builder(PenchantEnchantmentTags.NO_LEVELING);
         builder(PenchantEnchantmentTags.IGNORE_GUARANTEED_DROP);
+        builder(PenchantEnchantmentTags.LOOTING_GUARANTEED_DROP);
 
         builder(PenchantEnchantmentTags.COMMON);
         builder(PenchantEnchantmentTags.UNCOMMON);

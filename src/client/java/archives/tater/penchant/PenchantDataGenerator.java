@@ -49,7 +49,6 @@ public class PenchantDataGenerator implements DataGeneratorEntrypoint {
         lootPack.addProvider(LootEnchantmentProviderGenerator::new);
 
         var dropPack = createPack(fabricDataGenerator, PenchantModules.GUARANTEED_DROPS);
-        dropPack.addProvider(FlagTagGenerator.generator(PenchantFlag.GUARANTEED_TRIDENT_DROP));
         dropPack.addProvider(DropEnchantmentTagGenerator::new);
         dropPack.addProvider(DropEnchantmentGenerator::new);
 

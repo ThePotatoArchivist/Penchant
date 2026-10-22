@@ -18,6 +18,7 @@ public class PenchantEnchantmentTags {
     public static final TagKey<Enchantment> NO_LEVELING = create("no_leveling");
     public static final TagKey<Enchantment> ON_RANDOM_LOOT_BOOKS = create("on_random_loot_books");
     public static final TagKey<Enchantment> IGNORE_GUARANTEED_DROP = create("ignore_guaranteed_drop");
+    public static final TagKey<Enchantment> LOOTING_GUARANTEED_DROP = create("looting_guaranteed_drop");
 
     // categories
     public static final TagKey<Enchantment> UNIQUE = create("unique");

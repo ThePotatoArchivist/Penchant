@@ -1,6 +1,5 @@
 package archives.tater.penchant.datagen;
 
-import archives.tater.penchant.enchantment.EquipmentValueEffect;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
 import archives.tater.penchant.registry.PenchantEnchantments;
 
@@ -16,6 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -26,12 +26,15 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static archives.tater.penchant.loot.DroppedEquipmentCheck.droppedEquipment;
 import static net.minecraft.advancements.predicates.DataComponentMatchers.Builder.components;
 import static net.minecraft.advancements.predicates.ItemPredicate.Builder.item;
 import static net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity;
 import static net.minecraft.core.component.predicates.EnchantmentsPredicate.enchantments;
 import static net.minecraft.world.item.enchantment.Enchantment.definition;
 import static net.minecraft.world.item.enchantment.Enchantment.enchantment;
+import static net.minecraft.world.level.storage.loot.predicates.AllOfCondition.allOf;
+import static net.minecraft.world.level.storage.loot.predicates.AnyOfCondition.anyOf;
 import static net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition.hasProperties;
 
 public class DropEnchantmentGenerator extends FabricDynamicRegistryProvider {
@@ -58,20 +61,29 @@ public class DropEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         PenchantEnchantments.EQUIPMENT_DROPS,
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
-                        new EquipmentValueEffect(
-                                item().withComponents(components().partial(DataComponentPredicates.ENCHANTMENTS,
-                                        enchantments(List.of(
-                                                new EnchantmentPredicate(
-                                                        registries.getOrThrow(PenchantEnchantmentTags.IGNORE_GUARANTEED_DROP),
-                                                        MinMaxBounds.Ints.ANY
-                                                )
-                                        ))
-                                ).build()).build(),
-                                new AddValue(LevelBasedValue.perLevel(0.35f))
-                        ),
-                        hasProperties(
-                                LootContext.EntityTarget.ATTACKER,
-                                entity().entityType(EntityTypePredicate.of(entities, EntityTypes.PLAYER))
+                        new AddValue(LevelBasedValue.perLevel(0.35f)),
+                        allOf(
+                                anyOf(
+                                        droppedEquipment().item(item().withComponents(components()
+                                                .partial(DataComponentPredicates.ENCHANTMENTS, enchantments(List.of(
+                                                        new EnchantmentPredicate(
+                                                                registries.getOrThrow(PenchantEnchantmentTags.LOOTING_GUARANTEED_DROP),
+                                                                MinMaxBounds.Ints.ANY
+                                                        )
+                                                )))
+                                                .build())
+                                        ),
+                                        allOf(
+                                                droppedEquipment()
+                                                        .item(item().of(items, Items.TRIDENT))
+                                                        .slot(EquipmentSlotGroup.MAINHAND),
+                                                hasProperties(LootContext.EntityTarget.THIS, entity().entityType(EntityTypePredicate.of(entities, EntityTypes.DROWNED)))
+                                        )
+                                ),
+                                hasProperties(
+                                        LootContext.EntityTarget.ATTACKER,
+                                        entity().entityType(EntityTypePredicate.of(entities, EntityTypes.PLAYER))
+                                )
                         )
                 ).build(Enchantments.LOOTING.identifier())
         );
