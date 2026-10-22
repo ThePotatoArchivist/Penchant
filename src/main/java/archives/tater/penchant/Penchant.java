@@ -7,6 +7,7 @@ import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.registry.*;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -66,6 +67,8 @@ public class Penchant implements ModInitializer {
                 EnchantmentProgress.addToProgress(stack, 1, livingEntity);
             }
         });
+
+        CommandRegistrationCallback.EVENT.register(PenchantCommands::register);
 
         ServerLifecycleEvents.SERVER_STARTED.register(server ->
             PenchantmentDefinition.buildCache(server.registryAccess())
