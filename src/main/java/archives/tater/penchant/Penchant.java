@@ -1,17 +1,22 @@
 package archives.tater.penchant;
 
+import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.loot.LootModification;
 import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.registry.*;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Enemy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +55,17 @@ public class Penchant implements ModInitializer {
         PenchantAdvancements.init();
         PenchantModules.init();
         LootModification.init();
+
+        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
+            if (!(entity instanceof Enemy) && !entity.is(PenchantEntityTags.KILL_LEVELS_UP_EQUIPMENT)) return;
+            if (!(damageSource.getEntity() instanceof LivingEntity livingEntity)) return;
+
+            for (var slot : EquipmentSlot.VALUES) {
+                var stack = livingEntity.getItemBySlot(slot);
+                if (!stack.is(PenchantItemTags.LEVEL_UP_BY_KILLING) || livingEntity.getEquipmentSlotForItem(stack) != slot) continue;
+                EnchantmentProgress.addToProgress(stack, 1, livingEntity);
+            }
+        });
 
         ServerLifecycleEvents.SERVER_STARTED.register(server ->
             PenchantmentDefinition.buildCache(server.registryAccess())

@@ -8,9 +8,9 @@ import net.minecraft.world.level.block.Block;
 
 public class PenchantBlockTags {
 
-    private static TagKey<Block> of(String path) {
+    private static TagKey<Block> create(String path) {
         return TagKey.create(Registries.BLOCK, Penchant.id(path));
     }
 
-    public static final TagKey<Block> DISENCHANTER = of("disenchanter");
+    public static final TagKey<Block> DISENCHANTER = create("disenchanter");
 }

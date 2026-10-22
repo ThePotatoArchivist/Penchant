@@ -1,5 +1,6 @@
 {
   "values": [
-    "#minecraft:enchantable/armor"
+    "#minecraft:enchantable/armor",
+    "#c:tools/shield"
   ]
 }

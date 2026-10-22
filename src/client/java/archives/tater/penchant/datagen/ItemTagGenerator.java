@@ -30,7 +30,12 @@ public class ItemTagGenerator extends FabricTagsProvider.ItemTagsProvider {
                 .addOptional(createKey("enderscape", "magnia_attractor"));
 
         builder(PenchantItemTags.PROPORTIONAL_ENCHANTMENT_PROGRESS)
-                .forceAddTag(ItemTags.ARMOR_ENCHANTABLE);
+                .forceAddTag(ItemTags.ARMOR_ENCHANTABLE)
+                .forceAddTag(ConventionalItemTags.SHIELD_TOOLS);
+
+        builder(PenchantItemTags.LEVEL_UP_BY_KILLING)
+                .forceAddTag(ItemTags.ARMOR_ENCHANTABLE)
+                .forceAddTag(ConventionalItemTags.SHIELD_TOOLS);
     }
 
     private static ResourceKey<Item> createKey(String namespace, String path) {

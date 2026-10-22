@@ -8,10 +8,11 @@ import net.minecraft.world.item.Item;
 
 public class PenchantItemTags {
 
-    private static TagKey<Item> of(String path) {
+    private static TagKey<Item> create(String path) {
         return TagKey.create(Registries.ITEM, Penchant.id(path));
     }
 
-    public static final TagKey<Item> MAX_LEVEL_ENCHANTMENTS = of("max_level_enchantments");
-    public static final TagKey<Item> PROPORTIONAL_ENCHANTMENT_PROGRESS = of("proportional_enchantment_progress");
+    public static final TagKey<Item> MAX_LEVEL_ENCHANTMENTS = create("max_level_enchantments");
+    public static final TagKey<Item> PROPORTIONAL_ENCHANTMENT_PROGRESS = create("proportional_enchantment_progress");
+    public static final TagKey<Item> LEVEL_UP_BY_KILLING = create("level_up_by_killing");
 }
