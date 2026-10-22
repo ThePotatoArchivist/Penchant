@@ -56,13 +56,16 @@ public class PenchantComponents {
             true
     );
 
+    @SuppressWarnings("deprecation")
     public static void init() {
         DefaultItemComponentEvents.MODIFY.register(context -> {
             context.modify(
                     item -> item.components().has(DataComponents.MAX_DAMAGE),
                     (builder, item) -> {
                         if (!builder.contains(ENCHANTMENT_PROGRESS_COST_FACTOR))
-                            builder.set(ENCHANTMENT_PROGRESS_COST_FACTOR, clamp(item.components().getOrDefault(DataComponents.MAX_DAMAGE, 0) / 100, 1, 8));
+                            builder.set(ENCHANTMENT_PROGRESS_COST_FACTOR, item.builtInRegistryHolder().is(PenchantItemTags.DEFAULT_PROGRESS_COST_FACTOR_ONE)
+                                    ? 1
+                                    : clamp(item.components().getOrDefault(DataComponents.MAX_DAMAGE, 0) / 100, 1, 8));
                     }
             );
         });

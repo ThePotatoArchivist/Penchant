@@ -1,4 +1,5 @@
 // 26.3	-999999999-01-01T00:00:00	Penchant/Tags for minecraft:item
+de75671f136ad29ecb1fee30fc8326bbb0cce33f data/penchant/tags/item/default_progress_cost_factor_one.json
 957da10b7dab28c83297e9f3becc84490b41e75d data/penchant/tags/item/level_up_by_killing.json
 99d0827a481dbc54d234f59b09f31e699a2188fd data/penchant/tags/item/max_level_enchantments.json
 957da10b7dab28c83297e9f3becc84490b41e75d data/penchant/tags/item/proportional_enchantment_progress.json
