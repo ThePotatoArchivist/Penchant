@@ -1,5 +1,8 @@
 package archives.tater.penchant.util;
 
+import net.minecraft.advancements.predicates.DataComponentMatchers;
+import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
@@ -14,6 +17,8 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class PenchantUtil {
+    public static final ItemPredicate ANY_ITEM = new ItemPredicate(Optional.empty(), MinMaxBounds.Ints.ANY, DataComponentMatchers.ANY);
+
     private PenchantUtil() {}
 
     public static <T> Stream<Holder<T>> streamOrdered(HolderLookup<T> registry, TagKey<T> orderTag) {

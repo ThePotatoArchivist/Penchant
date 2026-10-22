@@ -1,0 +1,53 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "translate": "enchantment.minecraft.looting"
+  },
+  "effects": {
+    "penchant:equipment_drops": [
+      {
+        "effect": {
+          "effect": {
+            "type": "minecraft:add",
+            "value": {
+              "type": "minecraft:linear",
+              "base": 0.35,
+              "per_level_above_first": 0.35
+            }
+          },
+          "equipment_condition": {
+            "predicates": {
+              "minecraft:enchantments": [
+                {
+                  "enchantments": "#penchant:ignore_guaranteed_drop"
+                }
+              ]
+            }
+          }
+        },
+        "enchanted": "attacker",
+        "requirements": {
+          "type": "minecraft:entity_properties",
+          "entity": "attacker",
+          "predicate": {
+            "minecraft:entity_type": "minecraft:player"
+          }
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 65,
+    "per_level_above_first": 9
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 15,
+    "per_level_above_first": 9
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/melee_weapon",
+  "weight": 2
+}
