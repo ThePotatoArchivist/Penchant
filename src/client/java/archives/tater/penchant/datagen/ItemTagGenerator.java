@@ -28,6 +28,9 @@ public class ItemTagGenerator extends FabricTagsProvider.ItemTagsProvider {
                 .forceAddTag(ConventionalItemTags.NAUTILUS_ARMORS)
                 .addOptional(createKey("enderscape", "mirror"))
                 .addOptional(createKey("enderscape", "magnia_attractor"));
+
+        builder(PenchantItemTags.PROPORTIONAL_ENCHANTMENT_PROGRESS)
+                .forceAddTag(ItemTags.ARMOR_ENCHANTABLE);
     }
 
     private static ResourceKey<Item> createKey(String namespace, String path) {

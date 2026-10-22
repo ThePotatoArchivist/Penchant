@@ -1,2 +1,3 @@
-// 26.3-pre-3	-999999999-01-01T00:00:00	Penchant/Tags for minecraft:item
+// 26.3	-999999999-01-01T00:00:00	Penchant/Tags for minecraft:item
 99d0827a481dbc54d234f59b09f31e699a2188fd data/penchant/tags/item/max_level_enchantments.json
+18245965500c1793a7ea7d5071ac4d57d1a51703 data/penchant/tags/item/proportional_enchantment_progress.json

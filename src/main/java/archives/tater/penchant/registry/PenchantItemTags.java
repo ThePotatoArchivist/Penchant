@@ -13,4 +13,5 @@ public class PenchantItemTags {
     }
 
     public static final TagKey<Item> MAX_LEVEL_ENCHANTMENTS = of("max_level_enchantments");
+    public static final TagKey<Item> PROPORTIONAL_ENCHANTMENT_PROGRESS = of("proportional_enchantment_progress");
 }
