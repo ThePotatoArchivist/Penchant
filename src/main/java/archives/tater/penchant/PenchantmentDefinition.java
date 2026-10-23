@@ -29,6 +29,8 @@ public record PenchantmentDefinition(
             Enchantment.Cost.CODEC.fieldOf("progress_cost_factor").forGetter(PenchantmentDefinition::progressCostFactor)
     ).apply(instance, PenchantmentDefinition::new));
 
+    public static final PenchantmentDefinition FALLBACK = new PenchantmentDefinition(1, 0, new Enchantment.Cost(1, 0));
+
     public int getProgressCostFactor(int targetLevel) {
         return max(progressCostFactor.calculate(targetLevel), 1);
     }
@@ -59,6 +61,6 @@ public record PenchantmentDefinition(
     }
 
     public static PenchantmentDefinition getDefinition(Holder<Enchantment> enchantment) {
-        return CACHE.get(enchantment);
+        return CACHE.getOrDefault(enchantment, FALLBACK);
     }
 }
