@@ -66,6 +66,8 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
 
     private final CyclingSlotBackground secondSlotBackground = new CyclingSlotBackground(1);
 
+    private int lastExperienceLevel;
+
     private final RandomSource random = RandomSource.create();
     private @Nullable BookModel bookModel;
 
@@ -82,6 +84,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         inventoryLabelX = 23;
         inventoryLabelY = imageHeight - 94;
         menu.setSlotChangeListener(this::rebuildWidgets);
+        lastExperienceLevel = minecraft.player.experienceLevel;
     }
 
     @Override
@@ -142,6 +145,10 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         super.containerTick();
         minecraft.player.experienceDisplayStartTick = minecraft.player.tickCount;
         secondSlotBackground.tick(menu.canDisenchant() ? INGREDIENT_SLOT_TEXTURES : INGREDIENT_SLOT_TEXTURES_NO_DISENCHANT);
+        if (lastExperienceLevel != minecraft.player.experienceLevel) {
+            lastExperienceLevel = minecraft.player.experienceLevel;
+            rebuildWidgets();
+        }
         tickBook();
     }
 
