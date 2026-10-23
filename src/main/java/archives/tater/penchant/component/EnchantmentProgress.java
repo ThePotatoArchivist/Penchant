@@ -22,7 +22,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -46,7 +46,7 @@ public class EnchantmentProgress {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (EnchantmentProgress) obj;
@@ -84,6 +84,10 @@ public class EnchantmentProgress {
 
         public EnchantmentProgress toImmutable() {
             return new EnchantmentProgress(progress);
+        }
+
+        public @Nullable EnchantmentProgress toImmutableOrNull() {
+            return isEmpty() ? null : toImmutable();
         }
 
         public boolean isEmpty() {
@@ -134,7 +138,7 @@ public class EnchantmentProgress {
 
         updateEnchantmentsForStack(newProgress, enchantments, stack, user);
 
-        stack.set(PenchantComponents.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
+        stack.set(PenchantComponents.ENCHANTMENT_PROGRESS, newProgress.toImmutableOrNull());
     }
 
     public static void addRandomProgress(ItemStack stack, RandomSource random) {
@@ -152,7 +156,7 @@ public class EnchantmentProgress {
 
         if (newProgress.progress.isEmpty()) return;
 
-        stack.set(PenchantComponents.ENCHANTMENT_PROGRESS, newProgress.toImmutable());
+        stack.set(PenchantComponents.ENCHANTMENT_PROGRESS, newProgress.toImmutableOrNull());
     }
 
     /**
