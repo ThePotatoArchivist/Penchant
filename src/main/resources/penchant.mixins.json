@@ -26,6 +26,7 @@
     "leveling.EnchantWithLevelsFunctionMixin",
     "leveling.ItemDisplayBuilderMixin",
     "leveling.ItemStackMixin",
+    "leveling.ServerPlayerGameModeMixin",
     "loot.EnchantRandomlyFunctionMixin",
     "loot.EnchantWithLevelsFunctionMixin",
     "randomenchantment.ItemMixin",
@@ -33,7 +34,7 @@
     "table.EnchantingTableBlockMixin",
     "table.EnchantmentMenuMixin"
   ],
-  "plugin": "PenchantMixinPlugin",
+  "plugin": "archives.tater.penchant.PenchantMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   },

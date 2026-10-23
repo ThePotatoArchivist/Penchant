@@ -27,7 +27,7 @@ public class PenchantServerConfig extends WrappedConfig {
         public boolean lootRework = true;
 
         @Comment("Mobs always drop enchanted equipment")
-        public boolean guaranteedDrops = true;
+        public boolean guaranteedDrops = false;
 
         @Comment("Librarians sell a different book each time")
         public boolean randomizedLibrarians = false;

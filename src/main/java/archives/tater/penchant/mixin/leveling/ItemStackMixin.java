@@ -37,7 +37,7 @@ public abstract class ItemStackMixin implements ItemInstance {
     )
 	private void updateProgress(int amount, ServerLevel level, @Coerce @Nullable LivingEntity player, Consumer<Item> onBreak, CallbackInfo ci) {
         if (player instanceof ServerPlayer)
-            EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, player);
+            EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, amount, player);
 	}
 
     @Inject(
@@ -46,7 +46,7 @@ public abstract class ItemStackMixin implements ItemInstance {
     )
     private void updateProgress(int amount, Player player, CallbackInfo ci) {
         if (player instanceof ServerPlayer)
-            EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, player);
+            EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, amount, player);
     }
 
     @ModifyVariable(

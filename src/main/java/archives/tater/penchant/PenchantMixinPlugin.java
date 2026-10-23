@@ -1,4 +1,4 @@
-import archives.tater.penchant.PenchantCompat;
+package archives.tater.penchant;
 
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 
