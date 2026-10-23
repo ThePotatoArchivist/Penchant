@@ -8,6 +8,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.SlotSourceArgument;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.item.ItemAccessor;
 import net.minecraft.server.commands.item.ItemCommands;
 
@@ -44,6 +45,7 @@ public class PenchantCommands {
             var stack = slotAccess.get();
             EnchantmentProgress.addToProgress(stack, increase, null);
         });
+        source.sendSuccess(() -> Component.translatable("commands.penchant.add_progress.success", increase), true);
         return 1;
     }
 }

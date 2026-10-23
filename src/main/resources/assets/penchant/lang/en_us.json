@@ -40,5 +40,6 @@
   "advancements.penchant.babel.description": "Build an enchanting library with over 300 books",
   "advancements.penchant.extract_enchantment.title": "Reverse Engineering",
   "advancements.penchant.extract_enchantment.description": "Extract enchantments from found gear",
-  "tag.item.penchant.max_level_enchantments": "Max Level Enchantable"
+  "tag.item.penchant.max_level_enchantments": "Max Level Enchantable",
+  "commands.penchant.add_progress.success": "Added %s increase to items"
 }
