@@ -26,7 +26,6 @@ public class ItemTagGenerator extends FabricTagsProvider.ItemTagsProvider {
                 .forceAddTag(ItemTags.HARNESSES)
                 .forceAddTag(ConventionalItemTags.HORSE_ARMORS)
                 .forceAddTag(ConventionalItemTags.NAUTILUS_ARMORS)
-                .addOptional(createKey("enderscape", "mirror"))
                 .addOptional(createKey("enderscape", "magnia_attractor"));
 
         builder(PenchantItemTags.PROPORTIONAL_ENCHANTMENT_PROGRESS)
@@ -40,6 +39,9 @@ public class ItemTagGenerator extends FabricTagsProvider.ItemTagsProvider {
         builder(PenchantItemTags.DEFAULT_PROGRESS_COST_FACTOR_ONE)
                 .forceAddTag(ConventionalItemTags.BOW_TOOLS)
                 .forceAddTag(ConventionalItemTags.CROSSBOW_TOOLS);
+
+        builder(PenchantItemTags.LEVEL_UP_BY_USE)
+                .addOptional(createKey("enderscape", "mirror"));
     }
 
     private static ResourceKey<Item> createKey(String namespace, String path) {
