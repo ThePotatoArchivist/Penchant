@@ -1,7 +1,8 @@
 package archives.tater.penchant.menu;
 
 import archives.tater.penchant.Penchant;
-import archives.tater.penchant.PenchantCompat;
+import archives.tater.penchant.compat.PenchantCompat;
+import archives.tater.penchant.compat.PenchantEnchiridionCompat;
 import archives.tater.penchant.registry.PenchantAdvancements;
 import archives.tater.penchant.registry.PenchantBlockTags;
 import archives.tater.penchant.registry.PenchantEnchantmentTags;
@@ -279,7 +280,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
         );
 
         if (PenchantCompat.ENCHIRIDION_INSTALLED)
-            return base.thenComparingInt(enchantment -> -PenchantCompat.getCategoryOrUncategorized(enchantment, registries).value().priority());
+            return base.thenComparingInt(enchantment -> -PenchantEnchiridionCompat.getCategoryOrUncategorized(enchantment, registries).value().priority());
 
         return base;
     }

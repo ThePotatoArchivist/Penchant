@@ -1,5 +1,7 @@
 package archives.tater.penchant;
 
+import archives.tater.penchant.compat.PenchantCompat;
+
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 
 public class PenchantMixinPlugin implements IMixinConfigPlugin {

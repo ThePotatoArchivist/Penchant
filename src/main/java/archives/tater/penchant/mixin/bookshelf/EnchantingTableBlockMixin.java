@@ -1,6 +1,6 @@
 package archives.tater.penchant.mixin.bookshelf;
 
-import archives.tater.penchant.PenchantCompat;
+import archives.tater.penchant.compat.PenchantCompat;
 import archives.tater.penchant.registry.PenchantFlag;
 import archives.tater.penchant.util.PenchantmentHelper;
 

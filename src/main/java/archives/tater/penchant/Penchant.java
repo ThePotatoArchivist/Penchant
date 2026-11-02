@@ -1,5 +1,6 @@
 package archives.tater.penchant;
 
+import archives.tater.penchant.compat.PenchantCompat;
 import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.loot.LootModification;
 import archives.tater.penchant.menu.PenchantmentMenu;
@@ -9,7 +10,6 @@ import archives.tater.penchant.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
@@ -69,10 +69,6 @@ public class Penchant implements ModInitializer {
         });
 
         CommandRegistrationCallback.EVENT.register(PenchantCommands::register);
-
-        ServerLifecycleEvents.SERVER_STARTED.register(server ->
-            PenchantmentDefinition.buildCache(server.registryAccess())
-        );
 
         PayloadTypeRegistry.serverboundPlay().register(EnchantPayload.TYPE, EnchantPayload.CODEC);
 

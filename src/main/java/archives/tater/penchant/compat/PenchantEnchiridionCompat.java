@@ -1,9 +1,8 @@
-package archives.tater.penchant;
+package archives.tater.penchant.compat;
 
 import archives.tater.penchant.api.EnchantmentCompatibleCallback;
 
 import net.fabricmc.fabric.api.util.TriState;
-import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -13,15 +12,12 @@ import org.vulpixel.enchiridion.world.item.enchantment.category.EnchantmentCateg
 import org.vulpixel.enchiridion.world.item.enchantment.category.EnchantmentCategoryHelper;
 import org.vulpixel.enchiridion.world.item.enchantment.category.EnchiridionEnchantmentCategories;
 
-public class PenchantCompat {
-    public static final boolean ENCHIRIDION_INSTALLED = FabricLoader.getInstance().isModLoaded("enchiridion");
-    public static final boolean MODEST_MAGIC_INSTALLED = FabricLoader.getInstance().isModLoaded("modestmagic");
-
+public class PenchantEnchiridionCompat {
     public static Holder.Reference<EnchantmentCategory> getCategoryOrUncategorized(Holder<Enchantment> enchantment, HolderLookup.Provider registries) {
         return EnchantmentCategoryHelper.getFirstEnchantmentCategoryForEnchantment(registries, enchantment).orElseGet(() -> registries.getOrThrow(EnchiridionEnchantmentCategories.UNCATEGORIZED));
     }
 
-    @SuppressWarnings("ConstantValue") // intellij bugging I think
+    @SuppressWarnings("ConstantValue")
     public static void init() {
         if (PenchantCompat.ENCHIRIDION_INSTALLED)
             EnchantmentCompatibleCallback.EVENT.register((enchantment, existing, stack, registries) -> {

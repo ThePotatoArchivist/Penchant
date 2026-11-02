@@ -1,18 +1,20 @@
 package archives.tater.penchant.util;
 
-import archives.tater.penchant.PenchantmentDefinition;
 import archives.tater.penchant.api.CanEnchantCallback;
 import archives.tater.penchant.api.EnchantmentCompatibleCallback;
+import archives.tater.penchant.registry.PenchantComponents;
 import archives.tater.penchant.registry.PenchantFlag;
 
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
-import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.LecternBlock;
 
+import io.netty.buffer.ByteBuf;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -32,9 +35,16 @@ import java.util.function.Consumer;
 import static java.lang.Math.abs;
 
 public class PenchantmentHelper {
-    public static final boolean ITEM_DESCRIPTIONS_INSTALLED = FabricLoader.getInstance().isModLoaded("item_descriptions");
 
     private PenchantmentHelper() {}
+
+    public static final Enchantment.Cost DEFAULT_COST = new Enchantment.Cost(1, 0);
+
+    public static final StreamCodec<ByteBuf, Enchantment.Cost> COST_STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.VAR_INT, Enchantment.Cost::base,
+            ByteBufCodecs.VAR_INT, Enchantment.Cost::perLevelAboveFirst,
+            Enchantment.Cost::new
+    );
 
     public static List<BlockPos> LENIENT_BOOKSHELF_OFFSETS = BlockPos.betweenClosedStream(-3, -2, -3, 3, 2, 3)
             .filter(blockPos -> abs(blockPos.getX()) >= 2 || abs(blockPos.getZ()) >= 2 || blockPos.getY() >= 2 || blockPos.getY() <= -1)
@@ -49,16 +59,16 @@ public class PenchantmentHelper {
         );
     }
 
-    public static int getProgressCostFactor(Holder<Enchantment> enchantment, int targetLevel) {
-        return PenchantmentDefinition.getDefinition(enchantment).getProgressCostFactor(targetLevel);
+    public static int getPenchantibility(DataComponentGetter target, int targetLevel) {
+        return target.getOrDefault(PenchantComponents.PENCHANTIBILITY, DEFAULT_COST).calculate(targetLevel);
     }
 
     public static int getBookRequirement(Holder<Enchantment> enchantment) {
-        return PenchantmentDefinition.getDefinition(enchantment).bookRequirement();
+        return enchantment.getOrDefault(PenchantComponents.BOOK_REQUIREMENT, 0);
     }
 
     public static int getXpLevelCost(Holder<Enchantment> enchantment) {
-        return PenchantmentDefinition.getDefinition(enchantment).experienceCost();
+        return enchantment.getOrDefault(PenchantComponents.EXPERIENCE_COST, 0);
     }
 
     public static boolean canEnchantItem(ItemStack stack, Holder<Enchantment> enchantment) {

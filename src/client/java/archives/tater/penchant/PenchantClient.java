@@ -12,7 +12,6 @@ import archives.tater.penchant.registry.PenchantMenus;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.item.v1.ItemComponentTooltipProviderRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -30,7 +29,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import static archives.tater.penchant.util.PenchantUtil.containsIgnoreStyle;
-import static java.util.Objects.requireNonNull;
 import static net.minecraft.util.Util.makeDescriptionId;
 
 
@@ -97,10 +95,6 @@ public class PenchantClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
         MenuScreens.register(PenchantMenus.PENCHANTMENT_MENU, PenchantmentScreen::new);
-
-        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            PenchantmentDefinition.buildCache(requireNonNull(client.level).registryAccess());
-        });
 
         ItemComponentTooltipProviderRegistry.addBefore(DataComponents.STORED_ENCHANTMENTS, PenchantComponents.RANDOM_ENCHANTMENT);
 

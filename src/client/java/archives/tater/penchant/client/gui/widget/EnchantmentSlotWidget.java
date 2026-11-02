@@ -1,7 +1,8 @@
 package archives.tater.penchant.client.gui.widget;
 
 import archives.tater.penchant.Penchant;
-import archives.tater.penchant.PenchantCompat;
+import archives.tater.penchant.compat.PenchantCompat;
+import archives.tater.penchant.compat.PenchantEnchiridionCompat;
 import archives.tater.penchant.network.EnchantPayload;
 import archives.tater.penchant.util.PenchantmentHelper;
 
@@ -124,7 +125,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
                     .append(Component.translatable("widget.penchant.enchantment_slot.tooltip.xp_cost", xpCost)
                             .withColor(hasEnoughXp ? XP_COLOR : INSUFFICIENT_COLOR));
 
-            if (PenchantmentHelper.ITEM_DESCRIPTIONS_INSTALLED
+            if (PenchantCompat.ITEM_DESCRIPTIONS_INSTALLED
                     && ModClient.CONFIG.enchantmentDescriptions.enable.value()
                     && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()
                     && Enchantment.getFullname(enchantment, 1).getContents() instanceof TranslatableContents content)
@@ -170,7 +171,7 @@ public class EnchantmentSlotWidget extends AbstractButton {
 
     private static int getBaseColor(Holder<Enchantment> enchantment, HolderLookup.Provider registries) {
         if (PenchantCompat.ENCHIRIDION_INSTALLED) {
-            var category = PenchantCompat.getCategoryOrUncategorized(enchantment, registries);
+            var category = PenchantEnchiridionCompat.getCategoryOrUncategorized(enchantment, registries);
             return ARGB.opaque(category.value().visuals().textColor().getValue());
         }
         return enchantment.is(EnchantmentTags.CURSE) ? CURSE_TEXT_COLOR : BASE_TEXT_COLOR;
