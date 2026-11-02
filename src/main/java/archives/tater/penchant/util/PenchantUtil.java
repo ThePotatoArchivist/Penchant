@@ -39,4 +39,8 @@ public class PenchantUtil {
         var checkFlat = toFlatListRemoveStyle(check);
         return Collections.indexOfSubList(outerFlat, checkFlat) != -1;
     }
+
+    public static int multiply(int base, float multiplier) {
+        return (int) (base * multiplier);
+    }
 }
