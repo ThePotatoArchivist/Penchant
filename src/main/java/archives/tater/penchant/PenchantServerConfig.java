@@ -55,7 +55,7 @@ public class PenchantServerConfig extends WrappedConfig {
         @Comment("Multiplied by enchantment.max_cost.per_level_above_first to calculate penchantibility.per_level_above_first")
         public float enchantmentPenchantibilityMultiplier = 1;
 
-        @Comment("Multiplied by enchantment.max_cost.base to calculate penchantibility.base")
+        @Comment("Added to enchantment.max_cost.base to calculate penchantibility.base")
         public int enchantmentPenchantibilityConstant = 0;
 
         @Comment("Multiplied by item.max_damage to calculate penchantibility")
