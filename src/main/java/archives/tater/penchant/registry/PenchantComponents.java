@@ -115,19 +115,19 @@ public class PenchantComponents {
         HcapiDataComponentInitializers.registerInitializer(FALLBACK_PARAMETERS, context -> {
             var config = getActiveConfig(context.resourceManager());
 
-            context.lookupProvider().lookupOrThrow(Registries.ITEM).listElements()
-                    .forEach(item -> {
-                        var builder = context.builder(item.key());
-                        if (!builder.contains(DataComponents.MAX_DAMAGE)) return;
-                        setIfAbsent(builder, PENCHANTIBILITY, constantCost(item.is(PenchantItemTags.DEFAULT_PROGRESS_COST_FACTOR_ONE)
-                                ? 1
-                                : clamp(
-                                        multiply(builder.getOrDefault(DataComponents.MAX_DAMAGE, 0), config.itemPenchantibilityMultiplier()),
-                                        config.minItemPenchantibility(),
-                                        config.maxItemPenchantibility() == 0 ? Integer.MAX_VALUE : config.maxItemPenchantibility()
-                                )
-                        ));
-                    });
+            context.lookupProvider().lookupOrThrow(Registries.ITEM).listElements().forEach(item -> {
+                var builder = context.builder(item.key());
+                if (!builder.contains(DataComponents.MAX_DAMAGE)) return;
+                setIfAbsent(builder, PENCHANTIBILITY, constantCost(clamp(
+                                multiply(
+                                        builder.getOrDefault(DataComponents.MAX_DAMAGE, 0),
+                                        (item.is(PenchantItemTags.HALF_DEFAULT_PENCHANTIBILITY) ? 0.5f : 1) * config.itemPenchantibilityMultiplier()
+                                ),
+                                config.minItemPenchantibility(),
+                                config.maxItemPenchantibility() == 0 ? Integer.MAX_VALUE : config.maxItemPenchantibility()
+                        )
+                ));
+            });
 
             context.lookupProvider().lookupOrThrow(Registries.ENCHANTMENT).listElements().forEach(enchantment -> {
                 var builder = context.builder(enchantment.key());

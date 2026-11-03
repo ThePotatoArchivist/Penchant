@@ -36,7 +36,7 @@ public class ItemTagGenerator extends FabricTagsProvider.ItemTagsProvider {
                 .forceAddTag(ItemTags.ARMOR_ENCHANTABLE)
                 .forceAddTag(ConventionalItemTags.SHIELD_TOOLS);
 
-        builder(PenchantItemTags.DEFAULT_PROGRESS_COST_FACTOR_ONE)
+        builder(PenchantItemTags.HALF_DEFAULT_PENCHANTIBILITY)
                 .forceAddTag(ConventionalItemTags.BOW_TOOLS)
                 .forceAddTag(ConventionalItemTags.CROSSBOW_TOOLS);
 

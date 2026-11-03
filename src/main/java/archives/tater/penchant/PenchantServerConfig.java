@@ -37,15 +37,36 @@ public class PenchantServerConfig extends WrappedConfig {
 
     }
 
+    @Comment("Used to generate the fallback values for Penchant's parameter components")
+    @Comment("Will not apply to any components that are set directly")
+    @Comment("Requires server restart/world relog")
     public FallbackParameters fallbackParameters = new FallbackParameters();
     public static class FallbackParameters implements Section, PenchantFallbackConfig {
+
+        @Comment("Multiplied by enchantment.anvil_cost to calculate experience_cost")
         public float xpCostMultiplier = 1;
+
+        @Comment("Multiplied by enchantment.min_cost(1) to calculate book_requirement")
         public float bookRequirementMultiplier = 2;
+
+        @Comment("Constant offset for book_requirement")
         public int bookRequirementConstant = -5;
+
+        @Comment("Multiplied by enchantment.max_cost.per_level_above_first to calculate penchantibility.per_level_above_first")
         public float enchantmentPenchantibilityMultiplier = 1;
+
+        @Comment("Multiplied by enchantment.max_cost.base to calculate penchantibility.base")
         public int enchantmentPenchantibilityConstant = 0;
+
+        @Comment("Multiplied by item.max_damage to calculate penchantibility")
+        @Comment("Items in #penchant:half_default_penchantibility will use half this this value")
         public float itemPenchantibilityMultiplier = 0.01f;
+
+        @Comment("Minimum value for item penchantibility")
         public int minItemPenchantibility = 1;
+
+        @Comment("Maximum value for item penchantibility")
+        @Comment("0 means no maximum")
         public int maxItemPenchantibility = 0;
 
         @Override
