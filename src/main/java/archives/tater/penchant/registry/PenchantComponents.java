@@ -96,8 +96,8 @@ public class PenchantComponents {
                                         builder.getOrDefault(DataComponents.MAX_DAMAGE, 0),
                                         (item.is(PenchantItemTags.HALF_DEFAULT_PENCHANTIBILITY) ? 0.5f : 1) * config.itemPenchantibilityMultiplier
                                 ),
-                                config.minItemPenchantibility,
-                                config.maxItemPenchantibility == 0 ? Integer.MAX_VALUE : config.maxItemPenchantibility
+                                max(1, config.minItemPenchantibility),
+                                config.maxItemPenchantibility <= 0 ? Integer.MAX_VALUE : config.maxItemPenchantibility
                         )
                 ));
             });
