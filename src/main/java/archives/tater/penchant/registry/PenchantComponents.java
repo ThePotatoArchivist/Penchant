@@ -2,14 +2,11 @@ package archives.tater.penchant.registry;
 
 import archives.tater.hcapi.api.HcapiDataComponentInitializers;
 import archives.tater.penchant.Penchant;
-import archives.tater.penchant.PenchantFallbackConfig;
 import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.component.RandomEnchantment;
 import archives.tater.penchant.util.PenchantmentHelper;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.JsonOps;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
@@ -20,15 +17,10 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.StrictJsonParser;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import org.jspecify.annotations.Nullable;
-
-import java.io.IOException;
-import java.util.Optional;
 
 import static archives.tater.penchant.util.PenchantUtil.multiply;
 import static java.lang.Math.clamp;
@@ -92,28 +84,9 @@ public class PenchantComponents {
             builder.set(type, value);
     }
 
-    private static PenchantFallbackConfig getActiveConfig(ResourceManager resourceManager) {
-        return resourceManager.getResource(PenchantFallbackConfig.RESOURCE_PATH)
-                .flatMap(resource -> {
-                    try (var reader = resource.openAsReader()) {
-                        return switch (PenchantFallbackConfig.CODEC.parse(JsonOps.INSTANCE, StrictJsonParser.parse(reader))) {
-                            case DataResult.Success<PenchantFallbackConfig>(var value, var _) -> Optional.of(value);
-                            case DataResult.Error<PenchantFallbackConfig> error -> {
-                                Penchant.LOGGER.error("Error reading pack fallback parameters: {}", error.message());
-                                yield Optional.empty();
-                            }
-                        };
-                    } catch (IOException exception) {
-                        Penchant.LOGGER.error("Error reading pack fallback parameters:", exception);
-                        return Optional.empty();
-                    }
-                })
-                .orElse(Penchant.CONFIG.fallbackParameters);
-    }
-
     public static void init() {
         HcapiDataComponentInitializers.registerInitializer(FALLBACK_PARAMETERS, context -> {
-            var config = getActiveConfig(context.resourceManager());
+            var config = Penchant.CONFIG.fallbackParameters;
 
             context.lookupProvider().lookupOrThrow(Registries.ITEM).listElements().forEach(item -> {
                 var builder = context.builder(item.key());
@@ -121,10 +94,10 @@ public class PenchantComponents {
                 setIfAbsent(builder, PENCHANTIBILITY, constantCost(clamp(
                                 multiply(
                                         builder.getOrDefault(DataComponents.MAX_DAMAGE, 0),
-                                        (item.is(PenchantItemTags.HALF_DEFAULT_PENCHANTIBILITY) ? 0.5f : 1) * config.itemPenchantibilityMultiplier()
+                                        (item.is(PenchantItemTags.HALF_DEFAULT_PENCHANTIBILITY) ? 0.5f : 1) * config.itemPenchantibilityMultiplier
                                 ),
-                                config.minItemPenchantibility(),
-                                config.maxItemPenchantibility() == 0 ? Integer.MAX_VALUE : config.maxItemPenchantibility()
+                                config.minItemPenchantibility,
+                                config.maxItemPenchantibility == 0 ? Integer.MAX_VALUE : config.maxItemPenchantibility
                         )
                 ));
             });
@@ -132,12 +105,12 @@ public class PenchantComponents {
             context.lookupProvider().lookupOrThrow(Registries.ENCHANTMENT).listElements().forEach(enchantment -> {
                 var builder = context.builder(enchantment.key());
 
-                setIfAbsent(builder, EXPERIENCE_COST, max(1, multiply(enchantment.value().getAnvilCost(), config.xpCostMultiplier())));
-                setIfAbsent(builder, BOOK_REQUIREMENT, max(0, multiply(enchantment.value().getMinCost(1), config.bookRequirementMultiplier()) + config.bookRequirementConstant()));
+                setIfAbsent(builder, EXPERIENCE_COST, max(1, multiply(enchantment.value().getAnvilCost(), config.xpCostMultiplier)));
+                setIfAbsent(builder, BOOK_REQUIREMENT, max(0, multiply(enchantment.value().getMinCost(1), config.bookRequirementMultiplier) + config.bookRequirementConstant));
                 var maxCost = enchantment.value().definition().maxCost();
                 setIfAbsent(builder, PENCHANTIBILITY, new Enchantment.Cost(
-                        max(1, maxCost.base() + config.enchantmentPenchantibilityConstant()),
-                        max(0, multiply(maxCost.perLevelAboveFirst(), config.enchantmentPenchantibilityMultiplier()))
+                        max(1, maxCost.base() + config.enchantmentPenchantibilityConstant),
+                        max(0, multiply(maxCost.perLevelAboveFirst(), config.enchantmentPenchantibilityMultiplier))
                 ));
             });
         });

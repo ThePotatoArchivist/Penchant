@@ -37,11 +37,11 @@ public class PenchantServerConfig extends WrappedConfig {
 
     }
 
-    @Comment("Used to generate the fallback values for Penchant's parameter components")
+    @Comment("Used to generate the fallback values for Penchant's components")
     @Comment("Will not apply to any components that are set directly")
     @Comment("Requires server restart/world relog")
     public FallbackParameters fallbackParameters = new FallbackParameters();
-    public static class FallbackParameters implements Section, PenchantFallbackConfig {
+    public static class FallbackParameters implements Section {
 
         @Comment("Multiplied by enchantment.anvil_cost to calculate experience_cost")
         public float xpCostMultiplier = 1;
@@ -69,45 +69,6 @@ public class PenchantServerConfig extends WrappedConfig {
         @Comment("0 means no maximum")
         public int maxItemPenchantibility = 0;
 
-        @Override
-        public float xpCostMultiplier() {
-            return xpCostMultiplier;
-        }
-
-        @Override
-        public float bookRequirementMultiplier() {
-            return bookRequirementMultiplier;
-        }
-
-        @Override
-        public int bookRequirementConstant() {
-            return bookRequirementConstant;
-        }
-
-        @Override
-        public float enchantmentPenchantibilityMultiplier() {
-            return enchantmentPenchantibilityMultiplier;
-        }
-
-        @Override
-        public int enchantmentPenchantibilityConstant() {
-            return enchantmentPenchantibilityConstant;
-        }
-
-        @Override
-        public float itemPenchantibilityMultiplier() {
-            return itemPenchantibilityMultiplier;
-        }
-
-        @Override
-        public int minItemPenchantibility() {
-            return minItemPenchantibility;
-        }
-
-        @Override
-        public int maxItemPenchantibility() {
-            return maxItemPenchantibility;
-        }
     }
 
 }
