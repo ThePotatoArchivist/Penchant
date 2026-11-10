@@ -37,7 +37,8 @@
 		"minecraft": "~26.3",
 		"java": ">=25",
 		"fabric-api": "*",
-		"hcapi": "^1.0.0"
+		"hcapi": "^1.0.0",
+		"lootinj": "^1.0.5"
 	},
 	"suggests": {
 		"another-mod": "*"

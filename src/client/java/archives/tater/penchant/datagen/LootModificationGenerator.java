@@ -32,7 +32,7 @@ public class LootModificationGenerator extends FabricDynamicRegistryProvider {
     }
 
     private static void addInject(Entries entries, ResourceKey<LootTable> target, LootPool.Builder... inject) {
-        entries.add(ResourceKey.create(LootInj.LOOT_MODIFICATION, Penchant.id(target.identifier().getNamespace() + "/" + target.identifier().getPath())), LootModification.builder()
+        entries.add(ResourceKey.create(LootInj.LOOT_MODIFICATION, Penchant.id(target.identifier().getPath())), LootModification.builder()
                 .target(target)
                 .pools(Arrays.stream(inject).map(LootPool.Builder::build).toList())
                 .build()
@@ -79,7 +79,7 @@ public class LootModificationGenerator extends FabricDynamicRegistryProvider {
         addInject(entries, BuiltInLootTables.ABANDONED_MINESHAFT, createBooks(registry, 8, Enchantments.SILK_TOUCH, Enchantments.FORTUNE));
         addInject(entries, BuiltInLootTables.SIMPLE_DUNGEON, createBooks(registry, 14, Enchantments.SILK_TOUCH, Enchantments.FORTUNE));
         addInject(entries, BuiltInLootTables.SHIPWRECK_TREASURE, createBooks(registry, 18, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER));
-        entries.add(ResourceKey.create(LootInj.LOOT_MODIFICATION, Penchant.id("minecraft/chests/underwater_ruin")), LootModification.builder()
+        entries.add(ResourceKey.create(LootInj.LOOT_MODIFICATION, Penchant.id("chests/underwater_ruin")), LootModification.builder()
                 .target(BuiltInLootTables.UNDERWATER_RUIN_SMALL)
                 .target(BuiltInLootTables.UNDERWATER_RUIN_BIG)
                 .pool(createBooks(registry, 8, Enchantments.RESPIRATION, Enchantments.DEPTH_STRIDER))
