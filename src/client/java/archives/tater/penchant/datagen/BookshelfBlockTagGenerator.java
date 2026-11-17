@@ -3,6 +3,7 @@ package archives.tater.penchant.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v2.TagUtil;
 
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.Registries;
@@ -23,6 +24,7 @@ public class BookshelfBlockTagGenerator extends FabricTagProvider.BlockTagProvid
         getOrCreateTagBuilder(BlockTags.ENCHANTMENT_POWER_PROVIDER)
                 .add(Blocks.CHISELED_BOOKSHELF, Blocks.LECTERN)
                 .forceAddTag(ConventionalBlockTags.BOOKSHELVES)
+                .addOptionalTag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(TagUtil.C_TAG_NAMESPACE, "chiseled_bookshelves")))
                 .addOptionalTag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("blueprint", "wooden_chiseled_bookshelves")));
     }
 }
