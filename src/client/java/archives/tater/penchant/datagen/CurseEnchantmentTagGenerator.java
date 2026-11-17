@@ -1,24 +1,27 @@
 package archives.tater.penchant.datagen;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.EnchantmentTagsProvider;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.concurrent.CompletableFuture;
 
-public class CurseEnchantmentTagGenerator extends EnchantmentTagsProvider {
-    public CurseEnchantmentTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-        super(output, lookupProvider);
+public class CurseEnchantmentTagGenerator extends FabricTagProvider<Enchantment> {
+    public CurseEnchantmentTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, Registries.ENCHANTMENT, lookupProvider);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(EnchantmentTags.TRADEABLE)
-                .tagex_forceExcludeTag(EnchantmentTags.CURSE);
+                .removeTag(EnchantmentTags.CURSE);
         tag(EnchantmentTags.ON_RANDOM_LOOT)
-                .tagex_forceExcludeTag(EnchantmentTags.CURSE);
+                .removeTag(EnchantmentTags.CURSE);
         tag(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
-                .tagex_forceAddTag(EnchantmentTags.CURSE);
+                .forceAddTag(EnchantmentTags.CURSE);
     }
 }

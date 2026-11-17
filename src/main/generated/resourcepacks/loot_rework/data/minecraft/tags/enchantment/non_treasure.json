@@ -1,5 +1,6 @@
 {
-  "values": [
-    "!#penchant:rare"
-  ]
+  "fabric:remove": [
+    "#penchant:rare"
+  ],
+  "values": []
 }

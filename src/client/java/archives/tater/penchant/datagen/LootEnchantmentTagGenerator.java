@@ -3,12 +3,12 @@ package archives.tater.penchant.datagen;
 import archives.tater.penchant.Penchant;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.tags.EnchantmentTagsProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
+public class LootEnchantmentTagGenerator extends FabricTagProvider<Enchantment> {
 
     public static final List<ResourceKey<Enchantment>> RARE = List.of(
             Enchantments.FROST_WALKER, // igloo
@@ -69,7 +69,7 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
     );
 
     public LootEnchantmentTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, registriesFuture);
+        super(output, Registries.ENCHANTMENT, registriesFuture);
     }
 
     @Override
@@ -78,30 +78,30 @@ public class LootEnchantmentTagGenerator extends EnchantmentTagsProvider {
         var uncommon = TagKey.create(Registries.ENCHANTMENT, Penchant.id("uncommon"));
         var common = TagKey.create(Registries.ENCHANTMENT, Penchant.id("common"));
 
-        tag(rare)
+        getOrCreateTagBuilder(rare)
                 .addAll(RARE)
                 .addOptional(ResourceLocation.fromNamespaceAndPath("veinminer-enchantment", "veinminer"));
 
-        tag(uncommon)
+        getOrCreateTagBuilder(uncommon)
                 .addAll(UNCOMMON)
                 .addOptional(ResourceLocation.fromNamespaceAndPath("farmersdelight", "backstabbing"));
 
-        tag(common)
+        getOrCreateTagBuilder(common)
                 .addAll(COMMON);
 
-        tag(EnchantmentTags.TREASURE)
+        getOrCreateTagBuilder(EnchantmentTags.TREASURE)
                 .addTag(rare);
-        tag(EnchantmentTags.NON_TREASURE)
-                .tagex_excludeTag(rare);
-        tag(EnchantmentTags.IN_ENCHANTING_TABLE)
-                .tagex_excludeTag(uncommon);
-        tag(EnchantmentTags.TRADEABLE)
-                .tagex_excludeTag(common)
+        getOrCreateTagBuilder(EnchantmentTags.NON_TREASURE)
+                .removeTag(rare);
+        getOrCreateTagBuilder(EnchantmentTags.IN_ENCHANTING_TABLE)
+                .removeTag(uncommon);
+        getOrCreateTagBuilder(EnchantmentTags.TRADEABLE)
+                .removeTag(common)
                 .addTag(uncommon);
-        tag(EnchantmentTags.ON_RANDOM_LOOT)
+        getOrCreateTagBuilder(EnchantmentTags.ON_RANDOM_LOOT)
                 .addTag(uncommon)
                 .addTag(rare);
-        tag(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
+        getOrCreateTagBuilder(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
                 .addTag(uncommon)
                 .addTag(rare);
     }
