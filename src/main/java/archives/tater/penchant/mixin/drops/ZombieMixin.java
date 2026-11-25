@@ -19,7 +19,7 @@ public class ZombieMixin {
             at = @At(value = "INVOKE:LAST", target = "Lnet/minecraft/world/entity/monster/zombie/Zombie;setItemSlot(Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/item/ItemStack;)V"),
             index = 1
     )
-    private ItemStack spawnPickaxe(ItemStack original, @Local(argsOnly = true) RandomSource random) {
+    private ItemStack spawnPickaxe(ItemStack original, @Local(argsOnly = true, name = "random") RandomSource random) {
         return PenchantFlag.ZOMBIE_SPAWN_PICKAXE.isEnabled() && random.nextInt(4) == 0 ? new ItemStack(Items.IRON_PICKAXE) : original;
     }
 }
