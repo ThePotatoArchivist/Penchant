@@ -28,6 +28,7 @@ import net.minecraft.network.chat.contents.objects.AtlasSprite;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
@@ -128,12 +129,12 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                 minecraft,
                 layout,
                 EnchantmentSlotWidget.HEIGHT * 5,
-                new AbstractScrollArea.ScrollbarSettings(SCROLLLER_TEXTURE, null, null, 5, 16, 1, false),
+                new AbstractScrollArea.ScrollbarSettings(SCROLLLER_TEXTURE, null, null, 6, 19, 2, false),
                 1,
                 ScrollableLayout.ReserveStrategy.RIGHT,
                 GroupNarration.list("narrator.position.list", "narration.group_navigation.usage.enchantment", ScreenAxis.VERTICAL)
         );
-        scrollableLayout.setPosition(leftPos, topPos);
+        scrollableLayout.setPosition(leftPos + 60, topPos + 14);
         scrollableLayout.arrangeElements();
         scrollableLayout.visitWidgets(this::addRenderableWidget);
         scrollableLayout.setTabGroup(7); // TODO what
@@ -145,13 +146,17 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         var widgets = new ArrayList<SlotWidget>();
 
         for (var slot : menu.slots)
-            widgets.add(new SlotWidget(slot, minecraft, imageWidth, leftPos, topPos, SlotWidget.defaultTooltipWithCustomEmpty(minecraft, Tooltip.create(switch (slot.index) {
-                case 0 -> ENCHANTING_SLOT_TOOLTIP;
-                case 1 -> menu.canDisenchant() ? INGREDIENT_SLOT_DISENCHANT_TOOLTIP : INGREDIENT_SLOT_TOOLTIP;
-                default -> throw new IllegalStateException("Unexpected value: " + slot.index);
-            }))));
+            widgets.add(new SlotWidget(slot, minecraft, imageWidth, leftPos, topPos, SlotWidget.defaultTooltipWithCustomEmpty(minecraft, this::createEmptySlotTooltip)));
 
         this.setSlotWidgets(widgets);
+    }
+
+    private @Nullable Tooltip createEmptySlotTooltip(Slot slot) {
+        return switch (slot.index) {
+            case 0 -> Tooltip.create(ENCHANTING_SLOT_TOOLTIP);
+            case 1 -> Tooltip.create(menu.canDisenchant() ? INGREDIENT_SLOT_DISENCHANT_TOOLTIP : INGREDIENT_SLOT_TOOLTIP);
+            default -> null;
+        };
     }
 
     private List<Holder<Enchantment>> getIncompatible(ItemStack stack, Holder<Enchantment> enchantment, HolderLookup.Provider registries) {
