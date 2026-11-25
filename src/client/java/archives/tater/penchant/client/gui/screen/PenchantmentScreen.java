@@ -9,12 +9,13 @@ import archives.tater.penchant.util.PenchantmentHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiPipeline;
+import net.minecraft.client.gui.components.inventory.SlotWidget;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.book.BookModel;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.AtlasIds;
@@ -28,10 +29,11 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.clamp;
 import static java.util.Objects.requireNonNull;
-import static net.minecraft.util.Mth.clamp;
 import static net.minecraft.util.Mth.lerp;
 
 public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu> {
@@ -134,6 +136,16 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         }
     }
 
+    @Override
+    protected void updateSlotWidgets() {
+        var widgets = new ArrayList<SlotWidget>();
+
+        for (var slot : menu.slots) // TODO: Tooltip
+            widgets.add(new SlotWidget(slot, minecraft, imageWidth, leftPos, topPos, SlotWidget.defaultTooltip(minecraft)));
+
+        this.setSlotWidgets(widgets);
+    }
+
     private List<Holder<Enchantment>> getIncompatible(ItemStack stack, Holder<Enchantment> enchantment, HolderLookup.Provider registries) {
         if (PenchantmentHelper.hasEnchantment(stack, enchantment)) return List.of();
 
@@ -174,13 +186,13 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super.extractBackground(graphics, mouseX, mouseY, a);
+    public void extractBackground(GuiGraphicsExtractor graphics) {
+        super.extractBackground(graphics);
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
-        renderBook(graphics, x, y);
+        graphics.blit(GuiPipeline.TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        extractBook(graphics, x, y);
 
         var font = Minecraft.getInstance().font;
         var infoText = Component.object(BOOK_ICON_TEXTURE)
@@ -192,12 +204,12 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                 .append(menu.hasDisenchanter() ? "✔" : "❌");
         graphics.text(font, infoText, leftPos + 32 - font.width(infoText) / 2, topPos + 18, 0xFF606060, false);
 
-        secondSlotBackground.extractRenderState(menu, graphics, a, leftPos, topPos);
+        secondSlotBackground.extractRenderState(menu, graphics, leftPos, topPos);
 
         scrollbar.render(graphics);
     }
 
-    private void renderBook(GuiGraphicsExtractor guiGraphics, int x, int y) {
+    private void extractBook(GuiGraphicsExtractor guiGraphics, int x, int y) {
         var partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
         var open = lerp(partialTick, oOpen, this.open);
         var flip = lerp(partialTick, oFlip, this.flip);
@@ -208,22 +220,22 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         guiGraphics.book(requireNonNull(bookModel), BOOK_TEXTURE, 40.0F, open, flip, x0, y0, x1, y1);
     }
 
-    @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        var gamePartialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
-        super.extractRenderState(graphics, mouseX, mouseY, gamePartialTick);
-
-        if (hoveredSlot != null && !hoveredSlot.hasItem() && hoveredSlot.index <= 1)
-            graphics.setTooltipForNextFrame(font, font.split(
-                    hoveredSlot.index == 0
-                            ? ENCHANTING_SLOT_TOOLTIP
-                            : menu.canDisenchant()
-                                    ? INGREDIENT_SLOT_DISENCHANT_TOOLTIP
-                                    : INGREDIENT_SLOT_TOOLTIP,
-                    TOOLTIP_WIDTH), mouseX, mouseY);
-        else
-            extractTooltip(graphics, mouseX, mouseY);
-    }
+//    @Override
+//    public void extractRenderState(GuiGraphicsExtractor graphics) {
+//        super.extractRenderState(graphics);
+//
+//        var hoveredSlot = getHoveredSlot().slot();
+//        if (hoveredSlot != null && !hoveredSlot.hasItem() && hoveredSlot.index <= 1)
+//            graphics.setTooltipForNextFrame(font, font.split(
+//                    hoveredSlot.index == 0
+//                            ? ENCHANTING_SLOT_TOOLTIP
+//                            : menu.canDisenchant()
+//                                    ? INGREDIENT_SLOT_DISENCHANT_TOOLTIP
+//                                    : INGREDIENT_SLOT_TOOLTIP,
+//                    TOOLTIP_WIDTH), graphics.mouseX(), graphics.mouseY());
+//        else
+//            extractTooltip(graphics, mouseX, mouseY);
+//    }
 
     public void tickBook() {
         var stack = menu.getEnchantingStack();

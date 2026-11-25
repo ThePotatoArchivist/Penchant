@@ -26,7 +26,7 @@ public class PenchantUtil {
 
     public static List<String> toFlatListRemoveStyle(Component text) {
         var result = new ArrayList<String>();
-        text.visit((_, contents) -> {
+        text.visit(contents -> {
             if (!contents.isEmpty())
                 result.add(contents);
             return Optional.empty();

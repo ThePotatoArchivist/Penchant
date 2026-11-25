@@ -21,8 +21,10 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.core.registries.BuiltInClientRegistries;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.Holder;
+import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -98,7 +100,7 @@ public class PenchantClient implements ClientModInitializer {
     @Override
 	public void onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
-        MenuScreens.register(PenchantMenus.PENCHANTMENT_MENU, PenchantmentScreen::new);
+        MenuScreens.register((WritableRegistry<MenuScreens.ScreenConstructor<?,?>>) BuiltInClientRegistries.MENU_SCREEN, PenchantMenus.PENCHANTMENT_MENU, PenchantmentScreen::new);
 
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             PenchantmentDefinition.buildCache(requireNonNull(client.level).registryAccess());

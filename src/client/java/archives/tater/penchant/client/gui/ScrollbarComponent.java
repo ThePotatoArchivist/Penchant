@@ -1,15 +1,14 @@
 package archives.tater.penchant.client.gui;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiPipeline;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
 import static archives.tater.penchant.client.gui.PenchantGuiUtil.containsPoint;
-import static java.lang.Math.max;
-import static java.lang.Math.round;
-import static net.minecraft.util.Mth.clamp;
+import static java.lang.Math.*;
 
+// TODO look into vanilla scrollable layout
 public class ScrollbarComponent {
     private final Identifier texture;
     private final int width;
@@ -76,7 +75,7 @@ public class ScrollbarComponent {
     public void render(GuiGraphicsExtractor guiGraphics) {
         if (!canScroll()) return;
         guiGraphics.blitSprite(
-                RenderPipelines.GUI_TEXTURED,
+                GuiPipeline.TEXTURED,
                 texture,
                 width,
                 scrollerHeight,

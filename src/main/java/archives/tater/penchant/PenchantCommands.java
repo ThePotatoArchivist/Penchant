@@ -14,6 +14,7 @@ import net.minecraft.server.commands.item.ItemCommands;
 
 import static com.mojang.brigadier.arguments.IntegerArgumentType.getInteger;
 import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
+import static net.minecraft.commands.CommandPermissionLevels.LEVEL_GAMEMASTERS;
 import static net.minecraft.commands.Commands.*;
 import static net.minecraft.commands.arguments.SlotSourceArgument.getSlotSource;
 import static net.minecraft.commands.arguments.SlotSourceArgument.slotSource;
@@ -25,7 +26,7 @@ public class PenchantCommands {
                 .requires(hasPermission(LEVEL_GAMEMASTERS));
 
         for (var targetProvider : ItemCommands.TARGET_PROVIDERS) {
-            root.then(targetProvider.wrap(literal("add_progress"), t -> t.then(argument("slots", slotSource(buildContext))
+            root.then(targetProvider.wrap(literal("add_progress"), t -> t.then(argument("slots", slotSource(ItemCommands.SLOT_SOURCE_CONTEXT))
                     .then(argument("increase", integer())
                             .executes(context ->
                                     addProgress(context.getSource(), targetProvider.access(context), getSlotSource(context, "slots"), getInteger(context, "increase"))
@@ -40,7 +41,7 @@ public class PenchantCommands {
         dispatcher.register(root);
     }
 
-    private static int addProgress(CommandSourceStack source, ItemAccessor<?> access, SlotSourceArgument.Result slots, int increase) throws CommandSyntaxException {
+    private static int addProgress(CommandSourceStack source, ItemAccessor<?> access, SlotSourceArgument.SlotResult slots, int increase) throws CommandSyntaxException {
         access.getSlots(source, slots.value()).modifySlots(slotAccess -> {
             var stack = slotAccess.get();
             EnchantmentProgress.addToProgress(stack, increase, null);

@@ -75,13 +75,13 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                         .flatMap(HolderSet::stream)
         ).collect(Collectors.toSet());
 
-        addSlot(new Slot(enchantSlots, 0, 15, 58) {
+        addSlot(new Slot(enchantSlots, 0, 15, 58, Slot.Section.INPUT) {
             @Override
             public int getMaxStackSize() {
                 return 1;
             }
         });
-        addSlot(new Slot(enchantSlots, 1, 35, 58) {
+        addSlot(new Slot(enchantSlots, 1, 35, 58, Slot.Section.INPUT) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return isEnchantingIngredient(stack) || canDisenchant() && isDisenchantingIngredient(stack);
