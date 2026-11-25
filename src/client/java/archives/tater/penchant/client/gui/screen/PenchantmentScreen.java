@@ -2,7 +2,6 @@ package archives.tater.penchant.client.gui.screen;
 
 import archives.tater.penchant.Penchant;
 import archives.tater.penchant.client.FontUtils;
-import archives.tater.penchant.client.gui.ScrollbarComponent;
 import archives.tater.penchant.client.gui.widget.EnchantmentSlotWidget;
 import archives.tater.penchant.menu.PenchantmentMenu;
 import archives.tater.penchant.util.PenchantmentHelper;
@@ -10,10 +9,15 @@ import archives.tater.penchant.util.PenchantmentHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.GuiPipeline;
+import net.minecraft.client.gui.components.AbstractScrollArea;
+import net.minecraft.client.gui.components.ScrollableLayout;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.inventory.SlotWidget;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.narration.GroupNarration;
+import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.book.BookModel;
 import net.minecraft.core.Holder;
@@ -27,6 +31,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
+import com.google.common.collect.ImmutableList;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -56,15 +61,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private static final Component INGREDIENT_SLOT_DISENCHANT_TOOLTIP = Component.translatable("container.penchant.enchant.slot.ingredient.disenchant");
     private static final int TOOLTIP_WIDTH = 115;
 
-    private final ScrollbarComponent scrollbar = new ScrollbarComponent(
-            SCROLLLER_TEXTURE,
-            6,
-            19,
-            60,
-            EnchantmentSlotWidget.WIDTH + 1,
-            60,
-            this::rebuildWidgets
-    );
+    private List<EnchantmentSlotWidget> enchantmentOptions = List.of();
 
     private final CyclingSlotBackground secondSlotBackground = new CyclingSlotBackground(1);
 
@@ -95,35 +92,26 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         bookModel = new BookModel(minecraft.getEntityModels().bakeLayer(ModelLayers.BOOK));
         var displayedEnchantments = menu.getDisplayedEnchantments();
         var stack = menu.getEnchantingStack();
-        scrollbar.update(
-                leftPos + 192,
-                topPos + 14,
-                leftPos + 60,
-                topPos + 14,
-                displayedEnchantments.size() - 4
-        );
 
-        var creative = requireNonNull(minecraft.player).hasInfiniteMaterials();
         if (!menu.isEnchanting() && !menu.isDisenchanting()) return;
+        var creative = requireNonNull(minecraft.player).hasInfiniteMaterials();
         var registries = minecraft.level.registryAccess();
         var disenchanting = menu.isDisenchanting();
-        for (var i = 0; i < 5; i++) {
-            var index = scrollbar.getPosition() + i;
-            if (index >= displayedEnchantments.size()) break;
-            var enchantment = displayedEnchantments.get(index);
-            if (disenchanting)
-                addRenderableWidget(new EnchantmentSlotWidget(
-                        leftPos + 60,
-                        topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
+        var layout = LinearLayout.vertical();
+        var options = ImmutableList.<EnchantmentSlotWidget>builder();
+        for (var enchantment : displayedEnchantments) {
+            options.add(layout.addChild(disenchanting
+                ? new EnchantmentSlotWidget(
+                        0,
+                        0,
                         enchantment,
                         getIncompatible(menu.getIngredientStack(), enchantment, registries),
                         !PenchantmentHelper.hasEnchantment(menu.getIngredientStack(), enchantment),
                         creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount()
-                ));
-            else
-                addRenderableWidget(new EnchantmentSlotWidget(
-                        leftPos + 60,
-                        topPos + 14 + i * EnchantmentSlotWidget.HEIGHT,
+                )
+                : new EnchantmentSlotWidget(
+                        0,
+                        0,
                         enchantment,
                         getIncompatible(stack, enchantment, registries),
                         PenchantmentHelper.canEnchant(stack, enchantment),
@@ -132,16 +120,36 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         creative || PenchantmentHelper.getBookRequirement(enchantment) <= menu.getBookCount(),
                         creative || PenchantmentHelper.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
                         creative || menu.isAvailable(enchantment)
-                ));
+                )
+            ));
         }
+
+        var scrollableLayout = new ScrollableLayout(
+                minecraft,
+                layout,
+                EnchantmentSlotWidget.HEIGHT * 5,
+                new AbstractScrollArea.ScrollbarSettings(SCROLLLER_TEXTURE, null, null, 5, 16, 1, false),
+                1,
+                ScrollableLayout.ReserveStrategy.RIGHT,
+                GroupNarration.list("narrator.position.list", "narration.group_navigation.usage.enchantment", ScreenAxis.VERTICAL)
+        );
+        scrollableLayout.setPosition(leftPos, topPos);
+        scrollableLayout.arrangeElements();
+        scrollableLayout.visitWidgets(this::addRenderableWidget);
+        scrollableLayout.setTabGroup(7); // TODO what
+        scrollableLayout.allowTabNavigationInside(false);
     }
 
     @Override
     protected void updateSlotWidgets() {
         var widgets = new ArrayList<SlotWidget>();
 
-        for (var slot : menu.slots) // TODO: Tooltip
-            widgets.add(new SlotWidget(slot, minecraft, imageWidth, leftPos, topPos, SlotWidget.defaultTooltip(minecraft)));
+        for (var slot : menu.slots)
+            widgets.add(new SlotWidget(slot, minecraft, imageWidth, leftPos, topPos, SlotWidget.defaultTooltipWithCustomEmpty(minecraft, Tooltip.create(switch (slot.index) {
+                case 0 -> ENCHANTING_SLOT_TOOLTIP;
+                case 1 -> menu.canDisenchant() ? INGREDIENT_SLOT_DISENCHANT_TOOLTIP : INGREDIENT_SLOT_TOOLTIP;
+                default -> throw new IllegalStateException("Unexpected value: " + slot.index);
+            }))));
 
         this.setSlotWidgets(widgets);
     }
@@ -165,27 +173,6 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
-        return scrollbar.mouseClicked(event) || super.mouseClicked(event, isDoubleClick);
-    }
-
-    @Override
-    public boolean mouseDragged(MouseButtonEvent event, double mouseX, double mouseY) {
-        return scrollbar.mouseDragged(event) || super.mouseDragged(event, mouseX, mouseY);
-    }
-
-    @Override
-    public boolean mouseReleased(MouseButtonEvent event) {
-        scrollbar.mouseReleased();
-        return super.mouseReleased(event);
-    }
-
-    @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        return scrollbar.mouseScrolled(mouseX, mouseY, scrollY) || super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
-    }
-
-    @Override
     public void extractBackground(GuiGraphicsExtractor graphics) {
         super.extractBackground(graphics);
 
@@ -205,8 +192,6 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         graphics.text(font, infoText, leftPos + 32 - font.width(infoText) / 2, topPos + 18, 0xFF606060, false);
 
         secondSlotBackground.extractRenderState(menu, graphics, leftPos, topPos);
-
-        scrollbar.render(graphics);
     }
 
     private void extractBook(GuiGraphicsExtractor guiGraphics, int x, int y) {
@@ -219,23 +204,6 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         var y1 = y0 + 31;
         guiGraphics.book(requireNonNull(bookModel), BOOK_TEXTURE, 40.0F, open, flip, x0, y0, x1, y1);
     }
-
-//    @Override
-//    public void extractRenderState(GuiGraphicsExtractor graphics) {
-//        super.extractRenderState(graphics);
-//
-//        var hoveredSlot = getHoveredSlot().slot();
-//        if (hoveredSlot != null && !hoveredSlot.hasItem() && hoveredSlot.index <= 1)
-//            graphics.setTooltipForNextFrame(font, font.split(
-//                    hoveredSlot.index == 0
-//                            ? ENCHANTING_SLOT_TOOLTIP
-//                            : menu.canDisenchant()
-//                                    ? INGREDIENT_SLOT_DISENCHANT_TOOLTIP
-//                                    : INGREDIENT_SLOT_TOOLTIP,
-//                    TOOLTIP_WIDTH), graphics.mouseX(), graphics.mouseY());
-//        else
-//            extractTooltip(graphics, mouseX, mouseY);
-//    }
 
     public void tickBook() {
         var stack = menu.getEnchantingStack();
