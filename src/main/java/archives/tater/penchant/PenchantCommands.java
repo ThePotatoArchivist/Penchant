@@ -12,10 +12,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.item.ItemAccessor;
 import net.minecraft.server.commands.item.ItemCommands;
 
-import static com.mojang.brigadier.arguments.IntegerArgumentType.getInteger;
-import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
 import static net.minecraft.commands.CommandPermissionLevels.LEVEL_GAMEMASTERS;
 import static net.minecraft.commands.Commands.*;
+import static net.minecraft.commands.arguments.IntegerArgument.getInteger;
+import static net.minecraft.commands.arguments.IntegerArgument.integer;
 import static net.minecraft.commands.arguments.SlotSourceArgument.getSlotSource;
 import static net.minecraft.commands.arguments.SlotSourceArgument.slotSource;
 
@@ -27,7 +27,7 @@ public class PenchantCommands {
 
         for (var targetProvider : ItemCommands.TARGET_PROVIDERS) {
             root.then(targetProvider.wrap(literal("add_progress"), t -> t.then(argument("slots", slotSource(ItemCommands.SLOT_SOURCE_CONTEXT))
-                    .then(argument("increase", integer())
+                    .then(argument("increase", integer(0))
                             .executes(context ->
                                     addProgress(context.getSource(), targetProvider.access(context), getSlotSource(context, "slots"), getInteger(context, "increase"))
                             )
