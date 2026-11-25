@@ -16,7 +16,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 @Mixin(EnchantmentScreen.class)
 public class EnchantmentScreenMixin {
     @WrapOperation(
-            method = "extractRenderState",
+            method = "getClue",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;")
     )
     private Component noLevel(Holder<Enchantment> enchantment, int level, Operation<Component> original) {

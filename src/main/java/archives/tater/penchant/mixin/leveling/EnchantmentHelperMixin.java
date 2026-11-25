@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -33,7 +33,7 @@ public class EnchantmentHelperMixin {
             method = "enchantItemFromProvider",
             at = @At("TAIL")
     )
-    private static void addRandomProgress(ItemStack itemStack, RegistryAccess registryAccess, ResourceKey<EnchantmentProvider> providerKey, DifficultyInstance difficulty, RandomSource random, CallbackInfo ci) {
+    private static void addRandomProgress(ItemStack itemStack, HolderGetter.Provider registryAccess, ResourceKey<EnchantmentProvider> providerKey, DifficultyInstance difficulty, RandomSource random, CallbackInfo ci) {
         EnchantmentProgress.addRandomProgress(itemStack, random);
     }
 }

@@ -22,7 +22,7 @@ public class EnchantWithLevelsFunctionMixin {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @ModifyArg(
             method = "run",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;enchantItem(Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/item/ItemStack;ILnet/minecraft/core/RegistryAccess;Ljava/util/Optional;)Lnet/minecraft/world/item/ItemStack;"),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;enchantItem(Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/item/ItemStack;ILnet/minecraft/core/HolderLookup$Provider;Ljava/util/Optional;)Lnet/minecraft/world/item/ItemStack;"),
             index = 4
     )
     private static Optional<HolderSet<Enchantment>> replaceLootTag(Optional<HolderSet<Enchantment>> original, @Local(argsOnly = true, name = "itemStack") ItemStack itemStack, @Local(argsOnly = true, name = "context") LootContext context) {
