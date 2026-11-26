@@ -32,7 +32,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
-import com.google.common.collect.ImmutableList;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
     private static final Component INGREDIENT_SLOT_DISENCHANT_TOOLTIP = Component.translatable("container.penchant.enchant.slot.ingredient.disenchant");
     private static final int TOOLTIP_WIDTH = 115;
 
-    private List<EnchantmentSlotWidget> enchantmentOptions = List.of();
+    private @Nullable ScrollableLayout scrollableLayout;
 
     private final CyclingSlotBackground secondSlotBackground = new CyclingSlotBackground(1);
 
@@ -94,14 +93,16 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         var displayedEnchantments = menu.getDisplayedEnchantments();
         var stack = menu.getEnchantingStack();
 
-        if (!menu.isEnchanting() && !menu.isDisenchanting()) return;
+        if (!menu.isEnchanting() && !menu.isDisenchanting()) {
+            scrollableLayout = null;
+            return;
+        }
         var creative = requireNonNull(minecraft.player).hasInfiniteMaterials();
         var registries = minecraft.level.registryAccess();
         var disenchanting = menu.isDisenchanting();
         var layout = LinearLayout.vertical();
-        var options = ImmutableList.<EnchantmentSlotWidget>builder();
         for (var enchantment : displayedEnchantments) {
-            options.add(layout.addChild(disenchanting
+            layout.addChild(disenchanting
                 ? new EnchantmentSlotWidget(
                         0,
                         0,
@@ -122,10 +123,11 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
                         creative || PenchantmentHelper.getXpLevelCost(enchantment) <=  menu.getPlayerXp(),
                         creative || menu.isAvailable(enchantment)
                 )
-            ));
+            );
         }
 
-        var scrollableLayout = new ScrollableLayout(
+        var prevScrollAMount = scrollableLayout == null ? 0.0 : scrollableLayout.getScrollAmount();
+        scrollableLayout = new ScrollableLayout(
                 minecraft,
                 layout,
                 EnchantmentSlotWidget.HEIGHT * 5,
@@ -139,6 +141,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         scrollableLayout.visitWidgets(this::addRenderableWidget);
         scrollableLayout.setTabGroup(7); // TODO what
         scrollableLayout.allowTabNavigationInside(false);
+        scrollableLayout.setScrollAmount(prevScrollAMount);
     }
 
     @Override
