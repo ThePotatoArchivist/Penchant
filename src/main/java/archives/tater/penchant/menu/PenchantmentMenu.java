@@ -2,10 +2,7 @@ package archives.tater.penchant.menu;
 
 import archives.tater.penchant.Penchant;
 import archives.tater.penchant.PenchantCompat;
-import archives.tater.penchant.registry.PenchantAdvancements;
-import archives.tater.penchant.registry.PenchantBlockTags;
-import archives.tater.penchant.registry.PenchantEnchantmentTags;
-import archives.tater.penchant.registry.PenchantMenus;
+import archives.tater.penchant.registry.*;
 import archives.tater.penchant.util.PenchantmentHelper;
 
 import net.minecraft.advancements.triggers.CriteriaTriggers;
@@ -25,7 +22,6 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -152,7 +148,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public static boolean isEnchantingIngredient(ItemStack stack) {
-        return stack.is(Items.LAPIS_LAZULI);
+        return stack.is(PenchantItemTags.ENCHANTMENT_FUEL);
     }
 
     public static boolean isDisenchantingIngredient(ItemStack stack) {

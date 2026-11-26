@@ -47,6 +47,9 @@ public class ItemTagGenerator extends FabricTagsProvider.ItemTagsProvider {
         builder(PenchantItemTags.ENCHANTMENT_CONTAINERS)
                 .add(ItemIds.BOOK)
                 .add(ItemIds.ENCHANTED_BOOK);
+
+        builder(PenchantItemTags.ENCHANTMENT_FUEL)
+                .add(ItemIds.LAPIS_LAZULI);
     }
 
     private static ResourceKey<Item> createKey(String namespace, String path) {
