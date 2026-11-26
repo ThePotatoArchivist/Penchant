@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.references.ItemIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
@@ -42,6 +43,10 @@ public class ItemTagGenerator extends FabricTagsProvider.ItemTagsProvider {
 
         builder(PenchantItemTags.LEVEL_UP_BY_USE)
                 .addOptional(createKey("enderscape", "mirror"));
+
+        builder(PenchantItemTags.ENCHANTMENT_CONTAINERS)
+                .add(ItemIds.BOOK)
+                .add(ItemIds.ENCHANTED_BOOK);
     }
 
     private static ResourceKey<Item> createKey(String namespace, String path) {

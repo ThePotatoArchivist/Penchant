@@ -10,7 +10,6 @@ import archives.tater.penchant.util.PenchantmentHelper;
 
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.*;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -157,7 +156,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public static boolean isDisenchantingIngredient(ItemStack stack) {
-        return stack.is(Items.BOOK) || EnchantmentHelper.getComponentType(stack) == DataComponents.STORED_ENCHANTMENTS;
+        return PenchantmentHelper.isEnchantmentContainer(stack);
     }
 
     public static Set<Holder<Enchantment>> getUnlockedEnchantments(Level level, BlockPos pos) {
