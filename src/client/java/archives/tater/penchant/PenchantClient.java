@@ -11,6 +11,7 @@ import archives.tater.penchant.registry.PenchantMenus;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingContext;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.item.v1.ItemComponentTooltipProviderRegistry;
@@ -35,15 +36,16 @@ import static net.minecraft.util.Util.makeDescriptionId;
 
 
 public class PenchantClient implements ClientModInitializer {
-    private static KeyMappingExt keybind(Identifier id, int key, KeyMapping.Category category) {
-        return (KeyMappingExt) KeyMappingHelper.registerKeyMapping(new KeyMappingExt(makeDescriptionId("key", id), Type.KEYBOARD, key, category));
+    private static KeyMappingExt keybind(Identifier id, int key, KeyMapping.Category category, KeyMappingContext context) {
+        return (KeyMappingExt) KeyMappingHelper.registerKeyMapping(new KeyMappingExt(makeDescriptionId("key", id), Type.KEYBOARD, key, category), context);
     }
 
     private static final KeyMapping.Category PENCHANT_CATEGORY = KeyMapping.Category.register(Penchant.id(Penchant.MOD_ID));
     public static final KeyMappingExt SHOW_PROGRESS_KEYBIND = keybind(
             Penchant.id("show_progress"),
             InputConstants.KEY_LCONTROL,
-            PENCHANT_CATEGORY
+            PENCHANT_CATEGORY,
+            KeyMappingContext.IN_SCREEN
     );
 
     public static final PenchantClientConfig CONFIG = PenchantClientConfig.createToml(
