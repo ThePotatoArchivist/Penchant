@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.references.ItemIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
@@ -26,8 +27,29 @@ public class ItemTagGenerator extends FabricTagsProvider.ItemTagsProvider {
                 .forceAddTag(ItemTags.HARNESSES)
                 .forceAddTag(ConventionalItemTags.HORSE_ARMORS)
                 .forceAddTag(ConventionalItemTags.NAUTILUS_ARMORS)
-                .addOptional(createKey("enderscape", "mirror"))
                 .addOptional(createKey("enderscape", "magnia_attractor"));
+
+        builder(PenchantItemTags.PROPORTIONAL_ENCHANTMENT_PROGRESS)
+                .forceAddTag(ItemTags.ARMOR_ENCHANTABLE)
+                .forceAddTag(ConventionalItemTags.SHIELD_TOOLS);
+
+        builder(PenchantItemTags.LEVEL_UP_BY_KILLING)
+                .forceAddTag(ItemTags.ARMOR_ENCHANTABLE)
+                .forceAddTag(ConventionalItemTags.SHIELD_TOOLS);
+
+        builder(PenchantItemTags.DEFAULT_PROGRESS_COST_FACTOR_ONE)
+                .forceAddTag(ConventionalItemTags.BOW_TOOLS)
+                .forceAddTag(ConventionalItemTags.CROSSBOW_TOOLS);
+
+        builder(PenchantItemTags.LEVEL_UP_BY_USE)
+                .addOptional(createKey("enderscape", "mirror"));
+
+        builder(PenchantItemTags.ENCHANTMENT_CONTAINERS)
+                .add(ItemIds.BOOK)
+                .add(ItemIds.ENCHANTED_BOOK);
+
+        builder(PenchantItemTags.ENCHANTMENT_FUEL)
+                .add(ItemIds.LAPIS_LAZULI);
     }
 
     private static ResourceKey<Item> createKey(String namespace, String path) {

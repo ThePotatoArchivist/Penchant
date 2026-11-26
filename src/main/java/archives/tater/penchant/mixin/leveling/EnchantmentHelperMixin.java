@@ -25,15 +25,15 @@ public class EnchantmentHelperMixin {
             method = "createBook",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentInstance;level()I")
     )
-    private static int levelOne(int original, @Local(argsOnly = true) EnchantmentInstance instance) {
-        return instance.enchantment().is(PenchantEnchantmentTags.NO_LEVELING) ? original : 1;
+    private static int levelOne(int original, @Local(argsOnly = true, name = "enchant") EnchantmentInstance enchant) {
+        return enchant.enchantment().is(PenchantEnchantmentTags.NO_LEVELING) ? original : 1;
     }
 
     @Inject(
             method = "enchantItemFromProvider",
             at = @At("TAIL")
     )
-    private static void addRandomProgress(ItemStack stack, RegistryAccess registries, ResourceKey<EnchantmentProvider> key, DifficultyInstance difficulty, RandomSource random, CallbackInfo ci) {
-        EnchantmentProgress.addRandomProgress(stack, random);
+    private static void addRandomProgress(ItemStack itemStack, RegistryAccess registryAccess, ResourceKey<EnchantmentProvider> providerKey, DifficultyInstance difficulty, RandomSource random, CallbackInfo ci) {
+        EnchantmentProgress.addRandomProgress(itemStack, random);
     }
 }

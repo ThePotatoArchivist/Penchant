@@ -31,7 +31,7 @@ public abstract class ItemStackMixin implements ItemInstance {
             method = "hurtAndBreak(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerPlayer;Ljava/util/function/Consumer;)V"
     )
 	private void updateProgress(int amount, ServerLevel level, @Nullable ServerPlayer player, Consumer<Item> onBreak, CallbackInfo ci) {
-        EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, player);
+        EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, amount, player);
 	}
 
     @Inject(
@@ -40,7 +40,7 @@ public abstract class ItemStackMixin implements ItemInstance {
     )
     private void updateProgress(int amount, Player player, CallbackInfo ci) {
         if (player instanceof ServerPlayer)
-            EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, player);
+            EnchantmentProgress.onDurabilityDamage((ItemStack) (Object) this, amount, player);
     }
 
     @ModifyVariable(

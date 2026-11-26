@@ -17,7 +17,7 @@ public class EnchantmentHelperMixin {
             method = "lambda$getAvailableEnchantmentResults$0",
             at = @At("RETURN")
     )
-    private static boolean disableEnchantment(boolean original, @Local(argsOnly = true) Holder<Enchantment> enchantment) {
+    private static boolean disableEnchantment(boolean original, @Local(argsOnly = true, name = "enchantment") Holder<Enchantment> enchantment) {
         return original && !enchantment.is(PenchantEnchantmentTags.DISABLED);
     }
 }

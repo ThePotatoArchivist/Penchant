@@ -18,7 +18,7 @@ import net.minecraft.util.ExtraCodecs;
 
 import org.jspecify.annotations.Nullable;
 
-import static net.minecraft.util.Mth.clamp;
+import static java.lang.Math.max;
 
 public class PenchantComponents {
     private static <T> DataComponentType<T> register(String path, @Nullable Codec<T> codec, @Nullable StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec, boolean cache) {
@@ -56,13 +56,16 @@ public class PenchantComponents {
             true
     );
 
+    @SuppressWarnings("deprecation")
     public static void init() {
         DefaultItemComponentEvents.MODIFY.register(context -> {
             context.modify(
                     item -> item.components().has(DataComponents.MAX_DAMAGE),
                     (builder, item) -> {
                         if (!builder.contains(ENCHANTMENT_PROGRESS_COST_FACTOR))
-                            builder.set(ENCHANTMENT_PROGRESS_COST_FACTOR, clamp(item.components().getOrDefault(DataComponents.MAX_DAMAGE, 0) / 100, 1, 8));
+                            builder.set(ENCHANTMENT_PROGRESS_COST_FACTOR, item.builtInRegistryHolder().is(PenchantItemTags.DEFAULT_PROGRESS_COST_FACTOR_ONE)
+                                    ? 1
+                                    : max(item.components().getOrDefault(DataComponents.MAX_DAMAGE, 0) / 100, 1));
                     }
             );
         });

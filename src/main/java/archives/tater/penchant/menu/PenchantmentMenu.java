@@ -1,18 +1,12 @@
 package archives.tater.penchant.menu;
 
 import archives.tater.penchant.Penchant;
-import archives.tater.penchant.registry.PenchantAdvancements;
-import archives.tater.penchant.registry.PenchantBlockTags;
-import archives.tater.penchant.registry.PenchantEnchantmentTags;
-import archives.tater.penchant.registry.PenchantMenus;
+import archives.tater.penchant.PenchantCompat;
+import archives.tater.penchant.registry.*;
 import archives.tater.penchant.util.PenchantmentHelper;
 
 import net.minecraft.advancements.triggers.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -28,7 +22,6 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -36,13 +29,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static archives.tater.penchant.util.PenchantUtil.streamOrdered;
-import static java.util.Comparator.comparingInt;
 import static net.minecraft.util.Mth.floor;
 
 public class PenchantmentMenu extends AbstractContainerMenu {
@@ -57,6 +50,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     private final DataSlot hasDisenchanter = addDataSlot(DataSlot.standalone());
     private final ContainerLevelAccess access;
     private final Player player;
+    private final RegistryAccess registries;
     private final Registry<Enchantment> enchantments;
     private Set<Holder<Enchantment>> availableEnchantments = Set.of();
     private List<Holder<Enchantment>> displayedEnchantments = List.of();
@@ -70,7 +64,8 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     public PenchantmentMenu(int containerId, Inventory playerInventory, Set<Holder<Enchantment>> unlockedEnchantments, ContainerLevelAccess access) {
         super(PenchantMenus.PENCHANTMENT_MENU, containerId);
         player = playerInventory.player;
-        enchantments = player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        registries = player.registryAccess();
+        enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
         this.access = access;
 
         availableEnchantments = Stream.concat(
@@ -153,11 +148,11 @@ public class PenchantmentMenu extends AbstractContainerMenu {
     }
 
     public static boolean isEnchantingIngredient(ItemStack stack) {
-        return stack.is(Items.LAPIS_LAZULI);
+        return stack.is(PenchantItemTags.ENCHANTMENT_FUEL);
     }
 
     public static boolean isDisenchantingIngredient(ItemStack stack) {
-        return stack.is(Items.BOOK) || EnchantmentHelper.getComponentType(stack) == DataComponents.STORED_ENCHANTMENTS;
+        return PenchantmentHelper.isEnchantmentContainer(stack);
     }
 
     public static Set<Holder<Enchantment>> getUnlockedEnchantments(Level level, BlockPos pos) {
@@ -259,11 +254,7 @@ public class PenchantmentMenu extends AbstractContainerMenu {
                             PenchantmentHelper.canEnchantItem(stack, enchantment) &&
                             (!enchantment.is(EnchantmentTags.CURSE) || availableEnchantments.contains(enchantment) || PenchantmentHelper.hasEnchantment(stack, enchantment))
                     )
-                    .sorted(comparingInt(enchantment ->
-                            creative || !availableEnchantments.contains(enchantment) && !PenchantmentHelper.hasEnchantment(stack, enchantment) ? 2
-                            : enchantment.is(EnchantmentTags.CURSE) ? 1
-                            : 0
-                    ))
+                    .sorted(getComparator(creative, stack))
                     .toList();
         } else if (isDisenchanting()) {
             displayedEnchantments = streamOrdered(enchantments, EnchantmentTags.TOOLTIP_ORDER)
@@ -273,6 +264,19 @@ public class PenchantmentMenu extends AbstractContainerMenu {
             displayedEnchantments = List.of();
         }
         onSlotsChange.run();
+    }
+
+    private Comparator<Holder<Enchantment>> getComparator(boolean creative, ItemStack stack) {
+        var base = Comparator.<Holder<Enchantment>>comparingInt(enchantment ->
+                (!creative && !availableEnchantments.contains(enchantment)) && !PenchantmentHelper.hasEnchantment(stack, enchantment) ? 2
+                        : enchantment.is(EnchantmentTags.CURSE) ? 1
+                        : 0
+        );
+
+        if (PenchantCompat.ENCHIRIDION_INSTALLED)
+            return base.thenComparingInt(enchantment -> -PenchantCompat.getCategoryOrUncategorized(enchantment, registries).value().priority());
+
+        return base;
     }
 
     public void setSlotChangeListener(Runnable onSlotsChange) {

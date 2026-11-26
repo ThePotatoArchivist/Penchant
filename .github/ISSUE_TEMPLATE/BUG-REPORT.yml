@@ -1,0 +1,56 @@
+name: Bug Report
+description: File a bug report.
+title: "[Bug] "
+labels: ["bug"]
+type: bug
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What the bug is and how to reproduce it
+    validations:
+      required: true
+  - type: dropdown
+    id: game_loader
+    attributes:
+      label: Game Version & Loader
+      description: If your game version & loader combination is not listed, it is considered unsupported.
+      options:
+        - 26.1.2 Fabric
+        - 26.3 Fabric
+        - 26.1.2 Neoforge (Launchpad)
+    validations:
+      required: true
+  - type: input
+    id: mod_version
+    attributes:
+      label: Mod Version
+      description: What version of the mod were you running?
+      placeholder: e.g. 0.5.8+mc26.1.2
+    validations:
+      required: true
+  - type: dropdown
+    id: isolated
+    attributes:
+      label: Does the bug happen without other mods installed?
+      options:
+        - 'Yes'
+        - 'No'
+    validations:
+      required: true
+  - type: input
+    id: logs
+    attributes:
+      label: Link to log
+      description: Please use https://mclo.gs or your preferred paste site.
+      placeholder: https://mclo.gs/xxxxxxx
+    validations:
+      required: true
+  - type: upload
+    id: screenshots
+    attributes:
+      label: Upload screenshots
+      description: If applicable, add screenshots to help explain your problem.
+    validations:
+      required: false

@@ -6,7 +6,6 @@ import archives.tater.penchant.client.PenchantClientConfig;
 import archives.tater.penchant.client.gui.screen.PenchantmentScreen;
 import archives.tater.penchant.component.EnchantmentProgress;
 import archives.tater.penchant.registry.PenchantComponents;
-import archives.tater.penchant.registry.PenchantEnchantmentTags;
 import archives.tater.penchant.registry.PenchantItemTags;
 import archives.tater.penchant.registry.PenchantMenus;
 
@@ -118,7 +117,7 @@ public class PenchantClient implements ClientModInitializer {
 
                 for (var entry : enchantments.entrySet()) {
                     var enchantment = entry.getKey();
-                    if (enchantment.is(PenchantEnchantmentTags.NO_LEVELING) || enchantment.value().getMaxLevel() <= 1) continue;
+                    if (!EnchantmentProgress.shouldShowTooltip(enchantment)) continue;
                     if (!containsIgnoreStyle(line, enchantment.value().description())) continue;
                     iter.add(getProgressTooltip(progress, enchantment, entry.getIntValue(), stack));
                     break;

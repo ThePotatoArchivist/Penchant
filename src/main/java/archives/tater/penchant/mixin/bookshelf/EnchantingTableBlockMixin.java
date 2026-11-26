@@ -1,5 +1,6 @@
 package archives.tater.penchant.mixin.bookshelf;
 
+import archives.tater.penchant.PenchantCompat;
 import archives.tater.penchant.registry.PenchantFlag;
 import archives.tater.penchant.util.PenchantmentHelper;
 
@@ -41,7 +42,7 @@ public class EnchantingTableBlockMixin {
             at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/EnchantingTableBlock;BOOKSHELF_OFFSETS:Ljava/util/List;", opcode = Opcodes.GETSTATIC)
     )
     private List<BlockPos> lenientBookshelfPlacement(List<BlockPos> original) {
-        return PenchantmentHelper.getBookshelfOffsets(original);
+        return PenchantCompat.ENCHIRIDION_INSTALLED ? original : PenchantmentHelper.getBookshelfOffsets(original);
     }
 
     @Definition(id = "is", method = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z")

@@ -5,6 +5,8 @@
   "mixins": [
     "anvil.AnvilMenuMixin",
     "bookshelf.EnchantingTableBlockMixin",
+    "compat.modestmagic.AltarBlockEntityMixin",
+    "compat.modestmagic.TabletSmithingRecipeMixin",
     "disable.CreativeModeTabsMixin",
     "disable.EnchantmentHelperMixin",
     "disable.EnchantRandomlyFunctionMixin",
@@ -24,6 +26,7 @@
     "leveling.EnchantWithLevelsFunctionMixin",
     "leveling.ItemDisplayBuilderMixin",
     "leveling.ItemStackMixin",
+    "leveling.ServerPlayerGameModeMixin",
     "loot.EnchantRandomlyFunctionMixin",
     "loot.EnchantWithLevelsFunctionMixin",
     "randomenchantment.ItemMixin",
@@ -31,6 +34,7 @@
     "table.EnchantingTableBlockMixin",
     "table.EnchantmentMenuMixin"
   ],
+  "plugin": "archives.tater.penchant.PenchantMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   },

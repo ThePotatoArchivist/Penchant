@@ -2,13 +2,16 @@ package archives.tater.penchant.util;
 
 import archives.tater.penchant.PenchantmentDefinition;
 import archives.tater.penchant.api.CanEnchantCallback;
+import archives.tater.penchant.api.EnchantmentCompatibleCallback;
 import archives.tater.penchant.registry.PenchantFlag;
+import archives.tater.penchant.registry.PenchantItemTags;
 
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Unit;
@@ -59,9 +62,13 @@ public class PenchantmentHelper {
         return PenchantmentDefinition.getDefinition(enchantment).experienceCost();
     }
 
+    public static boolean isEnchantmentContainer(ItemStack stack) {
+        return stack.is(PenchantItemTags.ENCHANTMENT_CONTAINERS) || EnchantmentHelper.getComponentType(stack) == DataComponents.STORED_ENCHANTMENTS;
+    }
+
     public static boolean canEnchantItem(ItemStack stack, Holder<Enchantment> enchantment) {
         return CanEnchantCallback.ITEM.invoker().canEnchant(stack, enchantment).orElseGet(() ->
-                stack.is(Items.BOOK) || stack.is(Items.ENCHANTED_BOOK) || stack.getItem().getDefaultInstance().canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)
+                isEnchantmentContainer(stack) || stack.getItem().getDefaultInstance().canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)
         );
     }
 
@@ -75,7 +82,15 @@ public class PenchantmentHelper {
 
     public static boolean canEnchant(ItemStack stack, Holder<Enchantment> enchantment) {
         return !hasEnchantment(stack, enchantment) && CanEnchantCallback.STACK.invoker().canEnchant(stack, enchantment).orElseGet(() ->
-                canEnchantItem(stack, enchantment) && stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment)
+                canEnchantItem(stack, enchantment) && (isEnchantmentContainer(stack) || stack.canBeEnchantedWith(enchantment, EnchantingContext.ACCEPTABLE)) && EnchantmentHelper.isEnchantmentCompatible(getEnchantments(stack).keySet(), enchantment)
+        );
+    }
+
+    public static boolean areCompatible(Holder<Enchantment> enchantment, Holder<Enchantment> existing, ItemStack stack, HolderLookup.Provider registries) {
+        if (enchantment.equals(existing)) return true;
+
+        return EnchantmentCompatibleCallback.EVENT.invoker().areCompatible(enchantment, existing, stack, registries).orElseGet(() ->
+                Enchantment.areCompatible(enchantment, existing)
         );
     }
 
@@ -92,7 +107,7 @@ public class PenchantmentHelper {
 
     public static ItemStack updateEnchantments(ItemStack stack, Consumer<ItemEnchantments.Mutable> updater) {
         // not using EnchantmentHelper.updateEnchantments because it doesn't allow enchanting normal books
-        var type = stack.is(Items.BOOK) ? DataComponents.STORED_ENCHANTMENTS : EnchantmentHelper.getComponentType(stack);
+        var type = isEnchantmentContainer(stack) ? DataComponents.STORED_ENCHANTMENTS : EnchantmentHelper.getComponentType(stack);
         var enchantments = stack.getOrDefault(type, ItemEnchantments.EMPTY);
         var mutable = new ItemEnchantments.Mutable(enchantments);
         updater.accept(mutable);
