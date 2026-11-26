@@ -17,4 +17,6 @@ public class PenchantItemTags {
     public static final TagKey<Item> LEVEL_UP_BY_KILLING = create("level_up_by_killing");
     public static final TagKey<Item> DEFAULT_PROGRESS_COST_FACTOR_ONE = create("default_progress_cost_factor_one");
     public static final TagKey<Item> LEVEL_UP_BY_USE = create("level_up_by_use");
+    public static final TagKey<Item> ENCHANTMENT_CONTAINERS = create("enchantment_containers");
+    public static final TagKey<Item> ENCHANTMENT_FUEL = create("enchantment_fuel");
 }

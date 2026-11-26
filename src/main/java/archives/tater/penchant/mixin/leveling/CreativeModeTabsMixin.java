@@ -21,7 +21,7 @@ public class CreativeModeTabsMixin {
             },
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getMaxLevel()I")
     )
-    private static int onlyOneBookLevel(Enchantment instance, Operation<Integer> original, @Local(argsOnly = true) Holder.Reference<Enchantment> enchantment) {
+    private static int onlyOneBookLevel(Enchantment instance, Operation<Integer> original, @Local(argsOnly = true, name = "enchantment") Holder.Reference<Enchantment> enchantment) {
         return enchantment.is(PenchantEnchantmentTags.NO_LEVELING) ? original.call(instance) : instance.getMinLevel();
     }
 }

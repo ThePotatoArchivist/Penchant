@@ -17,7 +17,7 @@ public class EnchantRandomlyFunctionMixin {
             method = "lambda$run$1",
             at = @At("RETURN")
     )
-    private static boolean disableEnchantment(boolean original, @Local(argsOnly = true) Holder<Enchantment> enchantment) {
-        return original && !enchantment.is(PenchantEnchantmentTags.DISABLED);
+    private static boolean disableEnchantment(boolean original, @Local(argsOnly = true, name = "candidate") Holder<Enchantment> candidate) {
+        return original && !candidate.is(PenchantEnchantmentTags.DISABLED);
     }
 }

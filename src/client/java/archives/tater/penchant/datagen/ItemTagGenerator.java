@@ -12,6 +12,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -42,6 +43,13 @@ public class ItemTagGenerator extends FabricTagsProvider.ItemTagsProvider {
 
         builder(PenchantItemTags.LEVEL_UP_BY_USE)
                 .addOptional(createKey("enderscape", "mirror"));
+
+        valueLookupBuilder(PenchantItemTags.ENCHANTMENT_CONTAINERS)
+                .add(Items.BOOK)
+                .add(Items.ENCHANTED_BOOK);
+
+        valueLookupBuilder(PenchantItemTags.ENCHANTMENT_FUEL)
+                .add(Items.LAPIS_LAZULI);
     }
 
     private static ResourceKey<Item> createKey(String namespace, String path) {
