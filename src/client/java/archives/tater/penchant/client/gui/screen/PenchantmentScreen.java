@@ -139,7 +139,7 @@ public class PenchantmentScreen extends AbstractContainerScreen<PenchantmentMenu
         scrollableLayout.setPosition(leftPos + 60, topPos + 14);
         scrollableLayout.arrangeElements();
         scrollableLayout.visitWidgets(this::addRenderableWidget);
-        scrollableLayout.setTabGroup(7); // TODO what
+        scrollableLayout.setTabGroup(BETWEEN_INPUT_OUTPUT_TAB_GROUP);
         scrollableLayout.allowTabNavigationInside(false);
         scrollableLayout.setScrollAmount(prevScrollAMount);
     }
