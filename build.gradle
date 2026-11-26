@@ -81,9 +81,7 @@ dependencies {
 		exclude group: "net.fabricmc.fabric-api"
 	}
 
-	compileOnly("org.vulpixel.enchiridion:enchiridion:${project.enchiridion_version}") {
-		exclude group: "net.fabricmc.fabric-api"
-	}
+	compileOnly "maven.modrinth:enchiridion:${project.enchiridion_version}"
 
 	compileOnly "maven.modrinth:modest-magic:${project.modest_magic_version}"
 }
